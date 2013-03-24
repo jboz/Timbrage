@@ -1,7 +1,5 @@
 package com.boz.tools.android.timbrage;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
@@ -9,12 +7,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListView;
 
 public class TimbragesActivity extends Activity {
-    
-    private final DateFormat FORMATTER = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+    private ListView timesList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,10 +23,14 @@ public class TimbragesActivity extends Activity {
         final Button addBtn = (Button) findViewById(R.id.btnAdd);
         addBtn.setOnClickListener(new OnClickListener() {
 
-            public void onClick(View arg0) {
+            public void onClick(View v) {
                 addTime();
             }
         });
+
+        timesList = (ListView) findViewById(R.id.timesList);
+        timesList.setAdapter(new TimesLogArrayAdapter(getApplicationContext()));
+
     }
 
     @Override
@@ -36,8 +39,8 @@ public class TimbragesActivity extends Activity {
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     public void addTime() {
-        ((TextView) findViewById(R.id.helloTxt)).setText(FORMATTER.format(new Date()));
-        System.out.println(new Date());
+        ((ArrayAdapter<Date>) timesList.getAdapter()).add(new Date());
     }
 }
