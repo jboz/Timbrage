@@ -8,16 +8,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp"
-        android:text="@string/btn_add" />
+        android:text="@string/btn_add"
+        android:textSize="50sp" />
 
     <ListView
         android:id="@+id/timesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textReportDay"
         android:layout_below="@+id/btnAdd"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textReportMonth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/textReportDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textReportMonth"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

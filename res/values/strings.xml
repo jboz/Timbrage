@@ -6,5 +6,6 @@
     <string name="title_activity_timbrages">Timbrages</string>
     <string name="btn_add">Ajouter Timbrage</string>
     <string name="delete_btn">Delete</string>
+    <string name="item_share">Share</string>
 
 </resources>
