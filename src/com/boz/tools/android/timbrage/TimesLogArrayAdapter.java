@@ -1,6 +1,7 @@
 package com.boz.tools.android.timbrage;
 
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.Locale;
 import org.joda.time.LocalDateTime;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,7 +42,11 @@ public class TimesLogArrayAdapter extends ArrayAdapter<LocalDateTime> {
         super(activity.getApplicationContext(), R.layout.time_list_item, values);
         this.activity = activity;
         this.values = values;
-        sort(Ordering.natural());
+        sort();
+    }
+
+    public void sort() {
+        sort(Ordering.natural().reverse());
     }
 
     public List<LocalDateTime> getValues() {
@@ -64,11 +71,53 @@ public class TimesLogArrayAdapter extends ArrayAdapter<LocalDateTime> {
         holder.deleteBtn.setOnClickListener(new OnClickListener() {
 
             public void onClick(final View v) {
-                values.remove(position);
-                sort(Ordering.natural()); // sort and notify
+                final String title = MessageFormat.format(activity.getString(R.string.delete_title),
+                        values.get(position).toDate());
+
+                // confirmation dialog
+                new AlertDialog.Builder(activity).setTitle(title).setMessage(R.string.delete_message)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // remove on confirm
+                                values.remove(position);
+                                sort(); // sort and notify
+                            }
+                        }).setNegativeButton(android.R.string.no, null).show();
             }
         });
 
         return rowView;
     }
+
+    /**
+     * Display a confirm dialog.
+     * 
+     * @param activity
+     * @param title
+     * @param message
+     * @param positiveLabel
+     * @param negativeLabel
+     * @param onPositiveClick runnable to call (in UI thread) if positive button pressed. Can be null
+     * @param onNegativeClick runnable to call (in UI thread) if negative button pressed. Can be null
+     */
+    public static final void confirm(final Activity activity, final int title, final int message,
+            final int positiveLabel, final int negativeLabel, final Runnable onPositiveClick,
+            final Runnable onNegativeClick) {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.setCancelable(false);
+        dialog.setPositiveButton(positiveLabel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int buttonId) {
+                if (onPositiveClick != null)
+                    onPositiveClick.run();
+            }
+        });
+        dialog.setIcon(android.R.drawable.ic_dialog_alert);
+        dialog.show();
+    }
+
 }

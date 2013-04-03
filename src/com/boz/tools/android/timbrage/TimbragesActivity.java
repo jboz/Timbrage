@@ -2,7 +2,9 @@ package com.boz.tools.android.timbrage;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,41 +23,52 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.boz.tools.android.timbrage.DateTimePicker.ICustomDateTimeListener;
-import com.google.common.collect.Ordering;
+import com.google.common.collect.Lists;
 
 public class TimbragesActivity extends Activity {
 
-    public static final String FILE = "times.csv";
+    public static final String FILE_PARENT = "timbrage";
+    public static final String FILE_PATTERN = "times{0,date,-yyyy-MM}.csv";
 
-    private ListView timesList;
     private TimesLogArrayAdapter adapter;
+    private TextView textReportWillBe;
+    private TextView textReportDaily;
+    private TextView textReportMonthly;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timbrages);
+        final ListView timesList = (ListView) findViewById(R.id.timesList);
 
         final Button addBtn = (Button) findViewById(R.id.btnAdd);
         addBtn.setOnClickListener(new OnClickListener() {
 
             public void onClick(final View v) {
-                addTime();
+//                final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//                final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+//                r.play();
+
+                adapter.add(LocalDateTime.now());
+                // sort and notify
+                adapter.sort();
             }
         });
 
-        timesList = (ListView) findViewById(R.id.timesList);
         adapter = new TimesLogArrayAdapter(this, loadTimes());
         timesList.setAdapter(adapter);
         timesList.getAdapter().registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
+                // synchronize file
                 sync(adapter.getValues());
+                // reporting
                 updateReport(adapter.getValues());
             }
         });
@@ -65,20 +78,45 @@ public class TimbragesActivity extends Activity {
             }
         });
 
+        // add report field
+        textReportWillBe = createTextView();
+        textReportDaily = createTextView();
+        textReportMonthly = createTextView();
+
+        // check directory
+        if (!new File(Environment.getExternalStorageDirectory(), FILE_PARENT).exists()) {
+            new File(Environment.getExternalStorageDirectory(), FILE_PARENT).mkdir();
+        }
+
+        // load times
         updateReport(adapter.getValues());
+    }
+
+    private TextView createTextView() {
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.reportLayout);
+        final TextView textView = new TextView(this);
+        textView.setTextSize(20);
+        layout.addView(textView);
+        return textView;
+    }
+
+    private File getFile() {
+        // Uri.parse("android.resource://YOUR_PACKAGENAME/" + resources);
+        final String fileName = MessageFormat.format(FILE_PATTERN, new Date());
+
+        return new File(new File(Environment.getExternalStorageDirectory(), FILE_PARENT), fileName);
     }
 
     private void editTime(final int position) {
         final DateTimePicker dateTimePicker = new DateTimePicker(this, new ICustomDateTimeListener() {
 
             public void onSet(final LocalDateTime dateTime) {
-
                 // remove previous
                 adapter.getValues().remove(position);
                 // finally set new date
                 adapter.getValues().add(position, dateTime);
                 // sort and notify
-                adapter.sort(Ordering.natural());
+                adapter.sort();
             }
 
             public void onCancel() {
@@ -108,15 +146,10 @@ public class TimbragesActivity extends Activity {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
-    public void addTime() {
-        ((ArrayAdapter<LocalDateTime>) timesList.getAdapter()).add(LocalDateTime.now());
-    }
-
     public List<LocalDateTime> loadTimes() {
         final List<LocalDateTime> times = new ArrayList<LocalDateTime>();
         try {
-            final Scanner scanner = new Scanner(new File(Environment.getExternalStorageDirectory(), FILE));
+            final Scanner scanner = new Scanner(getFile());
 
             while (scanner.hasNext()) {
                 final String time = scanner.nextLine();
@@ -134,7 +167,7 @@ public class TimbragesActivity extends Activity {
     public void sync(final List<LocalDateTime> times) {
         if (Environment.getExternalStorageDirectory().canWrite()) {
             try {
-                final PrintWriter writer = new PrintWriter(new File(Environment.getExternalStorageDirectory(), FILE));
+                final PrintWriter writer = new PrintWriter(getFile());
 
                 for (final LocalDateTime timeLog : times) {
                     writer.println(timeLog.toString());
@@ -148,11 +181,22 @@ public class TimbragesActivity extends Activity {
     }
 
     public void updateReport(final List<LocalDateTime> times) {
-        // reporting
-        ((TextView) findViewById(R.id.textReportDay)).setText("Daily report : "
-                + TimeReport.report(times, LocalDate.now()));
-        ((TextView) findViewById(R.id.textReportMonth)).setText("Monthly report : "
-                + TimeReport.report(times, LocalDate.now().withDayOfMonth(1), LocalDate.now().withDayOfMonth(1)
-                        .plusMonths(1)));
+        if (times.size() % 2 != 0) {
+            final List<LocalDateTime> times2 = Lists.newArrayList(times);
+            times2.add(LocalDateTime.now());
+            // reporting
+            final String willBe = TimeReport.report(times2, LocalDate.now());
+            textReportWillBe.setText(MessageFormat.format(getString(R.string.reporting_willBe), willBe));
+        } else {
+            // no need elapsed time
+            textReportWillBe.setText("");
+        }
+
+        final String daily = TimeReport.report(times, LocalDate.now());
+        final String monthly = TimeReport.report(times, LocalDate.now().withDayOfMonth(1), LocalDate.now()
+                .withDayOfMonth(1).plusMonths(1));
+
+        textReportDaily.setText(MessageFormat.format(getString(R.string.reporting_daily), daily));
+        textReportMonthly.setText(MessageFormat.format(getString(R.string.reporting_daily), monthly));
     }
 }

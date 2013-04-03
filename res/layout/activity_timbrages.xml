@@ -18,26 +18,20 @@
         android:id="@+id/timesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textReportDay"
+        android:layout_above="@+id/reportLayout"
         android:layout_below="@+id/btnAdd"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/textReportMonth"
+    <LinearLayout
+        android:id="@+id/reportLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textReportDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textReportMonth"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -2,8 +2,10 @@ package com.boz.tools.android.timbrage;
 
 import org.joda.time.LocalDateTime;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,12 +52,19 @@ public class DateTimePicker implements OnClickListener {
     }
 
     @SuppressWarnings("deprecation")
+    private int matchForNew() {
+        if (android.os.Build.VERSION.SDK_INT >= 10) {
+            return LayoutParams.MATCH_PARENT;
+        }
+        return LayoutParams.FILL_PARENT;
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public View getDateTimePickerLayout() {
-        final LinearLayout.LayoutParams linear_match_wrap = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT,
-                LayoutParams.FILL_PARENT);
+        final LinearLayout.LayoutParams linear_match_wrap = new LinearLayout.LayoutParams(matchForNew(), matchForNew());
         final LinearLayout.LayoutParams linear_wrap_wrap = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
-        final FrameLayout.LayoutParams frame_match_wrap = new FrameLayout.LayoutParams(LayoutParams.FILL_PARENT,
+        final FrameLayout.LayoutParams frame_match_wrap = new FrameLayout.LayoutParams(matchForNew(),
                 LayoutParams.WRAP_CONTENT);
 
         final LinearLayout.LayoutParams button_params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT,
@@ -92,6 +101,10 @@ public class DateTimePicker implements OnClickListener {
         viewSwitcher.setLayoutParams(frame_match_wrap);
 
         datePicker = new DatePicker(activity);
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= 11) {
+            datePicker.setCalendarViewShown(false);
+        }
         timePicker = new TimePicker(activity);
 
         viewSwitcher.addView(timePicker);
@@ -184,7 +197,7 @@ public class DateTimePicker implements OnClickListener {
                     final int hourOfDay = timePicker.getCurrentHour().intValue();
                     final int minute = timePicker.getCurrentMinute().intValue();
 
-                    dateTime = new LocalDateTime(year, month, day, hourOfDay, minute);
+                    dateTime = new LocalDateTime(year, month + 1, day, hourOfDay, minute);
 
                     listener.onSet(dateTime);
                 }
