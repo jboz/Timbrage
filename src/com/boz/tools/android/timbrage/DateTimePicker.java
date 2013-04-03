@@ -148,7 +148,7 @@ public class DateTimePicker implements OnClickListener {
             timePicker.setCurrentHour(dateTime.getHourOfDay());
             timePicker.setCurrentMinute(dateTime.getMinuteOfHour());
 
-            datePicker.updateDate(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth());
+            datePicker.updateDate(dateTime.getYear(), dateTime.getMonthOfYear() - 1, dateTime.getDayOfMonth());
 
             dialog.show();
 
