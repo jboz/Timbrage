@@ -9,8 +9,14 @@
     <string name="item_share">Share</string>
     <string name="delete_title">Timbrage {0,date,EEEE dd/MM HH:mm:ss}</string>
     <string name="delete_message">Confirmez vous la suppression de ce timbrage ?</string>
-    <string name="reporting_willBe">Today reporting will be : {0}</string>
+    <string name="reporting_willBe">Daily elapsed time : {0}</string>
     <string name="reporting_daily">Daily report : {0}</string>
     <string name="reporting_monthly">Monthly report : {0}</string>
-
+    <string name="timeH">h</string>
+    <string name="timeM">m</string>
+    <string name="timeS">s</string>
+    <string name="send_subject">Reporting {0,date,MMMM yyyy}</string>
+    <string name="send_object">Total du mois : {0}</string>
+    
+    <color name="yellow">#fff826</color>
 </resources>

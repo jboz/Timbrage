@@ -3,23 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/btnAdd"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/btn_add"
-        android:textSize="50sp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp" >
+
+            <TextView
+                android:id="@+id/textViewH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textViewHLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timeH"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textViewM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textViewMLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timeM"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textViewS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textViewSLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timeS"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageViewAdd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/plus" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/timesList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/reportLayout"
-        android:layout_below="@+id/btnAdd"
+        android:layout_below="@+id/linearLayout"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
@@ -31,7 +87,6 @@
         android:layout_alignParentRight="true"
         android:layout_margin="5dp"
         android:orientation="vertical" >
-
     </LinearLayout>
 
 </RelativeLayout>

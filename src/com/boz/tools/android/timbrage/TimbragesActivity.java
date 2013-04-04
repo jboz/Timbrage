@@ -7,23 +7,27 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,6 +44,9 @@ public class TimbragesActivity extends Activity {
     private TextView textReportWillBe;
     private TextView textReportDaily;
     private TextView textReportMonthly;
+    private TextView textTimeH;
+    private TextView textTimeM;
+    private TextView textTimeS;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -47,13 +54,13 @@ public class TimbragesActivity extends Activity {
         setContentView(R.layout.activity_timbrages);
         final ListView timesList = (ListView) findViewById(R.id.timesList);
 
-        final Button addBtn = (Button) findViewById(R.id.btnAdd);
+        final ImageView addBtn = (ImageView) findViewById(R.id.imageViewAdd);
         addBtn.setOnClickListener(new OnClickListener() {
 
             public void onClick(final View v) {
-//                final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//                final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-//                r.play();
+                // final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                // final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+                // r.play();
 
                 adapter.add(LocalDateTime.now());
                 // sort and notify
@@ -90,6 +97,12 @@ public class TimbragesActivity extends Activity {
 
         // load times
         updateReport(adapter.getValues());
+
+        // current time
+        textTimeH = (TextView) findViewById(R.id.textViewH);
+        textTimeM = (TextView) findViewById(R.id.textViewM);
+        textTimeS = (TextView) findViewById(R.id.textViewS);
+        new Timer().schedule(new UpdateTimeTask(), 0, 500);
     }
 
     private TextView createTextView() {
@@ -100,9 +113,13 @@ public class TimbragesActivity extends Activity {
         return textView;
     }
 
+    public String getFileName() {
+        return MessageFormat.format(FILE_PATTERN, new Date());
+    }
+
     private File getFile() {
         // Uri.parse("android.resource://YOUR_PACKAGENAME/" + resources);
-        final String fileName = MessageFormat.format(FILE_PATTERN, new Date());
+        final String fileName = getFileName();
 
         return new File(new File(Environment.getExternalStorageDirectory(), FILE_PARENT), fileName);
     }
@@ -128,16 +145,28 @@ public class TimbragesActivity extends Activity {
     }
 
     @Override
-    public void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo) {
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemShare:
+                shareIt();
+                break;
+        }
+        return super.onMenuItemSelected(featureId, item);
+    }
 
-        // final MenuItem itemShare = (MenuItem) findViewById(R.id.itemShare);
-        final Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, "Sended text");
-        intent.setType("text/plain"); // TODO define file content
-        startActivity(Intent.createChooser(intent, "Share times with..."));
+    private void shareIt() {
+        // sharing implementation
+        final Intent share = new Intent(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_SUBJECT, MessageFormat.format(getString(R.string.send_subject), new Date()));
 
-        // TODO Auto-generated method stub
-        super.onCreateContextMenu(menu, v, menuInfo);
+        final String monthly = TimeReport.report(adapter.getValues(), LocalDate.now().withDayOfMonth(1), LocalDate
+                .now().withDayOfMonth(1).plusMonths(1));
+        share.putExtra(Intent.EXTRA_TEXT, MessageFormat.format(getString(R.string.send_object), monthly));
+        final Uri uri = Uri.fromFile(getFile());
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("text/plain"); // TODO define file content
+        startActivity(Intent.createChooser(share, "Share times with..."));
+
     }
 
     @Override
@@ -181,22 +210,41 @@ public class TimbragesActivity extends Activity {
     }
 
     public void updateReport(final List<LocalDateTime> times) {
-        if (times.size() % 2 != 0) {
-            final List<LocalDateTime> times2 = Lists.newArrayList(times);
-            times2.add(LocalDateTime.now());
-            // reporting
-            final String willBe = TimeReport.report(times2, LocalDate.now());
-            textReportWillBe.setText(MessageFormat.format(getString(R.string.reporting_willBe), willBe));
-        } else {
-            // no need elapsed time
-            textReportWillBe.setText("");
-        }
 
         final String daily = TimeReport.report(times, LocalDate.now());
         final String monthly = TimeReport.report(times, LocalDate.now().withDayOfMonth(1), LocalDate.now()
                 .withDayOfMonth(1).plusMonths(1));
 
         textReportDaily.setText(MessageFormat.format(getString(R.string.reporting_daily), daily));
-        textReportMonthly.setText(MessageFormat.format(getString(R.string.reporting_daily), monthly));
+        textReportMonthly.setText(MessageFormat.format(getString(R.string.reporting_monthly), monthly));
     }
+
+    class UpdateTimeTask extends TimerTask {
+
+        @Override
+        public void run() {
+            TimbragesActivity.this.runOnUiThread(new Runnable() {
+
+                public void run() {
+                    // current time update
+                    final LocalTime now = LocalTime.now();
+                    textTimeH.setText(StringUtils.leftPad(String.valueOf(now.getHourOfDay()), 2, "0"));
+                    textTimeM.setText(StringUtils.leftPad(String.valueOf(now.getMinuteOfHour()), 2, "0"));
+                    textTimeS.setText(StringUtils.leftPad(String.valueOf(now.getSecondOfMinute()), 2, "0"));
+
+                    // elapsed time report
+                    if (adapter.getValues().size() % 2 != 0) {
+                        final List<LocalDateTime> times2 = Lists.newArrayList(adapter.getValues());
+                        times2.add(LocalDateTime.now());
+                        // reporting
+                        final String willBe = TimeReport.report(times2, LocalDate.now());
+                        textReportWillBe.setText(MessageFormat.format(getString(R.string.reporting_willBe), willBe));
+                    } else {
+                        // no need elapsed time
+                        textReportWillBe.setText("");
+                    }
+                }
+            });
+        }
+    };
 }
