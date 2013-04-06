@@ -1,23 +1,21 @@
 package com.boz.tools.android.timbrage;
 
 import java.io.File;
-import java.io.PrintWriter;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
+import org.joda.time.Period;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,22 +29,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boz.tools.android.timbrage.DateTimePicker.ICustomDateTimeListener;
-import com.google.common.collect.Lists;
 
-public class TimbragesActivity extends Activity {
+public class TimbragesActivity extends Activity implements OnClickListener {
 
     public static final String FILE_PARENT = "timbrage";
     public static final String FILE_PATTERN = "times{0,date,-yyyy-MM}.csv";
 
     private TimesLogArrayAdapter adapter;
-    private TextView textReportWillBe;
-    private TextView textReportDaily;
     private TextView textReportMonthly;
     private TextView textTimeH;
     private TextView textTimeM;
     private TextView textTimeS;
+
+    private MediaPlayer player;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
@@ -55,26 +53,18 @@ public class TimbragesActivity extends Activity {
         final ListView timesList = (ListView) findViewById(R.id.timesList);
 
         final ImageView addBtn = (ImageView) findViewById(R.id.imageViewAdd);
-        addBtn.setOnClickListener(new OnClickListener() {
+        addBtn.setOnClickListener(this);
+        if (android.os.Build.VERSION.SDK_INT >= 10) {
+            addBtn.setImageResource(R.drawable.plus2);
+        }
 
-            public void onClick(final View v) {
-                // final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                // final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-                // r.play();
-
-                adapter.add(LocalDateTime.now());
-                // sort and notify
-                adapter.sort();
-            }
-        });
-
-        adapter = new TimesLogArrayAdapter(this, loadTimes());
+        adapter = new TimesLogArrayAdapter(this, TimeReport.loadTimes(getFile()));
         timesList.setAdapter(adapter);
         timesList.getAdapter().registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
                 // synchronize file
-                sync(adapter.getValues());
+                TimeReport.sync(adapter.getValues(), getFile());
                 // reporting
                 updateReport(adapter.getValues());
             }
@@ -86,8 +76,6 @@ public class TimbragesActivity extends Activity {
         });
 
         // add report field
-        textReportWillBe = createTextView();
-        textReportDaily = createTextView();
         textReportMonthly = createTextView();
 
         // check directory
@@ -103,6 +91,8 @@ public class TimbragesActivity extends Activity {
         textTimeM = (TextView) findViewById(R.id.textViewM);
         textTimeS = (TextView) findViewById(R.id.textViewS);
         new Timer().schedule(new UpdateTimeTask(), 0, 500);
+
+        player = MediaPlayer.create(this, R.raw.beep);
     }
 
     private TextView createTextView() {
@@ -124,6 +114,24 @@ public class TimbragesActivity extends Activity {
         return new File(new File(Environment.getExternalStorageDirectory(), FILE_PARENT), fileName);
     }
 
+    public void onClick(final View v) {
+        // final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        // final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+        // r.play();
+        new Thread() {
+            public void run() {
+                player.start();
+            }
+        }.start();
+
+        adapter.add(LocalDateTime.now());
+        // sort and notify
+        adapter.sort();
+
+        Toast.makeText(TimbragesActivity.this, MessageFormat.format(getString(R.string.time_added), new Date()),
+                Toast.LENGTH_SHORT).show();
+    }
+
     private void editTime(final int position) {
         final DateTimePicker dateTimePicker = new DateTimePicker(this, new ICustomDateTimeListener() {
 
@@ -134,6 +142,10 @@ public class TimbragesActivity extends Activity {
                 adapter.getValues().add(position, dateTime);
                 // sort and notify
                 adapter.sort();
+
+                Toast.makeText(TimbragesActivity.this,
+                        MessageFormat.format(getString(R.string.time_updated), dateTime.toDate()), Toast.LENGTH_SHORT)
+                        .show();
             }
 
             public void onCancel() {
@@ -175,47 +187,13 @@ public class TimbragesActivity extends Activity {
         return true;
     }
 
-    public List<LocalDateTime> loadTimes() {
-        final List<LocalDateTime> times = new ArrayList<LocalDateTime>();
-        try {
-            final Scanner scanner = new Scanner(getFile());
-
-            while (scanner.hasNext()) {
-                final String time = scanner.nextLine();
-                times.add(LocalDateTime.parse(time));
-            }
-            scanner.close();
-
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-
-        return times;
-    }
-
-    public void sync(final List<LocalDateTime> times) {
-        if (Environment.getExternalStorageDirectory().canWrite()) {
-            try {
-                final PrintWriter writer = new PrintWriter(getFile());
-
-                for (final LocalDateTime timeLog : times) {
-                    writer.println(timeLog.toString());
-                }
-
-                writer.close();
-            } catch (final Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void updateReport(final List<LocalDateTime> times) {
 
-        final String daily = TimeReport.report(times, LocalDate.now());
+        // final String daily = TimeReport.report(times, LocalDate.now());
         final String monthly = TimeReport.report(times, LocalDate.now().withDayOfMonth(1), LocalDate.now()
                 .withDayOfMonth(1).plusMonths(1));
 
-        textReportDaily.setText(MessageFormat.format(getString(R.string.reporting_daily), daily));
+        // textReportDaily.setText(MessageFormat.format(getString(R.string.reporting_daily), daily));
         textReportMonthly.setText(MessageFormat.format(getString(R.string.reporting_monthly), monthly));
     }
 
@@ -226,23 +204,11 @@ public class TimbragesActivity extends Activity {
             TimbragesActivity.this.runOnUiThread(new Runnable() {
 
                 public void run() {
-                    // current time update
-                    final LocalTime now = LocalTime.now();
-                    textTimeH.setText(StringUtils.leftPad(String.valueOf(now.getHourOfDay()), 2, "0"));
-                    textTimeM.setText(StringUtils.leftPad(String.valueOf(now.getMinuteOfHour()), 2, "0"));
-                    textTimeS.setText(StringUtils.leftPad(String.valueOf(now.getSecondOfMinute()), 2, "0"));
-
-                    // elapsed time report
-                    if (adapter.getValues().size() % 2 != 0) {
-                        final List<LocalDateTime> times2 = Lists.newArrayList(adapter.getValues());
-                        times2.add(LocalDateTime.now());
-                        // reporting
-                        final String willBe = TimeReport.report(times2, LocalDate.now());
-                        textReportWillBe.setText(MessageFormat.format(getString(R.string.reporting_willBe), willBe));
-                    } else {
-                        // no need elapsed time
-                        textReportWillBe.setText("");
-                    }
+                    // calculate daily elapsed time
+                    final Period dailyElapsed = TimeReport.calculateElapsed(adapter.getValues());
+                    textTimeH.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getHours()), 2, "0"));
+                    textTimeM.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getMinutes()), 2, "0"));
+                    textTimeS.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getSeconds()), 2, "0"));
                 }
             });
         }

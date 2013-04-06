@@ -1,6 +1,10 @@
 package com.boz.tools.android.timbrage;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.joda.time.Duration;
 import org.joda.time.LocalDate;
@@ -12,6 +16,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 
 public class TimeReport {
@@ -38,12 +43,57 @@ public class TimeReport {
         return total.toPeriod();
     }
 
+    public static Period calculateElapsed(final Iterable<LocalDateTime> times) {
+
+        final List<LocalDateTime> times2 = Lists.newArrayList(Iterables.filter(times,
+                new LocalDatePredicate(LocalDate.now())));
+        // si timbrages impaire, on en ajoute un
+        if (times2.size() % 2 != 0) {
+            times2.add(LocalDateTime.now());
+        }
+        return calculateTimes(times2);
+    }
+
     public static String report(final Iterable<LocalDateTime> times, final LocalDate predicate) {
         return formatter.print(calculateTimes(Iterables.filter(times, new LocalDatePredicate(predicate))));
     }
 
     public static String report(final Iterable<LocalDateTime> times, final LocalDate start, final LocalDate end) {
         return formatter.print(calculateTimes(Iterables.filter(times, new BetweenLocalDatePredicate(start, end))));
+    }
+
+    public static List<LocalDateTime> loadTimes(final File file) {
+        final List<LocalDateTime> times = new ArrayList<LocalDateTime>();
+        try {
+            final Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNext()) {
+                final String time = scanner.nextLine();
+                times.add(LocalDateTime.parse(time));
+            }
+            scanner.close();
+        } catch (final Exception e) {
+            // TODO manage exception
+            e.printStackTrace();
+        }
+
+        return times;
+    }
+
+    public static void sync(final List<LocalDateTime> times, final File file) {
+        if (file.canWrite()) {
+            try {
+                final PrintWriter writer = new PrintWriter(file);
+
+                for (final LocalDateTime timeLog : times) {
+                    writer.println(timeLog.toString());
+                }
+                writer.close();
+            } catch (final Exception e) {
+                // TODO manage exception
+                e.printStackTrace();
+            }
+        }
     }
 
     private static class LocalDatePredicate implements Predicate<LocalDateTime> {

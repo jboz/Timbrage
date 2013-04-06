@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.collect.Ordering;
 
@@ -81,8 +82,13 @@ public class TimesLogArrayAdapter extends ArrayAdapter<LocalDateTime> {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 // remove on confirm
-                                values.remove(position);
+                                final LocalDateTime removed = values.remove(position);
                                 sort(); // sort and notify
+
+                                Toast.makeText(
+                                        activity,
+                                        MessageFormat.format(activity.getString(R.string.time_deleted),
+                                                removed.toDate()), Toast.LENGTH_SHORT).show();
                             }
                         }).setNegativeButton(android.R.string.no, null).show();
             }

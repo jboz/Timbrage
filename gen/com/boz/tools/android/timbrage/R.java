@@ -11,54 +11,60 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int yellow=0x7f050000;
+        public static final int yellow=0x7f060000;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int plus=0x7f020001;
+        public static final int plus2=0x7f020002;
     }
     public static final class id {
-        public static final int deleteBtn=0x7f08000b;
-        public static final int imageViewAdd=0x7f080007;
-        public static final int itemShare=0x7f08000c;
-        public static final int linearLayout=0x7f080000;
-        public static final int reportLayout=0x7f080009;
-        public static final int textViewH=0x7f080001;
-        public static final int textViewHLbl=0x7f080002;
-        public static final int textViewM=0x7f080003;
-        public static final int textViewMLbl=0x7f080004;
-        public static final int textViewS=0x7f080005;
-        public static final int textViewSLbl=0x7f080006;
-        public static final int timeTxt=0x7f08000a;
-        public static final int timesList=0x7f080008;
+        public static final int deleteBtn=0x7f09000b;
+        public static final int imageViewAdd=0x7f090007;
+        public static final int itemShare=0x7f09000c;
+        public static final int linearLayout=0x7f090000;
+        public static final int reportLayout=0x7f090009;
+        public static final int textViewH=0x7f090001;
+        public static final int textViewHLbl=0x7f090002;
+        public static final int textViewM=0x7f090003;
+        public static final int textViewMLbl=0x7f090004;
+        public static final int textViewS=0x7f090005;
+        public static final int textViewSLbl=0x7f090006;
+        public static final int timeTxt=0x7f09000a;
+        public static final int timesList=0x7f090008;
     }
     public static final class layout {
         public static final int activity_timbrages=0x7f030000;
         public static final int time_list_item=0x7f030001;
     }
     public static final class menu {
-        public static final int activity_timbrages=0x7f070000;
+        public static final int activity_timbrages=0x7f080000;
+    }
+    public static final class raw {
+        public static final int beep=0x7f040000;
     }
     public static final class string {
-        public static final int app_name=0x7f040000;
-        public static final int btn_add=0x7f040004;
-        public static final int delete_btn=0x7f040005;
-        public static final int delete_message=0x7f040008;
-        public static final int delete_title=0x7f040007;
-        public static final int hello_world=0x7f040001;
-        public static final int item_share=0x7f040006;
-        public static final int menu_settings=0x7f040002;
-        public static final int reporting_daily=0x7f04000a;
-        public static final int reporting_monthly=0x7f04000b;
-        public static final int reporting_willBe=0x7f040009;
-        public static final int send_object=0x7f040010;
-        public static final int send_subject=0x7f04000f;
-        public static final int timeH=0x7f04000c;
-        public static final int timeM=0x7f04000d;
-        public static final int timeS=0x7f04000e;
-        public static final int title_activity_timbrages=0x7f040003;
+        public static final int app_name=0x7f050000;
+        public static final int btn_add=0x7f050004;
+        public static final int delete_btn=0x7f050005;
+        public static final int delete_message=0x7f05000b;
+        public static final int delete_title=0x7f05000a;
+        public static final int hello_world=0x7f050001;
+        public static final int item_share=0x7f050006;
+        public static final int menu_settings=0x7f050002;
+        public static final int reporting_daily=0x7f05000c;
+        public static final int reporting_monthly=0x7f05000d;
+        public static final int send_object=0x7f050012;
+        public static final int send_subject=0x7f050011;
+        public static final int timeH=0x7f05000e;
+        public static final int timeM=0x7f05000f;
+        public static final int timeS=0x7f050010;
+        public static final int time_added=0x7f050007;
+        public static final int time_deleted=0x7f050009;
+        public static final int time_updated=0x7f050008;
+        public static final int title_activity_timbrages=0x7f050003;
     }
     public static final class style {
-        public static final int AppTheme=0x7f060000;
+        public static final int AppTheme=0x7f070000;
     }
 }
