@@ -7,6 +7,7 @@
     <string name="btn_add">Ajouter Timbrage</string>
     <string name="delete_btn">Delete</string>
     <string name="item_share">Share</string>
+    <string name="item_calendar">Calendar</string>
     <string name="time_added">{0,date,dd/MM HH:mm:ss} ajouté !</string>
     <string name="time_updated">{0,date,dd/MM HH:mm:ss} modifié !</string>
     <string name="time_deleted">{0,date,dd/MM HH:mm:ss} supprimé !</string>

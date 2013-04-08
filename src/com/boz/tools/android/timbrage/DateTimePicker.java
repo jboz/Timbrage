@@ -153,6 +153,7 @@ public class DateTimePicker implements OnClickListener {
             dialog.show();
 
             // time by default
+            btn_setDate.performClick();
             btn_setTime.performClick();
         }
     }

@@ -162,6 +162,10 @@ public class TimbragesActivity extends Activity implements OnClickListener {
             case R.id.itemShare:
                 shareIt();
                 break;
+        // case R.id.itemCalendar:
+        // final Intent toCalendar = new Intent(this, CalendarActivity.class);
+        // startActivity(toCalendar);
+        // break;
         }
         return super.onMenuItemSelected(featureId, item);
     }

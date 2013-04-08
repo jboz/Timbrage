@@ -2,9 +2,15 @@
 
     <item
         android:id="@+id/itemShare"
+        android:icon="@android:drawable/ic_menu_share"
         android:showAsAction="always"
-        android:title="@string/item_share"
-        android:icon="@android:drawable/ic_menu_share">
+        android:title="@string/item_share">
     </item>
+    <!--<item
+        android:id="@+id/itemCalendar"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:showAsAction="always"
+        android:title="@string/item_calendar">
+    </item>-->
 
 </menu>
