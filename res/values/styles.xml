@@ -2,4 +2,11 @@
 
     <style name="AppTheme" parent="android:Theme.Light" />
 
+    <color name="holo_blue_light">#33b5e5</color>
+    <color name="holo_blue_dark">#0099cc</color>
+    <color name="holo_blue_bright">#00ddff</color>
+    <color name="orange_text">#722E1D</color>
+    <color name="blue_text">#093748</color>
+    <color name="gray_text">#1F1E1E</color>
+
 </resources>

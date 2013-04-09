@@ -23,26 +23,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.boz.tools.android.timbrage.DateTimePicker.ICustomDateTimeListener;
 
 public class TimbragesActivity extends Activity implements OnClickListener {
 
     public static final String FILE_PARENT = "timbrage";
     public static final String FILE_PATTERN = "times{0,date,-yyyy-MM}.csv";
 
-    private TimesLogArrayAdapter adapter;
-    private TextView textReportMonthly;
+    private GroupArrayAdapter adapter;
+    private TextView textReportMonthlyH;
+    private TextView textReportMonthlyM;
+    private TextView textReportMonthlyS;
     private TextView textTimeH;
     private TextView textTimeM;
     private TextView textTimeS;
+
+    private ImageView addBtn;
 
     private MediaPlayer player;
 
@@ -50,33 +49,25 @@ public class TimbragesActivity extends Activity implements OnClickListener {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timbrages);
-        final ListView timesList = (ListView) findViewById(R.id.timesList);
 
-        final ImageView addBtn = (ImageView) findViewById(R.id.imageViewAdd);
+        addBtn = (ImageView) findViewById(R.id.imageViewAdd);
         addBtn.setOnClickListener(this);
-        if (android.os.Build.VERSION.SDK_INT >= 10) {
-            addBtn.setImageResource(R.drawable.plus2);
-        }
 
-        adapter = new TimesLogArrayAdapter(this, TimeReport.loadTimes(getFile()));
+        adapter = new GroupArrayAdapter(this, GroupArrayAdapter.group(TimeReport.loadTimes(getFile())));
+        final ListView timesList = (ListView) findViewById(R.id.timesList);
         timesList.setAdapter(adapter);
         timesList.getAdapter().registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
-                // synchronize file
-                TimeReport.sync(adapter.getValues(), getFile());
                 // reporting
-                updateReport(adapter.getValues());
-            }
-        });
-        timesList.setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(final AdapterView<?> adapter, final View view, final int position, final long arg3) {
-                editTime(position);
+                timesChanged(adapter.getAllTimes());
             }
         });
 
         // add report field
-        textReportMonthly = createTextView();
+        textReportMonthlyH = (TextView) findViewById(R.id.textViewReportMonthlyH);
+        textReportMonthlyM = (TextView) findViewById(R.id.textViewReportMonthlyM);
+        textReportMonthlyS = (TextView) findViewById(R.id.textViewReportMonthlyS);
 
         // check directory
         if (!new File(Environment.getExternalStorageDirectory(), FILE_PARENT).exists()) {
@@ -84,23 +75,16 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         }
 
         // load times
-        updateReport(adapter.getValues());
+        timesChanged(adapter.getAllTimes());
 
         // current time
         textTimeH = (TextView) findViewById(R.id.textViewH);
         textTimeM = (TextView) findViewById(R.id.textViewM);
         textTimeS = (TextView) findViewById(R.id.textViewS);
+        // start thread to update time and report
         new Timer().schedule(new UpdateTimeTask(), 0, 500);
 
         player = MediaPlayer.create(this, R.raw.beep);
-    }
-
-    private TextView createTextView() {
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.reportLayout);
-        final TextView textView = new TextView(this);
-        textView.setTextSize(20);
-        layout.addView(textView);
-        return textView;
     }
 
     public String getFileName() {
@@ -125,35 +109,9 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         }.start();
 
         adapter.add(LocalDateTime.now());
-        // sort and notify
-        adapter.sort();
 
         Toast.makeText(TimbragesActivity.this, MessageFormat.format(getString(R.string.time_added), new Date()),
                 Toast.LENGTH_SHORT).show();
-    }
-
-    private void editTime(final int position) {
-        final DateTimePicker dateTimePicker = new DateTimePicker(this, new ICustomDateTimeListener() {
-
-            public void onSet(final LocalDateTime dateTime) {
-                // remove previous
-                adapter.getValues().remove(position);
-                // finally set new date
-                adapter.getValues().add(position, dateTime);
-                // sort and notify
-                adapter.sort();
-
-                Toast.makeText(TimbragesActivity.this,
-                        MessageFormat.format(getString(R.string.time_updated), dateTime.toDate()), Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            public void onCancel() {
-            }
-        });
-        dateTimePicker.set24HourFormat(true);
-        dateTimePicker.setDateTime(adapter.getValues().get(position));
-        dateTimePicker.showDialog();
     }
 
     @Override
@@ -175,7 +133,7 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         final Intent share = new Intent(Intent.ACTION_SEND);
         share.putExtra(Intent.EXTRA_SUBJECT, MessageFormat.format(getString(R.string.send_subject), new Date()));
 
-        final String monthly = TimeReport.report(adapter.getValues(), LocalDate.now().withDayOfMonth(1), LocalDate
+        final String monthly = TimeReport.report(adapter.getAllTimes(), LocalDate.now().withDayOfMonth(1), LocalDate
                 .now().withDayOfMonth(1).plusMonths(1));
         share.putExtra(Intent.EXTRA_TEXT, MessageFormat.format(getString(R.string.send_object), monthly));
         final Uri uri = Uri.fromFile(getFile());
@@ -191,14 +149,19 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         return true;
     }
 
-    public void updateReport(final List<LocalDateTime> times) {
+    public void timesChanged(final List<LocalDateTime> times) {
+        // synchronize file
+        // TODO make async ? non UI thread ? take care of multi thread adapter list access
+        TimeReport.sync(adapter.getAllTimes(), getFile());
 
-        // final String daily = TimeReport.report(times, LocalDate.now());
-        final String monthly = TimeReport.report(times, LocalDate.now().withDayOfMonth(1), LocalDate.now()
-                .withDayOfMonth(1).plusMonths(1));
-
-        // textReportDaily.setText(MessageFormat.format(getString(R.string.reporting_daily), daily));
-        textReportMonthly.setText(MessageFormat.format(getString(R.string.reporting_monthly), monthly));
+        // update btn add icon
+        if (adapter.getAllTimes().size() % 2 != 0) {
+            // working
+            addBtn.setImageResource(R.drawable.plus2_red);
+        } else {
+            // not working
+            addBtn.setImageResource(R.drawable.plus2_green);
+        }
     }
 
     class UpdateTimeTask extends TimerTask {
@@ -209,10 +172,17 @@ public class TimbragesActivity extends Activity implements OnClickListener {
 
                 public void run() {
                     // calculate daily elapsed time
-                    final Period dailyElapsed = TimeReport.calculateElapsed(adapter.getValues());
+                    final Period dailyElapsed = TimeReport.calculateElapsed(adapter.getAllTimes(), LocalDate.now());
                     textTimeH.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getHours()), 2, "0"));
                     textTimeM.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getMinutes()), 2, "0"));
                     textTimeS.setText(StringUtils.leftPad(String.valueOf(dailyElapsed.getSeconds()), 2, "0"));
+
+                    // update report
+                    final Period monthlyElapsed = TimeReport.calculateElapsed(adapter.getAllTimes(), LocalDate.now()
+                            .withDayOfMonth(1), LocalDate.now().withDayOfMonth(1).plusMonths(1));
+                    textReportMonthlyH.setText(StringUtils.leftPad(String.valueOf(monthlyElapsed.getHours()), 2, "0"));
+                    textReportMonthlyM.setText(StringUtils.leftPad(String.valueOf(monthlyElapsed.getMinutes()), 2, "0"));
+                    textReportMonthlyS.setText(StringUtils.leftPad(String.valueOf(monthlyElapsed.getSeconds()), 2, "0"));
                 }
             });
         }

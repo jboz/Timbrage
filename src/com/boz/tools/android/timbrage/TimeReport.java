@@ -43,10 +43,17 @@ public class TimeReport {
         return total.toPeriod();
     }
 
-    public static Period calculateElapsed(final Iterable<LocalDateTime> times) {
+    public static Period calculateElapsed(final Iterable<LocalDateTime> times, final LocalDate start,
+            final LocalDate end) {
+        return calculateElapsed(Iterables.filter(times, new BetweenLocalDatePredicate(start, end)));
+    }
 
-        final List<LocalDateTime> times2 = Lists.newArrayList(Iterables.filter(times,
-                new LocalDatePredicate(LocalDate.now())));
+    public static Period calculateElapsed(final Iterable<LocalDateTime> times, final LocalDate predicate) {
+        return calculateElapsed(Iterables.filter(times, new LocalDatePredicate(predicate)));
+    }
+
+    private static Period calculateElapsed(final Iterable<LocalDateTime> times) {
+        final List<LocalDateTime> times2 = Lists.newArrayList(times);
         // si timbrages impaire, on en ajoute un
         if (times2.size() % 2 != 0) {
             times2.add(LocalDateTime.now());
@@ -54,8 +61,12 @@ public class TimeReport {
         return calculateTimes(times2);
     }
 
+    public static Period calculateTimes(final Iterable<LocalDateTime> times, final LocalDate predicate) {
+        return calculateTimes(Iterables.filter(times, new LocalDatePredicate(predicate)));
+    }
+
     public static String report(final Iterable<LocalDateTime> times, final LocalDate predicate) {
-        return formatter.print(calculateTimes(Iterables.filter(times, new LocalDatePredicate(predicate))));
+        return formatter.print(calculateTimes(times, predicate));
     }
 
     public static String report(final Iterable<LocalDateTime> times, final LocalDate start, final LocalDate end) {

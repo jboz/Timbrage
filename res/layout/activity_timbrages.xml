@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:gravity="bottom" >
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/recapGroupLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -12,21 +13,21 @@
         android:orientation="horizontal" >
 
         <LinearLayout
+            android:id="@+id/timerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp" >
 
             <TextView
                 android:id="@+id/textViewH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="12"
                 android:textSize="50sp" />
 
             <TextView
-                android:id="@+id/textViewHLbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timeH"
@@ -41,7 +42,6 @@
                 android:textSize="50sp" />
 
             <TextView
-                android:id="@+id/textViewMLbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timeM"
@@ -51,11 +51,11 @@
                 android:id="@+id/textViewS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="18"
                 android:textSize="50sp" />
 
             <TextView
-                android:id="@+id/textViewSLbl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/timeS"
@@ -67,15 +67,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/plus" />
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/plus2_red" />
     </LinearLayout>
 
-    <ListView
+    <View
+        android:id="@+id/imageViewHR"
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:layout_below="@+id/recapGroupLayout"
+        android:layout_margin="10dp"
+        android:background="@drawable/gradient_blue" />
+
+    <com.boz.tools.android.timbrage.ExpandedListView
         android:id="@+id/timesList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/reportLayout"
-        android:layout_below="@+id/linearLayout"
+        android:layout_below="@+id/imageViewHR"
         android:layout_centerHorizontal="true" />
 
     <LinearLayout
@@ -85,8 +94,63 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
-        android:orientation="vertical" >
+        android:background="@drawable/gradient_orange"
+        android:padding="5dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reporting_monthly"
+            android:textColor="@color/orange_text"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/textViewReportMonthlyH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="12"
+            android:textColor="@color/orange_text"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timeH"
+            android:textColor="@color/orange_text"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/textViewReportMonthlyM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="24"
+            android:textColor="@color/orange_text"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timeM"
+            android:textColor="@color/orange_text"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/textViewReportMonthlyS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="18"
+            android:textColor="@color/orange_text"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timeS"
+            android:textColor="@color/orange_text"
+            android:textSize="12dp" />
     </LinearLayout>
 
 </RelativeLayout>
