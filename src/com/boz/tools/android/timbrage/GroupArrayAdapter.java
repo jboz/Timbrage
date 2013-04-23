@@ -2,10 +2,12 @@ package com.boz.tools.android.timbrage;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Minutes;
 import org.joda.time.Period;
 
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
+import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,14 +66,42 @@ public class GroupArrayAdapter extends ArrayAdapter<Group> {
     }
 
     public void add(final LocalDateTime time) {
-        tryFind(time, groups).or(new Supplier<Group>() {
+        final Group group = tryFind(time, groups).or(new Supplier<Group>() {
             public Group get() {
                 final Group group = new Group(time.toLocalDate());
                 groups.add(group);
                 return group;
             }
-        }).add(time);
+        });
+        if (group.times.size() > 0) {
+            // check last time
+            final LocalDateTime last = group.times.get(0);
+            final Minutes diff = Minutes.minutesBetween(last, LocalDateTime.now());
+            if (diff.getMinutes() <= 0) {
+                // do not add time in same minute that the last one
+                new Thread() {
+                    public void run() {
+                        playError();
+                    }
+                }.start();
+                return;
+            }
+        }
+        group.add(time);
+        // affective added
+        Toast.makeText(activity, MessageFormat.format(activity.getString(R.string.time_added), new Date()),
+                Toast.LENGTH_SHORT).show();
+        new Thread() {
+            public void run() {
+                MediaPlayer.create(activity, R.raw.beep).start();
+            }
+        }.start();
         sort();
+    }
+    
+    private synchronized void playError() {
+        MediaPlayer.create(activity, R.raw.beep_error).start();
+        
     }
 
     public void remove(final LocalDateTime time) {

@@ -14,6 +14,9 @@ import org.joda.time.Seconds;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -73,7 +76,10 @@ public class TimeReport {
         return formatter.print(calculateTimes(Iterables.filter(times, new BetweenLocalDatePredicate(start, end))));
     }
 
-    public static List<LocalDateTime> loadTimes(final File file) {
+    public static List<LocalDateTime> loadTimes(final File file, final Context context) {
+        if (!file.canRead()) {
+            Toast.makeText(context, context.getString(R.string.error_cant_read), Toast.LENGTH_LONG).show();
+        }
         final List<LocalDateTime> times = new ArrayList<LocalDateTime>();
         try {
             final Scanner scanner = new Scanner(file);
@@ -84,26 +90,25 @@ public class TimeReport {
             }
             scanner.close();
         } catch (final Exception e) {
-            // TODO manage exception
-            e.printStackTrace();
+            Toast.makeText(context, context.getString(R.string.error_during_read), Toast.LENGTH_LONG).show();
         }
 
         return times;
     }
 
-    public static void sync(final List<LocalDateTime> times, final File file) {
-        if (file.canWrite()) {
-            try {
-                final PrintWriter writer = new PrintWriter(file);
+    public static void sync(final List<LocalDateTime> times, final File file, final Context context) {
+        if (!file.canWrite()) {
+            Toast.makeText(context, context.getString(R.string.error_cant_write), Toast.LENGTH_LONG).show();
+        }
+        try {
+            final PrintWriter writer = new PrintWriter(file);
 
-                for (final LocalDateTime timeLog : times) {
-                    writer.println(timeLog.toString());
-                }
-                writer.close();
-            } catch (final Exception e) {
-                // TODO manage exception
-                e.printStackTrace();
+            for (final LocalDateTime timeLog : times) {
+                writer.println(timeLog.toString());
             }
+            writer.close();
+        } catch (final Exception e) {
+            Toast.makeText(context, context.getString(R.string.error_during_write), Toast.LENGTH_LONG).show();
         }
     }
 

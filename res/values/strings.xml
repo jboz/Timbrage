@@ -11,6 +11,7 @@
     <string name="time_updated">{0,date,dd/MM HH:mm:ss} modifié !</string>
     <string name="time_deleted">{0,date,dd/MM HH:mm:ss} supprimé !</string>
     <string name="delete_title">Timbrage {0,date,EEEE dd/MM HH:mm:ss}</string>
+    <string name="notAdded">Timbrage non ajouté dans la même minute !</string>
     <string name="delete_message">Confirmez vous la suppression de ce timbrage ?</string>
     <string name="reporting_monthly">Cumul du mois : </string>
     <string name="timeH">h</string>
@@ -18,5 +19,9 @@
     <string name="timeS">s</string>
     <string name="send_subject">Reporting {0,date,MMMM yyyy}</string>
     <string name="send_object">Total du mois : {0}</string>
+    <string name="error_cant_write">L\'application ne peut pas écrire dans le fichier</string>
+    <string name="error_during_write">Erreur à l\'écriture du fichier</string>
+    <string name="error_cant_read">L\'application ne peut pas lire le fichier</string>
+    <string name="error_during_read">Erreur à la lecture du fichier</string>
 
 </resources>

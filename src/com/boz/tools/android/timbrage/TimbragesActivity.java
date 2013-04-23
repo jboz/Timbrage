@@ -15,7 +15,6 @@ import org.joda.time.Period;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -26,7 +25,6 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class TimbragesActivity extends Activity implements OnClickListener {
 
@@ -43,8 +41,6 @@ public class TimbragesActivity extends Activity implements OnClickListener {
 
     private ImageView addBtn;
 
-    private MediaPlayer player;
-
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +49,7 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         addBtn = (ImageView) findViewById(R.id.imageViewAdd);
         addBtn.setOnClickListener(this);
 
-        adapter = new GroupArrayAdapter(this, GroupArrayAdapter.group(TimeReport.loadTimes(getFile())));
+        adapter = new GroupArrayAdapter(this, GroupArrayAdapter.group(TimeReport.loadTimes(getFile(), this)));
         final ListView timesList = (ListView) findViewById(R.id.timesList);
         timesList.setAdapter(adapter);
         timesList.getAdapter().registerDataSetObserver(new DataSetObserver() {
@@ -83,8 +79,6 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         textTimeS = (TextView) findViewById(R.id.textViewS);
         // start thread to update time and report
         new Timer().schedule(new UpdateTimeTask(), 0, 500);
-
-        player = MediaPlayer.create(this, R.raw.beep);
     }
 
     public String getFileName() {
@@ -99,19 +93,7 @@ public class TimbragesActivity extends Activity implements OnClickListener {
     }
 
     public void onClick(final View v) {
-        // final Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        // final Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
-        // r.play();
-        new Thread() {
-            public void run() {
-                player.start();
-            }
-        }.start();
-
         adapter.add(LocalDateTime.now());
-
-        Toast.makeText(TimbragesActivity.this, MessageFormat.format(getString(R.string.time_added), new Date()),
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -152,7 +134,7 @@ public class TimbragesActivity extends Activity implements OnClickListener {
     public void timesChanged(final List<LocalDateTime> times) {
         // synchronize file
         // TODO make async ? non UI thread ? take care of multi thread adapter list access
-        TimeReport.sync(adapter.getAllTimes(), getFile());
+        TimeReport.sync(adapter.getAllTimes(), getFile(), this);
 
         // update btn add icon
         if (adapter.getAllTimes().size() % 2 != 0) {
