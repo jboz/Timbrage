@@ -3,10 +3,12 @@
     <string name="app_name">Timbrage</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_timbrages">Timbrages</string>
+    <string name="title_activity_calendar">Calendrier</string>
     <string name="btn_add">Ajouter Timbrage</string>
     <string name="delete_btn">Delete</string>
     <string name="item_share">Share</string>
     <string name="item_calendar">Calendar</string>
+    <string name="item_timbrage">Timbrage</string>
     <string name="time_added">{0,date,dd/MM HH:mm:ss} ajouté !</string>
     <string name="time_updated">{0,date,dd/MM HH:mm:ss} modifié !</string>
     <string name="time_deleted">{0,date,dd/MM HH:mm:ss} supprimé !</string>

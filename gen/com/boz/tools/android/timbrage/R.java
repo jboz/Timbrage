@@ -11,84 +11,125 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
-        public static final int blue_text=0x7f070004;
-        public static final int gray_text=0x7f070005;
-        public static final int holo_blue_bright=0x7f070002;
-        public static final int holo_blue_dark=0x7f070001;
-        public static final int holo_blue_light=0x7f070000;
-        public static final int orange_text=0x7f070003;
+        public static final int blue_text=0x7f05000d;
+        public static final int caldroid_black=0x7f050001;
+        public static final int caldroid_darker_gray=0x7f050005;
+        public static final int caldroid_gray=0x7f050004;
+        /**  A dark Holo shade of blue 
+         */
+        public static final int caldroid_holo_blue_dark=0x7f050007;
+        /**  A light Holo shade of blue 
+         */
+        public static final int caldroid_holo_blue_light=0x7f050006;
+        /**  For settings framework 
+         */
+        public static final int caldroid_lighter_gray=0x7f050003;
+        /**  A really bright Holo shade of blue 
+         */
+        public static final int caldroid_sky_blue=0x7f050008;
+        public static final int caldroid_transparent=0x7f050002;
+        public static final int caldroid_white=0x7f050000;
+        public static final int gray_text=0x7f05000e;
+        public static final int holo_blue_bright=0x7f05000b;
+        public static final int holo_blue_dark=0x7f05000a;
+        public static final int holo_blue_light=0x7f050009;
+        public static final int orange_text=0x7f05000c;
     }
     public static final class drawable {
-        public static final int delete=0x7f020000;
-        public static final int gradient_blue=0x7f020001;
-        public static final int gradient_gray=0x7f020002;
-        public static final int gradient_orange=0x7f020003;
-        public static final int hr=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int plus=0x7f020006;
-        public static final int plus2_green=0x7f020007;
-        public static final int plus2_red=0x7f020008;
+        public static final int calendar_next_arrow=0x7f020000;
+        public static final int calendar_prev_arrow=0x7f020001;
+        public static final int cell_bg=0x7f020002;
+        public static final int delete=0x7f020003;
+        public static final int disable_cell=0x7f020004;
+        public static final int gradient_blue=0x7f020005;
+        public static final int gradient_gray=0x7f020006;
+        public static final int gradient_orange=0x7f020007;
+        public static final int hr=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int left_arrow=0x7f02000a;
+        public static final int plus=0x7f02000b;
+        public static final int plus2_green=0x7f02000c;
+        public static final int plus2_red=0x7f02000d;
+        public static final int red_border=0x7f02000e;
+        public static final int red_border_gray_bg=0x7f02000f;
+        public static final int right_arrow=0x7f020010;
     }
     public static final class id {
-        public static final int deleteBtn=0x7f090012;
-        public static final int imageViewAdd=0x7f090005;
-        public static final int imageViewHR=0x7f090006;
-        public static final int imageViewHR2=0x7f090008;
-        public static final int itemShare=0x7f090013;
-        public static final int listViewTimes=0x7f09000e;
-        public static final int recapGroupLayout=0x7f090000;
-        public static final int reportLayout=0x7f090009;
-        public static final int textViewDay=0x7f09000d;
-        public static final int textViewH=0x7f090002;
-        public static final int textViewM=0x7f090003;
-        public static final int textViewRecapH=0x7f09000f;
-        public static final int textViewRecapM=0x7f090010;
-        public static final int textViewReportMonthlyH=0x7f09000a;
-        public static final int textViewReportMonthlyM=0x7f09000b;
-        public static final int textViewReportMonthlyS=0x7f09000c;
-        public static final int textViewS=0x7f090004;
-        public static final int timeTxt=0x7f090011;
-        public static final int timerLayout=0x7f090001;
-        public static final int timesList=0x7f090007;
+        public static final int calendar1=0x7f090000;
+        public static final int calendar_gridview=0x7f090013;
+        public static final int calendar_left_arrow=0x7f09000f;
+        public static final int calendar_month_year_textview=0x7f090010;
+        public static final int calendar_right_arrow=0x7f090011;
+        public static final int calendar_title_view=0x7f09000e;
+        public static final int dayOfMonth=0x7f090014;
+        public static final int deleteBtn=0x7f09001a;
+        public static final int imageViewAdd=0x7f090006;
+        public static final int imageViewHR=0x7f090007;
+        public static final int imageViewHR2=0x7f090009;
+        public static final int itemCalendar=0x7f09001d;
+        public static final int itemShare=0x7f09001b;
+        public static final int itemTimbrage=0x7f09001c;
+        public static final int listViewTimes=0x7f090018;
+        public static final int recapGroupLayout=0x7f090001;
+        public static final int reportLayout=0x7f09000a;
+        public static final int textViewDay=0x7f090015;
+        public static final int textViewH=0x7f090003;
+        public static final int textViewM=0x7f090004;
+        public static final int textViewRecapH=0x7f090016;
+        public static final int textViewRecapM=0x7f090017;
+        public static final int textViewReportMonthlyH=0x7f09000b;
+        public static final int textViewReportMonthlyM=0x7f09000c;
+        public static final int textViewReportMonthlyS=0x7f09000d;
+        public static final int textViewS=0x7f090005;
+        public static final int timeTxt=0x7f090019;
+        public static final int timerLayout=0x7f090002;
+        public static final int timesList=0x7f090008;
+        public static final int weekday_gridview=0x7f090012;
     }
     public static final class layout {
-        public static final int activity_timbrages=0x7f030000;
-        public static final int groups_list_item=0x7f030001;
-        public static final int times_list_item=0x7f030002;
+        public static final int activity_calendar=0x7f030000;
+        public static final int activity_timbrages=0x7f030001;
+        public static final int calendar_view=0x7f030002;
+        public static final int date_cell=0x7f030003;
+        public static final int groups_list_item=0x7f030004;
+        public static final int times_list_item=0x7f030005;
     }
     public static final class menu {
-        public static final int activity_timbrages=0x7f080000;
+        public static final int activity_calendar=0x7f080000;
+        public static final int activity_timbrages=0x7f080001;
     }
     public static final class raw {
         public static final int beep=0x7f040000;
         public static final int beep_error=0x7f040001;
     }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int btn_add=0x7f050003;
-        public static final int delete_btn=0x7f050004;
-        public static final int delete_message=0x7f05000c;
-        public static final int delete_title=0x7f05000a;
-        public static final int error_cant_read=0x7f050015;
-        public static final int error_cant_write=0x7f050013;
-        public static final int error_during_read=0x7f050016;
-        public static final int error_during_write=0x7f050014;
-        public static final int item_calendar=0x7f050006;
-        public static final int item_share=0x7f050005;
-        public static final int menu_settings=0x7f050001;
-        public static final int notAdded=0x7f05000b;
-        public static final int reporting_monthly=0x7f05000d;
-        public static final int send_object=0x7f050012;
-        public static final int send_subject=0x7f050011;
-        public static final int timeH=0x7f05000e;
-        public static final int timeM=0x7f05000f;
-        public static final int timeS=0x7f050010;
-        public static final int time_added=0x7f050007;
-        public static final int time_deleted=0x7f050009;
-        public static final int time_updated=0x7f050008;
-        public static final int title_activity_timbrages=0x7f050002;
+        public static final int app_name=0x7f060000;
+        public static final int btn_add=0x7f060004;
+        public static final int delete_btn=0x7f060005;
+        public static final int delete_message=0x7f06000e;
+        public static final int delete_title=0x7f06000c;
+        public static final int error_cant_read=0x7f060017;
+        public static final int error_cant_write=0x7f060015;
+        public static final int error_during_read=0x7f060018;
+        public static final int error_during_write=0x7f060016;
+        public static final int item_calendar=0x7f060007;
+        public static final int item_share=0x7f060006;
+        public static final int item_timbrage=0x7f060008;
+        public static final int menu_settings=0x7f060001;
+        public static final int notAdded=0x7f06000d;
+        public static final int reporting_monthly=0x7f06000f;
+        public static final int send_object=0x7f060014;
+        public static final int send_subject=0x7f060013;
+        public static final int timeH=0x7f060010;
+        public static final int timeM=0x7f060011;
+        public static final int timeS=0x7f060012;
+        public static final int time_added=0x7f060009;
+        public static final int time_deleted=0x7f06000b;
+        public static final int time_updated=0x7f06000a;
+        public static final int title_activity_calendar=0x7f060003;
+        public static final int title_activity_timbrages=0x7f060002;
     }
     public static final class style {
-        public static final int AppTheme=0x7f060000;
+        public static final int AppTheme=0x7f070000;
     }
 }

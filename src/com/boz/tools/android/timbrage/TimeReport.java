@@ -48,7 +48,7 @@ public class TimeReport {
 
     public static Period calculateElapsed(final Iterable<LocalDateTime> times, final LocalDate start,
             final LocalDate end) {
-        return calculateElapsed(Iterables.filter(times, new BetweenLocalDatePredicate(start, end)));
+        return times == null ? Period.ZERO : calculateElapsed(Iterables.filter(times, new BetweenLocalDatePredicate(start, end)));
     }
 
     public static Period calculateElapsed(final Iterable<LocalDateTime> times, final LocalDate predicate) {
@@ -65,7 +65,7 @@ public class TimeReport {
     }
 
     public static Period calculateTimes(final Iterable<LocalDateTime> times, final LocalDate predicate) {
-        return calculateTimes(Iterables.filter(times, new LocalDatePredicate(predicate)));
+        return times == null ? Period.ZERO : calculateTimes(Iterables.filter(times, new LocalDatePredicate(predicate)));
     }
 
     public static String report(final Iterable<LocalDateTime> times, final LocalDate predicate) {
@@ -136,7 +136,8 @@ public class TimeReport {
         }
 
         public boolean apply(final LocalDateTime date) {
-            return start.isBefore(date.toLocalDate()) && end.isAfter(date.toLocalDate());
+            return (start.isBefore(date.toLocalDate()) || start.isEqual(date.toLocalDate()))
+                    && end.isAfter(date.toLocalDate());
         }
     }
 }

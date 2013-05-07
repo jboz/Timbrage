@@ -7,10 +7,10 @@
         android:title="@string/item_share">
     </item>
     <item
-        android:id="@+id/itemCalendar"
-        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:id="@+id/itemTimbrage"
+        android:icon="@android:drawable/ic_menu_revert"
         android:showAsAction="always"
-        android:title="@string/item_calendar">
+        android:title="@string/item_timbrage">
     </item>
 
 </menu>

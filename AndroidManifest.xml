@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.boz.tools.android.timbrage"
-    android:versionCode="4"
-    android:versionName="1.4" >
+    android:versionCode="5"
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/title_activity_calendar"
+            android:screenOrientation="portrait"  />
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.net.Uri;
@@ -81,13 +82,17 @@ public class TimbragesActivity extends Activity implements OnClickListener {
         new Timer().schedule(new UpdateTimeTask(), 0, 500);
     }
 
-    public String getFileName() {
+    public static String getFileName() {
         return MessageFormat.format(FILE_PATTERN, new Date());
     }
 
-    private File getFile() {
+    public static File getFile() {
+        return getFile(new Date());
+    }
+
+    public static File getFile(final Date date) {
         // Uri.parse("android.resource://YOUR_PACKAGENAME/" + resources);
-        final String fileName = getFileName();
+        final String fileName = MessageFormat.format(FILE_PATTERN, date);
 
         return new File(new File(Environment.getExternalStorageDirectory(), FILE_PARENT), fileName);
     }
@@ -100,28 +105,28 @@ public class TimbragesActivity extends Activity implements OnClickListener {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
             case R.id.itemShare:
-                shareIt();
+                shareIt(this, this.adapter.getAllTimes(), LocalDate.now());
                 break;
-        // case R.id.itemCalendar:
-        // final Intent toCalendar = new Intent(this, CalendarActivity.class);
-        // startActivity(toCalendar);
-        // break;
+            case R.id.itemCalendar:
+                final Intent toCalendar = new Intent(this, CalendarActivity.class);
+                startActivity(toCalendar);
+                break;
         }
         return super.onMenuItemSelected(featureId, item);
     }
 
-    private void shareIt() {
+    public static void shareIt(final Context context, final Iterable<LocalDateTime> times, final LocalDate month) {
         // sharing implementation
         final Intent share = new Intent(Intent.ACTION_SEND);
-        share.putExtra(Intent.EXTRA_SUBJECT, MessageFormat.format(getString(R.string.send_subject), new Date()));
+        share.putExtra(Intent.EXTRA_SUBJECT,
+                MessageFormat.format(context.getString(R.string.send_subject), month.toDate()));
 
-        final String monthly = TimeReport.report(adapter.getAllTimes(), LocalDate.now().withDayOfMonth(1), LocalDate
-                .now().withDayOfMonth(1).plusMonths(1));
-        share.putExtra(Intent.EXTRA_TEXT, MessageFormat.format(getString(R.string.send_object), monthly));
-        final Uri uri = Uri.fromFile(getFile());
+        final String monthly = TimeReport.report(times, month.withDayOfMonth(1), month.withDayOfMonth(1).plusMonths(1));
+        share.putExtra(Intent.EXTRA_TEXT, MessageFormat.format(context.getString(R.string.send_object), monthly));
+        final Uri uri = Uri.fromFile(getFile(month.toDate()));
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType("text/plain"); // TODO define file content
-        startActivity(Intent.createChooser(share, "Share times with..."));
+        context.startActivity(Intent.createChooser(share, "Share times with..."));
 
     }
 
