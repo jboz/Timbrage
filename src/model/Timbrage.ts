@@ -1,5 +1,5 @@
 export class Timbrage {
-    date = new Date();
+    date = new Date().toISOString();
 
     constructor() {
     }

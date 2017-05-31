@@ -1,3 +1,58 @@
-page-timbrages {
+$primary: #8e24aa;
+$primary-dark: #5c007a;
+$primary-text: #ffffff;
+$secondary: #9e9e9e;
 
+page-timbrages {
+    .toolbar-background {
+        background-color: $primary-dark;
+    }
+
+    .toolbar-title, div.header {
+        color: $primary-text;
+    }
+
+    div.header {
+        height: 15em;
+        background-color: $primary;
+        padding: 2em;
+        position: fixed;
+        top: 4em;
+        width: 100%;
+        z-index: 1;
+
+        #date {
+            > span:nth-child(1) {
+                font-size: 4em;
+                padding-right: 0.2em;
+            }
+            span:nth-child(2) {
+                display: inline-block;
+
+                > span:nth-child(1) {
+                    display: block;
+                    padding-bottom: 0.4em;
+                }
+
+                > span:nth-child(2) {
+                    color: $secondary;
+                }
+            }
+        }
+        #time {
+            font-size: 2em;
+            padding: 1em 2em;
+        }
+        
+        #timbre {
+            top: 13em;
+
+            button {
+                background-color: $primary-dark;
+            }
+        }
+    }
+    #timbrages {
+        padding-top: 15em;
+    }
 }

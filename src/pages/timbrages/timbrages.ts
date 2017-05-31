@@ -11,8 +11,16 @@ import { Timbrage } from '../../model/Timbrage';
 export class TimbragesPage {
 
   timbrages = new Array<Timbrage>();
+  now = new Date();
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController) {
+    setInterval(() => {
+      this.now = new Date();
+    }, 1000);
+  }
+
+  public today() {
+    return new Date();
   }
 
   public timbrer() {

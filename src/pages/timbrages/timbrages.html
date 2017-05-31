@@ -1,25 +1,37 @@
 <ion-header>
-  <button ion-button icon-only (click)="timbrer()">
-    <img src="assets/plus2_red.png">
-  </button>
+  <ion-navbar>
+    <ion-title>Timeline</ion-title>
+  </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-list>
-    <ion-item-sliding *ngFor="let timbrage of timbrages">
+<ion-content>
+  <div class="header">
+    <div id="time">
+      <span>{{ now | moment: 'Do' }}</span>
+      <span>
+        <span>{{ now | moment: 'dddd' }}</span>
+        <span>{{ now | moment: 'MMMM YYYY' }}</span>
+      </span>
+    </div>
+    <div>
+      {{ now | moment: 'HH:MM:ss' }}
+    </div>
+    <ion-fab id="timbre" top right edge>
+      <button ion-fab (click)="timbrer()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </div>
+
+  <ion-list id="timbrages" padding>
+    <ion-item *ngFor="let timbrage of timbrages">
       <ion-item>
-        <!--<ion-datetime displayFormat="HH.mm" [(ngModel)]="timbrage.date"></ion-datetime>-->
-        {{timbrage.date | date: 'HH:mm:ss' }}
+        <ion-datetime displayFormat="HH:MM:ss" [(ngModel)]="timbrage.date"></ion-datetime>
       </ion-item>
 
       <ion-item-options>
-        <!--<button ion-button icon-only (click)="edit(timbrage)" light>
-          <ion-icon name="paper"></ion-icon>
-        </button>-->
         <button ion-button icon-only (click)="delete(timbrage)" danger>
           <ion-icon name="trash"></ion-icon>
         </button>
       </ion-item-options>
-    </ion-item-sliding>
+    </ion-item>
   </ion-list>
 </ion-content>

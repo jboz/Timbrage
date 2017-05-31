@@ -9,12 +9,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { MomentPipe } from '../pipes/moment/moment';
 
 @NgModule({
   declarations: [
     MyApp,
     TabsPage,
-    TimbragesPage, CalendarPage
+    TimbragesPage, CalendarPage,
+    MomentPipe
   ],
   imports: [
     BrowserModule,
