@@ -23,15 +23,11 @@
 
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages">
-      <ion-item>
-        <ion-datetime displayFormat="HH:MM:ss" [(ngModel)]="timbrage.date"></ion-datetime>
-      </ion-item>
+      <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="timbrage.date"></ion-datetime>
 
-      <ion-item-options>
-        <button ion-button icon-only (click)="delete(timbrage)" danger>
-          <ion-icon name="trash"></ion-icon>
-        </button>
-      </ion-item-options>
+      <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-right>
+        <ion-icon name="trash"></ion-icon>
+      </button>
     </ion-item>
   </ion-list>
 </ion-content>
