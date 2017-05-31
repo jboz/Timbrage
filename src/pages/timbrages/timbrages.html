@@ -6,14 +6,14 @@
 
 <ion-content>
   <div class="header">
-    <div id="time">
+    <div id="date">
       <span>{{ now | moment: 'Do' }}</span>
       <span>
         <span>{{ now | moment: 'dddd' }}</span>
         <span>{{ now | moment: 'MMMM YYYY' }}</span>
       </span>
     </div>
-    <div>
+    <div id="time">
       {{ now | moment: 'HH:MM:ss' }}
     </div>
     <ion-fab id="timbre" top right edge>
