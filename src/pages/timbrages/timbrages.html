@@ -1,6 +1,6 @@
 <ion-header>
   <button ion-button icon-only (click)="timbrer()">
-    <ion-icon name="add"></ion-icon>
+    <img src="assets/plus2_red.png">
   </button>
 </ion-header>
 
@@ -8,8 +8,8 @@
   <ion-list>
     <ion-item-sliding *ngFor="let timbrage of timbrages">
       <ion-item>
-        <ion-datetime displayFormat="HH.mm" [(ngModel)]="timbrage.date"></ion-datetime>
-        <!--{{timbrage.date | date: 'HH:mm' }}-->
+        <!--<ion-datetime displayFormat="HH.mm" [(ngModel)]="timbrage.date"></ion-datetime>-->
+        {{timbrage.date | date: 'HH:mm:ss' }}
       </ion-item>
 
       <ion-item-options>
