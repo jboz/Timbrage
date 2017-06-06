@@ -1,4 +1,5 @@
 [![license](https://img.shields.io/github/license/jboz/timbrage.svg)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Application d'aide au reporting quotidien, outils de productivité.
 
