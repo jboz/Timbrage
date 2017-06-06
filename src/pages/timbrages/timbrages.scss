@@ -48,6 +48,14 @@ page-timbrages {
             float: right;
             position: relative;
             top: 1em;
+
+            > div:nth-child(1) {
+                text-align: end;
+            }
+
+            > div:nth-child(2) {
+                font-size: 2em;
+            }
         }
 
         #time {

@@ -10,11 +10,12 @@
       <span>{{ now | moment: 'Do' }}</span>
       <span>
         <span>{{ now | moment: 'dddd' }}</span>
-        <span>{{ now | moment: 'MMMM YYYY' }}</span>
+      <span>{{ now | moment: 'MMMM YYYY' }}</span>
       </span>
     </div>
     <div id="totals">
-        <div>Somme du jour : {{ getTodaySum() }}</div>
+      <div>Total journalier :</div>
+      <div>{{ sum }}</div>
     </div>
     <div id="time">
       {{ now | moment: 'HH:mm:ss' }}
@@ -26,7 +27,7 @@
 
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages">
-      <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="timbrage.date"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" [(ngModel)]="timbrage.date"></ion-datetime>
 
       <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-right>
         <ion-icon name="trash"></ion-icon>
