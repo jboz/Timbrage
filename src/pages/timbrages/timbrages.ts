@@ -47,7 +47,7 @@ export class TimbragesPage {
     this.storageService.save(this.today(), this.timbrages);
   }
 
-  public timbrageChanged(timbrage: Timbrage) {
+  public onChangeTime(event): void {
     this.saveAll();
   }
 
