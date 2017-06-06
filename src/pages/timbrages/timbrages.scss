@@ -21,6 +21,10 @@ page-timbrages {
         width: 100%;
         z-index: 1;
 
+        #date, #totals {
+            display: inline-block;
+        }
+
         #date {
             > span:nth-child(1) {
                 font-size: 4em;
@@ -39,6 +43,13 @@ page-timbrages {
                 }
             }
         }
+
+        #totals {
+            float: right;
+            position: relative;
+            top: 1em;
+        }
+
         #time {
             font-size: 2em;
             padding: 1em 2em;
@@ -53,6 +64,6 @@ page-timbrages {
         }
     }
     #timbrages {
-        padding-top: 15em;
+        padding-top: 17em;
     }
 }

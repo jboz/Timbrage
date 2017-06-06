@@ -13,8 +13,11 @@
         <span>{{ now | moment: 'MMMM YYYY' }}</span>
       </span>
     </div>
+    <div id="totals">
+        <div>Somme du jour : {{ getTodaySum() }}</div>
+    </div>
     <div id="time">
-      {{ now | moment: 'HH:MM:ss' }}
+      {{ now | moment: 'HH:mm:ss' }}
     </div>
     <ion-fab id="timbre" top right edge>
       <button ion-fab (click)="timbrer()"><ion-icon name="add"></ion-icon></button>
