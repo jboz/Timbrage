@@ -1,3 +1,5 @@
+[![license](https://img.shields.io/github/license/jboz/timbrage.svg)]()
+
 Application d'aide au reporting quotidien
 
 Cette applciation permet d'enregistrer rapidement et simple sont temps de travail quotidien, pratique pour la facturation au client ;).
