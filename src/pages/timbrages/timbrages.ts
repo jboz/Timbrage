@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-import { Duration } from 'moment';
+import { Duration, Moment } from 'moment';
 import * as moment from 'moment';
 
 import { Timbrage } from '../../model/Timbrage';
 import { CalculationProvider } from '../../providers/calculation/calculation';
+import { StorageProvider } from '../../providers/storage/storage';
 
 @IonicPage()
 @Component({
   selector: 'page-timbrages',
   templateUrl: 'timbrages.html',
-  providers: [CalculationProvider]
+  providers: [CalculationProvider, StorageProvider]
 })
 export class TimbragesPage {
 
@@ -20,17 +21,34 @@ export class TimbragesPage {
   sum: Duration = moment.duration();
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
-    public calculation: CalculationProvider) {
-    
-    // each secon, refresh time and duration
+    public calculationService: CalculationProvider, public storageService: StorageProvider) {
+
+    this.storageService.find(this.today()).then((data) => {
+      this.timbrages = data;
+    });
+
+    // each second, refresh time and duration
     setInterval(() => {
       this.now = new Date();
-      this.sum = this.calculation.calculate(this.timbrages);
+      this.sum = this.calculationService.calculate(this.timbrages);
     }, 1000);
+  }
+
+  public today(): Moment {
+    return moment();
   }
 
   public timbrer() {
     this.timbrages.push(new Timbrage());
+    this.saveAll();
+  }
+
+  private saveAll() {
+    this.storageService.save(this.today(), this.timbrages);
+  }
+
+  public timbrageChanged(timbrage: Timbrage) {
+    this.saveAll();
   }
 
   public delete(timbrage) {

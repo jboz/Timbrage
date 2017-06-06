@@ -4,8 +4,6 @@ import 'rxjs/add/operator/map';
 import { Timbrage } from '../../model/Timbrage';
 import { Duration } from 'moment';
 import * as moment from 'moment';
-// import { extendMoment } from 'moment-range';
-// const moment = extendMoment(Moment);
 
 @Injectable()
 export class CalculationProvider {
