@@ -11,4 +11,6 @@ Toute contribution est la bienvenue !
 
 La version actuel est basé sur le très réputé framework ionic qui lui même se base sur angular et cordova. Le tout permet d'obtenir une application type web facilement déployable sur windows/android/ios/serveur web.
 
+Ecran de saisie quotidien :
 
+![screen1](docs/screen1-android.png)
