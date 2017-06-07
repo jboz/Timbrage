@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map';
 import { Storage } from '@ionic/storage';
 
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 import { Timbrage } from '../../model/Timbrage';
 
@@ -31,8 +32,23 @@ export class StorageProvider {
     });
   }
 
-  public find(dateRef: Moment): Promise<Array<Timbrage>> {
-    return this.storage.get(this.getKey(dateRef))
+  public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
+    start = start.clone().startOf("day");
+    end = end ? end.clone().startOf("day") : start.clone();
+
+    let promises = [];
+    while (start.isSameOrBefore(end)) {
+      promises.push(this.get(this.getKey(start)));
+      start = start.add(1, 'day');
+    }
+
+    return Promise.all(promises).then((data) => {
+      return data.reduce((a, b) => a.concat(b));
+    });
+  }
+
+  private get(key: string): Promise<Array<Timbrage>> {
+    return this.storage.get(key)
       .then((jsonData) => {
         if (jsonData) {
           return jsonData.map(JSON.parse).map(this.toModel);
