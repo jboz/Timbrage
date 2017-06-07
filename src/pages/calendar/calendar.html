@@ -10,13 +10,39 @@
   </ion-navbar>
 </ion-header>
 
+<ng-template #monthviewDefaultDisplayEventTemplate let-view="view" let-row="row" let-col="col">
+  {{view.dates[row*7+col].label}}
+</ng-template>
+<ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+  <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+    <div *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)">
+      <ion-item>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="event.startTimbrage.date"></ion-datetime>
+        <button ion-button icon-only (click)="delete(event.startTimbrage)" color="danger" item-right>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="event.endTimbrage.date"></ion-datetime>
+        <button ion-button icon-only (click)="delete(event.endTimbrage)" color="danger" item-right>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item>
+      <!--<span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
+        start {{event.startTime|date: 'HH:mm'}} to {{event.endTime|date: 'HH:mm'}}
+      </span>-->
+      <ion-item *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">{{allDayLabel}}</ion-item>
+      <!--<span class="event-detail">total : {{event.title}}</span>-->
+      <ion-item *ngIf="selectedDate?.events.length==0">
+        <div class="no-events-label">{{noEventsLabel}}</div>
+      </ion-item>
+    </div>
+  </ion-list>
+</ng-template>
+
 <ion-content class="has-header">
-  <calendar [calendarMode]="calendar.mode" 
-    [currentDate]="calendar.currentDate" 
-    [eventSource]="eventSource" 
-    [markDisabled]="markDisabled"
-    (onCurrentDateChanged)="onCurrentDateChanged($event)"
-    (onTitleChanged)="onViewTitleChanged($event)" 
-    step="30">
+  <calendar [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" [eventSource]="eventSource" [markDisabled]="markDisabled"
+    (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" step="30" [monthviewDisplayEventTemplate]="monthviewDefaultDisplayEventTemplate"
+    [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate">
   </calendar>
 </ion-content>

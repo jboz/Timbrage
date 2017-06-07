@@ -20,33 +20,7 @@ export class CalendarPage {
   isSelectedToday: boolean;
   calendar = {
     mode: 'month',
-    currentDate: new Date(),
-    dateFormatter: {
-      formatMonthViewDay: function (date: Date) {
-        return date.getDate().toString();
-      },
-      formatMonthViewDayHeader: function (date: Date) {
-        return 'MonMH';
-      },
-      formatMonthViewTitle: function (date: Date) {
-        return 'testMT';
-      },
-      formatWeekViewDayHeader: function (date: Date) {
-        return 'MonWH';
-      },
-      formatWeekViewTitle: function (date: Date) {
-        return 'testWT';
-      },
-      formatWeekViewHourColumn: function (date: Date) {
-        return 'testWH';
-      },
-      formatDayViewHourColumn: function (date: Date) {
-        return 'testDH';
-      },
-      formatDayViewTitle: function (date: Date) {
-        return 'testDT';
-      }
-    }
+    currentDate: new Date()
   };
 
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider) {
@@ -72,7 +46,9 @@ export class CalendarPage {
     return {
       title: duration,
       startTime: pair[0].getDate(),
-      endTime: pair[1].getDate()
+      endTime: pair[1].getDate(),
+      startTimbrage: pair[0],
+      endTimbrage: pair[1]
     }
   }
 
