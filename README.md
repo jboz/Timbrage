@@ -13,4 +13,4 @@ La version actuel est basé sur le très réputé framework ionic qui lui même 
 
 Ecran de saisie quotidien :
 
-![screen1](docs/screen1-android.png)
+![screen1](docs/screen1-android_2.png)
