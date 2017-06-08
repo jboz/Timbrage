@@ -23,7 +23,7 @@ export class TimbragesPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
     public calculationService: CalculationProvider, public storageService: StorageProvider) {
 
-    this.storageService.find(this.today()).then((data) => {
+    this.storageService.find(moment()).then((data) => {
       this.timbrages = data;
     });
 
@@ -34,21 +34,15 @@ export class TimbragesPage {
     }, 1000);
   }
 
-  public today(): Moment {
-    return moment();
-  }
-
   public timbrer() {
-    this.timbrages.push(new Timbrage());
-    this.saveAll();
+    this.storageService.add(new Timbrage()).then((timbrage) => {
+      //timbrages.forEach(timbrage => this.timbrages.push(timbrage));
+      this.timbrages.push(timbrage);
+    });
   }
 
-  private saveAll() {
-    this.storageService.save(this.today(), this.timbrages);
-  }
-
-  public onChangeTime(event): void {
-    this.saveAll();
+  public onChangeTime(timbrage: Timbrage): void {
+    this.storageService.update(timbrage);
   }
 
   public delete(timbrage) {
@@ -56,7 +50,7 @@ export class TimbragesPage {
 
     if (index > -1) {
       this.timbrages.splice(index, 1);
-      this.saveAll();
+      this.storageService.delete(timbrage);
     }
   }
 }
