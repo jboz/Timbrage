@@ -2,9 +2,9 @@ import { Moment } from 'moment';
 import * as moment from 'moment';
 
 export class Timbrage {
-    // création de la date arrondie à la seconde
     date: string;
 
+    // création de la date arrondie à la minute
     constructor(date: string = moment().startOf('minute').format()) {
         this.date = date;
     }

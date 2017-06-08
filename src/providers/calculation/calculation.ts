@@ -9,7 +9,6 @@ import * as moment from 'moment';
 export class CalculationProvider {
 
   constructor() {
-    console.log('Hello CalculationProvider Provider');
   }
 
   public calculate(timbrages: Array<Timbrage>): Duration {
@@ -28,8 +27,8 @@ export class CalculationProvider {
     return duration;
   }
 
-  public diff(t1: Timbrage, t2: Timbrage): Duration {
-    let diff = t1.getMoment().diff(t2.getMoment());
+  public diff(t1: Timbrage, t0: Timbrage): Duration {
+    let diff = t1.getMoment().diff(t0.getMoment());
 
     return moment.duration(diff);
   }
@@ -38,7 +37,7 @@ export class CalculationProvider {
     return timbrages.length % 2;
   }
 
-  private splitPairs(arr: Array<Timbrage>): Array<Array<Timbrage>> {
+  public splitPairs(arr: Array<Timbrage>): Array<Array<Timbrage>> {
     var pairs = [];
     for (var i = 0; i < arr.length; i += 2) {
       if (arr[i + 1] !== undefined) {

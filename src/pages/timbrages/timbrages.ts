@@ -56,6 +56,7 @@ export class TimbragesPage {
 
     if (index > -1) {
       this.timbrages.splice(index, 1);
+      this.saveAll();
     }
   }
 }

@@ -1,18 +1,48 @@
-<!--
-  Generated template for the Calendar page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>calendar</ion-title>
+  <ion-navbar color="dark">
+    <ion-title>{{ viewTitle }}</ion-title>
+    <ion-buttons end>
+      <button ion-button [disabled]="isSelectedToday" (click)="today()">Today</button>
+      <button ion-button (click)="changeMode('month')">M</button>
+      <button ion-button (click)="changeMode('week')">W</button>
+      <button ion-button (click)="changeMode('day')">D</button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
+<ng-template #monthviewDefaultDisplayEventTemplate let-view="view" let-row="row" let-col="col">
+  {{view.dates[row*7+col].label}}
+</ng-template>
+<ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+  <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+    <div *ngFor="let event of selectedDate?.events" (click)="eventSelected(event)">
+      <ion-item>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="event.startTimbrage.date"></ion-datetime>
+        <button ion-button icon-only (click)="delete(event.startTimbrage)" color="danger" item-right>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item>
+      <ion-item>
+        <ion-datetime displayFormat="HH:mm" [(ngModel)]="event.endTimbrage.date"></ion-datetime>
+        <button ion-button icon-only (click)="delete(event.endTimbrage)" color="danger" item-right>
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-item>
+      <!--<span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
+        start {{event.startTime|date: 'HH:mm'}} to {{event.endTime|date: 'HH:mm'}}
+      </span>-->
+      <ion-item *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">{{allDayLabel}}</ion-item>
+      <!--<span class="event-detail">total : {{event.title}}</span>-->
+      <ion-item *ngIf="selectedDate?.events.length==0">
+        <div class="no-events-label">{{noEventsLabel}}</div>
+      </ion-item>
+    </div>
+  </ion-list>
+</ng-template>
 
-<ion-content padding>
-
+<ion-content class="has-header">
+  <calendar [calendarMode]="calendar.mode" [currentDate]="calendar.currentDate" [eventSource]="eventSource" [markDisabled]="markDisabled"
+    (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" step="30" [monthviewDisplayEventTemplate]="monthviewDefaultDisplayEventTemplate"
+    [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate">
+  </calendar>
 </ion-content>
