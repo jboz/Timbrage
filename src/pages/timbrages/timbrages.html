@@ -27,7 +27,7 @@
 
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages">
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
 
       <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-right>
         <ion-icon name="trash"></ion-icon>

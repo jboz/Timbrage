@@ -23,7 +23,7 @@
         </button>
       </ion-item>
       <ion-item>
-        <ion-datetime displayFormat="HH:mm" [(ngModel)]="event.endTimbrage.date"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="event.endTimbrage.date"></ion-datetime>
         <button ion-button icon-only (click)="delete(event.endTimbrage)" color="danger" item-right>
           <ion-icon name="trash"></ion-icon>
         </button>
