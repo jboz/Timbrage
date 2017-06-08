@@ -1,3 +1,9 @@
 page-calendar {
-
+    .toolbar-title, div.header, button.bar-button {
+        color: map-get($colors,light);
+    }
+    
+    .monthview-primary-with-event.monthview-selected.monthview-current{
+        background-color: map-get($colors,primary);
+    }
 }
