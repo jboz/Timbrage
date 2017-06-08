@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 
-import { Duration, Moment } from 'moment';
 import * as moment from 'moment';
 
 import { Timbrage } from '../../model/Timbrage';
