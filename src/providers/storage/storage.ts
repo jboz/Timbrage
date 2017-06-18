@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 
 import { Moment } from 'moment';
 import * as moment from 'moment';
+
 import * as PouchDB from 'pouchdb';
 PouchDB.plugin(require('pouchdb-find'));
 
@@ -36,6 +37,17 @@ export class StorageProvider {
     return Promise.resolve(this._db);
   }
 
+  public reset(): Promise<any> {
+    if (this._db) {
+      return this._db.destroy().then(function () {
+        console.log('database cleaned');
+      });
+    }
+    return Promise.resolve().then(() => {
+      console.log('no database to clean');
+    });
+  }
+
   private parallelize(timbrages: Timbrage[], promise: (db: any) => any) {
     return this.db().then((db) => {
       let promises = [];
@@ -50,15 +62,12 @@ export class StorageProvider {
   public add(timbrage: Timbrage): Promise<Timbrage> {
     //return this.parallelize(timbrages, (db) => db.post(timbrages));
     return this.db().then((db) => db.post(timbrage))
-      .then(docSaved => this._db.get(docSaved.id))
-      .then(doc => this.toModel(doc));
-    // return this.update(timbrage);
+      .then(() => timbrage);
   }
 
   public update(timbrage: Timbrage): Promise<Timbrage> {
     return this.db().then((db) => db.put(timbrage))
-      .then(docSaved => this._db.get(docSaved.id))
-      .then(doc => this.toModel(doc));
+      .then(() => timbrage);
   }
 
   public delete(timbrage: Timbrage): Promise<Timbrage> {
@@ -68,7 +77,7 @@ export class StorageProvider {
 
   public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
     start = start.clone().startOf("day");
-    end = end ? end.clone().startOf("day") : start.clone();
+    end = end ? end.clone().startOf("day") : start.clone().add(1, 'day');
 
     // return this.db().then((db) => db.find({
     //   selector: {
@@ -82,13 +91,14 @@ export class StorageProvider {
     // }).then((data) => data.docs.map((doc) => this.toModel(doc))));
 
     return this.db().then((db) => db.query(function (doc, emit) {
-      emit(doc.date);
+      let date = moment(doc.date);
+      if (date.isSameOrAfter(start) && date.isBefore(end)) {
+        emit(doc.date);
+      }
     }, {
-        startkey: start.format(),
-        endkey: end.format(),
         include_docs: true
       }).then((data) => {
-        data.rows.map((row) => this.toModel(row.doc))
+        return data.rows.map((row) => this.toModel(row.doc))
       }));
 
     // return this.db().then((db) => db

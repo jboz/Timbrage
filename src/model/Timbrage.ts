@@ -4,7 +4,7 @@ import * as moment from 'moment';
 export class Timbrage {
 
     // création de la date arrondie à la minute
-    constructor(public date: string = moment().startOf('minute').format(), private _id?: string) {
+    constructor(public date: string = moment().startOf('minute').format(), public _id?: string) {
         // if (!_id) {
         //     this._id = this.date;
         // }

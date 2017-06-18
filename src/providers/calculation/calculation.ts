@@ -17,6 +17,11 @@ export class CalculationProvider {
     //   timbrages = timbrages.concat([new Timbrage()]);
     // }
     let duration = moment.duration();
+    
+    if (!timbrages || timbrages.length == 0) {
+      // no times
+      return duration;
+    }
 
     // calculate duration by pairs of Timbrage
     this.splitPairs(timbrages).forEach(pair => {
