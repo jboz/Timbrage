@@ -23,4 +23,11 @@ export class Timbrage {
     public getMoment(): Moment {
         return moment(this.date);
     }
+
+    /**
+     * Compare two timbrage by their moment.
+     */
+    public compareTo(other: Timbrage): number {
+        return this.getMoment().diff(other.getMoment());
+    }
 }

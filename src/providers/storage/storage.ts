@@ -79,17 +79,6 @@ export class StorageProvider {
     start = start.clone().startOf("day");
     end = end ? end.clone().startOf("day") : start.clone().add(1, 'day');
 
-    // return this.db().then((db) => db.find({
-    //   selector: {
-    //     $and: [
-    //       { date: { $gte: start.format() } },
-    //       { date: { $lt: end.format() } }
-    //     ]
-    //   }
-    //   // fields: ['date'],
-    //   // sort: ['date']
-    // }).then((data) => data.docs.map((doc) => this.toModel(doc))));
-
     return this.db().then((db) => db.query(function (doc, emit) {
       let date = moment(doc.date);
       if (date.isSameOrAfter(start) && date.isBefore(end)) {
@@ -99,15 +88,11 @@ export class StorageProvider {
         include_docs: true
       }).then((data) => {
         return data.rows.map((row) => this.toModel(row.doc))
+      }).then((timbrages) => {
+        return timbrages.sort((a, b) => {
+          return a.compareTo(b);
+        });
       }));
-
-    // return this.db().then((db) => db
-    //   .query("byDate", { startkey: start.format(), endkey: end.format() })
-    //   .then((data) => data.rows.map((row) => this.toModel(row.doc)))
-    // );
-
-    // return this.db().then((db) => db.allDocs({ startkey: start.format(), endkey: end.format(), ascending: true }))
-    //   .then((data) => data.rows.map((row) => this.toModel(row.doc)));
   }
 
   public findAll(): Promise<Array<Timbrage>> {

@@ -29,11 +29,16 @@ export class CalendarPage {
     this.loadEvents();
   }
 
+  /**
+   * Load all events of the month.
+   */
   private loadEvents() {
     let start = moment(this.calendarOptions.currentDate).set('date', 1);
     let end = moment(this.calendarOptions.currentDate).endOf('month');
     this.storageService.find(start, end).then((timbrages) => {
-      this.eventSource = this.calculationService.splitPairs(timbrages).map(pair => this.toEvent(pair));
+      // TODO group by day and after split pairs
+      this.eventSource = this.calculationService.splitPairs(timbrages)
+        .map(pair => this.toEvent(pair));
     });
   }
 

@@ -42,14 +42,19 @@ export class CalculationProvider {
     return timbrages.length % 2;
   }
 
-  public splitPairs(arr: Array<Timbrage>): Array<Array<Timbrage>> {
+  public splitPairs(arr: Array<Timbrage>, endOfDay = false): Array<Array<Timbrage>> {
     var pairs = [];
     for (var i = 0; i < arr.length; i += 2) {
       if (arr[i + 1] !== undefined) {
         pairs.push([arr[i], arr[i + 1]]);
       } else {
         // the list of timbrages is not odd
-        pairs.push([arr[i], new Timbrage()]);
+        let missing = new Timbrage();
+        if (endOfDay) {
+          // TODO set time to end of day
+          //missing.date = moment().
+        }
+        pairs.push([arr[i], missing]);
       }
     }
     return pairs;

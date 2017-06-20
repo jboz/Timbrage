@@ -24,7 +24,8 @@ export class MyApp {
 
   resetDatabase(): void {
     this.storageService.reset().then(() => {
-      // TODO add message
+      // TODO add toast message
+      console.info("reset done");
     });
   }
 }
