@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
-import { NgCalendarModule  } from 'ionic2-calendar';
 // import { HttpModule } from '@angular/http';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -17,7 +16,6 @@ import { StorageProvider } from '../providers/storage/storage';
   ],
   imports: [
     BrowserModule,
-    NgCalendarModule,
     // HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({

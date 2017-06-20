@@ -17,7 +17,7 @@ export class CalendarPage {
   eventSource;
   viewTitle;
   isSelectedToday: boolean;
-  calendar = {
+  calendarOptions = {
     mode: 'month',
     currentDate: new Date()
   };
@@ -30,8 +30,8 @@ export class CalendarPage {
   }
 
   private loadEvents() {
-    let start = moment(this.calendar.currentDate).set('date', 1);
-    let end = moment(this.calendar.currentDate).endOf('month');
+    let start = moment(this.calendarOptions.currentDate).set('date', 1);
+    let end = moment(this.calendarOptions.currentDate).endOf('month');
     this.storageService.find(start, end).then((timbrages) => {
       this.eventSource = this.calculationService.splitPairs(timbrages).map(pair => this.toEvent(pair));
     });
@@ -64,8 +64,8 @@ export class CalendarPage {
   onCurrentDateChanged(event: Date) {
     this.isSelectedToday = moment(event).startOf('day').month() == moment().startOf('day').month();
     // if month changed, load events
-    let isChanged = moment(event).month() != moment(this.calendar.currentDate).month();
-    this.calendar.currentDate = event;
+    let isChanged = moment(event).month() != moment(this.calendarOptions.currentDate).month();
+    this.calendarOptions.currentDate = event;
     if (isChanged) {
       this.loadEvents();
     }
@@ -82,14 +82,14 @@ export class CalendarPage {
    * Changement du type de vue.
    */
   changeMode(mode) {
-    this.calendar.mode = mode;
+    this.calendarOptions.mode = mode;
   }
 
   /**
    * Navigate to today date.
    */
   today() {
-    this.calendar.currentDate = new Date();
+    this.calendarOptions.currentDate = new Date();
     this.loadEvents();
   }
 }
