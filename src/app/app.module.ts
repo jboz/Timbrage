@@ -6,10 +6,6 @@ import { MyApp } from './app.component';
 import { NgCalendarModule  } from 'ionic2-calendar';
 // import { HttpModule } from '@angular/http';
 
-import { TimbragesPage } from '../pages/timbrages/timbrages';
-import { CalendarPage } from '../pages/calendar/calendar';
-import { TabsPage } from '../pages/tabs/tabs';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MomentPipe } from '../pipes/moment/moment';
@@ -19,8 +15,6 @@ import { StorageProvider } from '../providers/storage/storage';
 @NgModule({
   declarations: [
     MyApp,
-    TabsPage,
-    TimbragesPage, CalendarPage,
     MomentPipe
   ],
   imports: [
@@ -36,8 +30,6 @@ import { StorageProvider } from '../providers/storage/storage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    TabsPage,
-    TimbragesPage, CalendarPage
   ],
   providers: [
     StatusBar,

@@ -3,8 +3,6 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { TabsPage } from '../pages/tabs/tabs';
-
 import { StorageProvider } from '../providers/storage/storage';
 
 @Component({
@@ -12,7 +10,7 @@ import { StorageProvider } from '../providers/storage/storage';
   providers: [StorageProvider]
 })
 export class MyApp {
-  rootPage: any = TabsPage;
+  rootPage: any = 'TabsPage';
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
     public storageService: StorageProvider) {
