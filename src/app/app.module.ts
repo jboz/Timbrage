@@ -8,14 +8,12 @@ import { NgCalendarModule  } from 'ionic2-calendar';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { MomentPipe } from '../pipes/moment/moment';
 import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
 
 @NgModule({
   declarations: [
     MyApp,
-    MomentPipe
   ],
   imports: [
     BrowserModule,
