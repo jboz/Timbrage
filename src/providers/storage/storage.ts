@@ -48,31 +48,28 @@ export class StorageProvider {
     });
   }
 
-  private parallelize(timbrages: Timbrage[], promise: (db: any) => any) {
-    return this.db().then((db) => {
-      let promises = [];
-      timbrages.forEach((timbrage) => {
-        promises.push(promise(db));
-      });
+  // ex: return this.parallelize(timbrages, (db) => db.post(timbrages));
+  // private parallelize(timbrages: Timbrage[], promise: (db: any) => any) {
+  //   return this.db().then((db) => {
+  //     let promises = [];
+  //     timbrages.forEach((timbrage) => {
+  //       promises.push(promise(db));
+  //     });
 
-      return Promise.all(promises);
-    });
-  }
+  //     return Promise.all(promises);
+  //   });
+  // }
 
   public add(timbrage: Timbrage): Promise<Timbrage> {
-    //return this.parallelize(timbrages, (db) => db.post(timbrages));
-    return this.db().then((db) => db.post(timbrage))
-      .then(() => timbrage);
+    return this.db().then((db) => db.post(timbrage)).then(() => timbrage);
   }
 
   public update(timbrage: Timbrage): Promise<Timbrage> {
-    return this.db().then((db) => db.put(timbrage))
-      .then(() => timbrage);
+    return this.db().then((db) => db.put(timbrage)).then(() => timbrage);
   }
 
   public delete(timbrage: Timbrage): Promise<Timbrage> {
-    return this.db().then((db) => db.remove(timbrage))
-      .then(() => timbrage);
+    return this.db().then((db) => db.remove(timbrage)).then(() => timbrage);
   }
 
   public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
@@ -86,9 +83,12 @@ export class StorageProvider {
       }
     }, {
         include_docs: true
-      }).then((data) => {
-        return data.rows.map((row) => this.toModel(row.doc))
-      }).then((timbrages) => {
+      })
+      // create model from db data
+      .then((data) => data.rows.map((row) => this.toModel(row.doc)))
+      // sort ascending
+      // TODO sort in query options ?
+      .then((timbrages) => {
         return timbrages.sort((a, b) => {
           return a.compareTo(b);
         });
@@ -101,6 +101,6 @@ export class StorageProvider {
   }
 
   private toModel(doc: any): Timbrage {
-    return new Timbrage(doc.date, doc._id);
+    return new Timbrage(doc.date, doc._id, doc._rev);
   }
 }
