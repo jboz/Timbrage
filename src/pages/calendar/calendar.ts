@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 
 import * as moment from 'moment';
+import _ from 'lodash';
 
 import { Timbrage } from '../../model/Timbrage';
+import { Event } from '../../model/Event';
 import { CalculationProvider } from '../../providers/calculation/calculation';
 import { StorageProvider } from '../../providers/storage/storage';
 
@@ -34,27 +36,50 @@ export class CalendarPage {
    */
   private loadEvents() {
     let start = moment(this.calendarOptions.currentDate).set('date', 1);
-    let end = moment(this.calendarOptions.currentDate).endOf('month');
+    let end = start.clone().add(1, 'month');
     this.storageService.find(start, end).then((timbrages) => {
       // TODO group by day and after split pairs
-      this.eventSource = this.calculationService.splitPairs(timbrages)
-        .map(pair => this.toEvent(pair));
+      if (!timbrages || timbrages.length == 0) {
+        return;
+      }
+      // group by day
+      let groups = _.groupBy(timbrages, x => x.getMoment().startOf('day').toISOString());
+      this.eventSource = new Array();
+      for (var day in groups) {
+        var timbragesDuJour: Array<Timbrage> = groups[day];
+        // create event from pair of timbrage
+        // if one timbrage is missing, add one at end of day
+        let events = this.calculationService.splitPairs(timbragesDuJour, true)
+          .map(pair => this.toEvent(pair));
+
+        // // create an 'all day' event to show the sum of the day
+        // let duration = this.sumOfDay(events);
+        // events.push(Event.allDay(duration.toString(), moment(day)));
+
+        this.eventSource = this.eventSource.concat(events);
+      }
     });
+  }
+
+  public sumOfDay(events: Event[]): string {
+    if (!events) {
+      return "";
+    }
+    let duration = moment.duration();
+    events.forEach(event => {
+      duration = duration.add(event.duration());
+    });
+    return duration.toString();
   }
 
   /**
    * Map Timbrage object to Event object.
    */
-  toEvent(pair: Timbrage[]) {
+  toEvent(pair: Timbrage[]): Event {
     let duration = this.calculationService.diff(pair[1], pair[0]);
-    return {
-      title: duration,
-      startTime: pair[0].getDate(),
-      endTime: pair[1].getDate(),
-      startTimbrage: pair[0],
-      endTimbrage: pair[1]
-    }
+    return Event.fromTimbrages(duration.toString(), pair[0], pair[1]);
   }
+
 
   /**
    * Mark next month to disable.
@@ -96,5 +121,13 @@ export class CalendarPage {
   today() {
     this.calendarOptions.currentDate = new Date();
     this.loadEvents();
+  }
+
+  public onChangeTime(timbrage: Timbrage): void {
+    this.storageService.save(timbrage).then(() => this.loadEvents());
+  }
+
+  public delete(timbrage: Timbrage) {
+    this.storageService.delete(timbrage).then(() => this.loadEvents());
   }
 }

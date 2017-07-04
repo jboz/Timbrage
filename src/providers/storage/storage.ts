@@ -60,15 +60,20 @@ export class StorageProvider {
   //   });
   // }
 
-  public add(timbrage: Timbrage): Promise<Timbrage> {
-    return this.db().then((db) => db.post(timbrage)).then(() => timbrage);
-  }
-
-  public update(timbrage: Timbrage): Promise<Timbrage> {
-    return this.db().then((db) => db.put(timbrage)).then(() => timbrage);
+  public save(timbrage: Timbrage): Promise<Timbrage> {
+    return this.db().then((db) => {
+      if (timbrage._id) {
+        db.put(timbrage)
+      } else {
+        db.post(timbrage)
+      }
+    }).then(() => timbrage);
   }
 
   public delete(timbrage: Timbrage): Promise<Timbrage> {
+    if (!timbrage._id) {
+      return; // nothing to sync with db
+    }
     return this.db().then((db) => db.remove(timbrage)).then(() => timbrage);
   }
 
@@ -101,6 +106,7 @@ export class StorageProvider {
   }
 
   private toModel(doc: any): Timbrage {
+    // _id and _rev are required to update/delete fields
     return new Timbrage(doc.date, doc._id, doc._rev);
   }
 }

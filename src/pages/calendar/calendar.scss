@@ -6,4 +6,16 @@ page-calendar {
     .monthview-primary-with-event.monthview-selected.monthview-current{
         background-color: map-get($colors,primary);
     }
+
+    .event-detail-container {
+
+        ion-label.label {
+            padding-left: 16px;
+        }
+
+        .monthview-eventdetail-timecolumn {
+            font-weight: bold;
+            font-size: 2em;
+        }
+    }
 }
