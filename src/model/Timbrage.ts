@@ -2,11 +2,10 @@ import { Moment } from 'moment';
 import * as moment from 'moment';
 
 export class Timbrage {
-    date: string;
 
     // création de la date arrondie à la minute
-    constructor(date: string = moment().startOf('minute').format()) {
-        this.date = date;
+    constructor(public date: string = moment().startOf('minute').format(),
+        public _id?: string, private _rev?: string) {
     }
 
     /**
@@ -21,5 +20,12 @@ export class Timbrage {
      */
     public getMoment(): Moment {
         return moment(this.date);
+    }
+
+    /**
+     * Compare two timbrage by their moment.
+     */
+    public compareTo(other: Timbrage): number {
+        return this.getMoment().diff(other.getMoment());
     }
 }

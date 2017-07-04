@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-import { Duration, Moment } from 'moment';
+import { Duration } from 'moment';
 import * as moment from 'moment';
 
 import { Timbrage } from '../../model/Timbrage';
@@ -23,9 +23,7 @@ export class TimbragesPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
     public calculationService: CalculationProvider, public storageService: StorageProvider) {
 
-    this.storageService.find(this.today()).then((data) => {
-      this.timbrages = data;
-    });
+    this.loadTimbrages();
 
     // each second, refresh time and duration
     setInterval(() => {
@@ -34,29 +32,25 @@ export class TimbragesPage {
     }, 1000);
   }
 
-  public today(): Moment {
-    return moment();
+  public loadTimbrages() {
+    this.storageService.find(moment()).then((data) => {
+      this.timbrages = data;
+    });
+  }
+
+  public save(timbrage: Timbrage): void {
+    this.storageService.save(timbrage).then(() => this.loadTimbrages());
   }
 
   public timbrer() {
-    this.timbrages.push(new Timbrage());
-    this.saveAll();
+    this.save(new Timbrage());
   }
 
-  private saveAll() {
-    this.storageService.save(this.today(), this.timbrages);
-  }
-
-  public onChangeTime(event): void {
-    this.saveAll();
+  public onChangeTime(timbrage: Timbrage): void {
+    this.save(timbrage);
   }
 
   public delete(timbrage) {
-    let index = this.timbrages.indexOf(timbrage);
-
-    if (index > -1) {
-      this.timbrages.splice(index, 1);
-      this.saveAll();
-    }
+    this.storageService.delete(timbrage).then(() => this.loadTimbrages());
   }
 }

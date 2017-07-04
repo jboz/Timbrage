@@ -15,4 +15,4 @@ La version actuel est basé sur le très réputé framework ionic qui lui même 
 
 ## Ecrans de saisie quotidien/vue mensuelle :
 
-<img src="docs/screen1-android.png" width="300"/>    <img src="docs/screen2-android.png" width="300"/>
+<img src="docs/screen1-android.png" width="300"/> <img src="docs/screen2-android.png" width="300"/>

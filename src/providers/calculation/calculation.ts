@@ -17,6 +17,11 @@ export class CalculationProvider {
     //   timbrages = timbrages.concat([new Timbrage()]);
     // }
     let duration = moment.duration();
+    
+    if (!timbrages || timbrages.length == 0) {
+      // no times
+      return duration;
+    }
 
     // calculate duration by pairs of Timbrage
     this.splitPairs(timbrages).forEach(pair => {
@@ -37,14 +42,19 @@ export class CalculationProvider {
     return timbrages.length % 2;
   }
 
-  public splitPairs(arr: Array<Timbrage>): Array<Array<Timbrage>> {
+  public splitPairs(list: Array<Timbrage>, endOfDay = false): Array<Array<Timbrage>> {
     var pairs = [];
-    for (var i = 0; i < arr.length; i += 2) {
-      if (arr[i + 1] !== undefined) {
-        pairs.push([arr[i], arr[i + 1]]);
+    for (var i = 0; i < list.length; i += 2) {
+      if (list[i + 1] !== undefined) {
+        pairs.push([list[i], list[i + 1]]);
       } else {
         // the list of timbrages is not odd
-        pairs.push([arr[i], new Timbrage()]);
+        let missing = new Timbrage();
+        if (endOfDay) {
+          // TODO set time to end of day
+          missing.date = moment(list[i].date).endOf('day').format();
+        }
+        pairs.push([list[i], missing]);
       }
     }
     return pairs;

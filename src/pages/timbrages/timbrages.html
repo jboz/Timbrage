@@ -1,5 +1,8 @@
 <ion-header>
   <ion-navbar color="dark">
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Timeline</ion-title>
   </ion-navbar>
 </ion-header>
@@ -27,7 +30,7 @@
 
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages">
-      <ion-datetime displayFormat="HH:mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime($event)"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
 
       <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-right>
         <ion-icon name="trash"></ion-icon>

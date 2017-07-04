@@ -6,58 +6,107 @@ import { Storage } from '@ionic/storage';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
+import * as PouchDB from 'pouchdb';
+PouchDB.plugin(require('pouchdb-find'));
+
 import { Timbrage } from '../../model/Timbrage';
 
 @Injectable()
 export class StorageProvider {
-
-  public static readonly COLLECTION_NAME = "timbrages";
+  private _db;
 
   constructor(public storage: Storage) {
   }
 
-  public save(date: Moment, timbrages: Array<Timbrage>): Promise<any> {
-    return this.saveOnKey(this.getKey(date), timbrages);
+  db(): Promise<any> {
+    if (!this._db) {
+      console.log("creating database connection...");
+      this._db = new PouchDB('timbrages.db', { adapter: 'websql' });
+      console.log('database connection created');
+      this._db.info().then(function (response) {
+        console.info("db info: " + response.result);
+      });
+      this._db.createIndex({
+        index: {
+          fields: ['date']
+        }
+      }).then(function (result) {
+        console.info("index on field date " + result);
+      });
+    }
+    return Promise.resolve(this._db);
   }
 
-  private getKey(date: Moment): string {
-    return date.format("YYYY-MM-DD");
-  }
-
-  public saveOnKey(key: string, timbrages: Array<Timbrage>): Promise<any> {
-    return this.storage.ready().then(() => {
-      let data = new Array();
-      timbrages.forEach(timbrage => data.push(JSON.stringify(timbrage)));
-      return this.storage.set(key, data);
+  public reset(): Promise<any> {
+    if (this._db) {
+      return this._db.destroy().then(function () {
+        console.log('database cleaned');
+      });
+    }
+    return Promise.resolve().then(() => {
+      console.log('no database to clean');
     });
+  }
+
+  // ex: return this.parallelize(timbrages, (db) => db.post(timbrages));
+  // private parallelize(timbrages: Timbrage[], promise: (db: any) => any) {
+  //   return this.db().then((db) => {
+  //     let promises = [];
+  //     timbrages.forEach((timbrage) => {
+  //       promises.push(promise(db));
+  //     });
+
+  //     return Promise.all(promises);
+  //   });
+  // }
+
+  public save(timbrage: Timbrage): Promise<Timbrage> {
+    return this.db().then((db) => {
+      if (timbrage._id) {
+        db.put(timbrage)
+      } else {
+        db.post(timbrage)
+      }
+    }).then(() => timbrage);
+  }
+
+  public delete(timbrage: Timbrage): Promise<Timbrage> {
+    if (!timbrage._id) {
+      return; // nothing to sync with db
+    }
+    return this.db().then((db) => db.remove(timbrage)).then(() => timbrage);
   }
 
   public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
     start = start.clone().startOf("day");
-    end = end ? end.clone().startOf("day") : start.clone();
+    end = end ? end.clone().startOf("day") : start.clone().add(1, 'day');
 
-    let promises = [];
-    while (start.isSameOrBefore(end)) {
-      promises.push(this.get(this.getKey(start)));
-      start = start.add(1, 'day');
-    }
-
-    return Promise.all(promises).then((data) => {
-      return data.reduce((a, b) => a.concat(b));
-    });
+    return this.db().then((db) => db.query(function (doc, emit) {
+      let date = moment(doc.date);
+      if (date.isSameOrAfter(start) && date.isBefore(end)) {
+        emit(doc.date);
+      }
+    }, {
+        include_docs: true
+      })
+      // create model from db data
+      .then((data) => data.rows.map((row) => this.toModel(row.doc)))
+      // sort ascending
+      // TODO sort in query options ?
+      .then((timbrages) => {
+        return timbrages.sort((a, b) => {
+          return a.compareTo(b);
+        });
+      }));
   }
 
-  private get(key: string): Promise<Array<Timbrage>> {
-    return this.storage.get(key)
-      .then((jsonData) => {
-        if (jsonData) {
-          return jsonData.map(JSON.parse).map(this.toModel);
-        }
-        return new Array();
-      });
+  public findAll(): Promise<Array<Timbrage>> {
+    return this.db().then((db) => db.allDocs({ include_docs: true }))
+      .then((data) => data.rows.map((row) => this.toModel(row.doc)));
   }
 
-  private toModel(r: any): Timbrage {
-    return new Timbrage(r.date);
+  private toModel(doc: any): Timbrage {
+    // _id and _rev are required to update/delete fields
+    return new Timbrage(doc.date, doc._id, doc._rev);
   }
 }
