@@ -1,0 +1,38 @@
+language: javascript
+
+sudo: false
+
+install: ionic build
+
+script: echo -e "\nIonic application\n"
+
+branches:
+  only:
+  - master
+
+cache:
+  directories:
+  - "$HOME/.m2"
+
+after_success:
+  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in .travis/release.keystore.enc -out $GPG_DIR/release.keystore -d
+
+env:
+  global:
+  # encrypt ENCRYPTION_PASSWORD
+  # encrypt alias_name
+  # encrypt keystore password
+
+notifications:
+  email:
+  - julienboz@gmail.com
+  on_success: change
+  on_failure: always
+
+# deploy:
+#   provider: script
+#   script: .travis/deploy.sh
+#   script: ionic cordova build --release android
+#           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my.keystore path-to-unsigned.apk alias_name
+#           zipalign -v 4 path-to-unsigned.apk timbrage.apk
+#   skip_cleanup: true
