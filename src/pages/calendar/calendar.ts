@@ -86,7 +86,7 @@ export class CalendarPage {
    * Update flag that indicate if the selected date is today.
    */
   onCurrentDateChanged(event: Date) {
-    this.isSelectedToday = moment(event).startOf('day').month() == moment().startOf('day').month();
+    this.isSelectedToday = moment(event).startOf('day').toString() == moment().startOf('day').toString();
     // if month changed, load events
     let isChanged = moment(event).month() != moment(this.calendarOptions.currentDate).month();
     this.calendarOptions.currentDate = event;
