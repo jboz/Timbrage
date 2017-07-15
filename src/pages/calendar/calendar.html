@@ -20,12 +20,13 @@
   let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
   <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
     <ion-item *ngIf="selectedDate?.events.length>0" 
-      class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events)}}</ion-item>
+      class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events) | duration}}</ion-item>
     <div *ngFor="let event of selectedDate?.events">
       <ion-item *ngIf="event.startTimbrage">
         <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" 
           [(ngModel)]="event.startTimbrage.date"
           (ngModelChange)="onChangeTime(event.startTimbrage)"></ion-datetime>
+        <span item-right class="timbrage-desc">start</span>
         <button ion-button icon-only (click)="delete(event.startTimbrage)" color="danger" item-right>
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -34,6 +35,7 @@
         <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" 
           [(ngModel)]="event.endTimbrage.date" 
           (ngModelChange)="onChangeTime(event.endTimbrage)"></ion-datetime>
+        <span item-right class="timbrage-desc">end</span>
         <button ion-button icon-only (click)="delete(event.endTimbrage)" 
           color="danger" item-right>
           <ion-icon name="trash"></ion-icon>
@@ -41,6 +43,7 @@
       </ion-item>
       <ion-item *ngIf="event.endTimbrage && !event.endTimbrage._id">
         {{ event.endTimbrage.date | moment: 'HH:mm' }}
+        <span item-right class="timbrage-desc">end</span>
       </ion-item>
       <!--<span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
         start {{event.startTime|date: 'HH:mm'}} to {{event.endTime|date: 'HH:mm'}}

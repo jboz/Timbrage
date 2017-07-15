@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 
+import { Duration } from 'moment';
 import * as moment from 'moment';
 import _ from 'lodash';
 
@@ -61,15 +62,8 @@ export class CalendarPage {
     });
   }
 
-  public sumOfDay(events: Event[]): string {
-    if (!events) {
-      return "";
-    }
-    let duration = moment.duration();
-    events.forEach(event => {
-      duration = duration.add(event.duration());
-    });
-    return duration.toString();
+  public sumOfDay(events: Event[]): Duration {
+    return this.calculationService.calculateFromEvents(events);
   }
 
   /**

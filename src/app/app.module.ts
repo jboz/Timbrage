@@ -12,7 +12,7 @@ import { StorageProvider } from '../providers/storage/storage';
 
 @NgModule({
   declarations: [
-    MyApp,
+    MyApp,  
   ],
   imports: [
     BrowserModule,
