@@ -1,3 +1,5 @@
+$break-small: 320px;
+
 page-timbrages {
 
     .toolbar-title, div.header {
@@ -52,7 +54,12 @@ page-timbrages {
 
         #time {
             font-size: 2em;
-            padding: 1em 2em;
+            padding-top: 1em;
+            padding-left: 2em;
+            
+            @media screen and (max-width: $break-small) {
+                padding-left: 0;
+            }
         }
         
         #timbre {
