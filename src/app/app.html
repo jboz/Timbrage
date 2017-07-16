@@ -7,11 +7,15 @@
 
   <ion-content #content>
     <ion-list>
-      <button menuClose ion-item (click)="resetDatabase()">
+      <!--<button menuClose ion-item (click)="resetDatabase()">
         Reset database
-      </button>
+      </button>-->
     </ion-list>
   </ion-content>
+
+  <ion-footer>
+    {{appName}} {{packageName}} {{versionNumber}} {{versionCode}}
+  </ion-footer>
 </ion-menu>
 
 <ion-nav [root]="rootPage"></ion-nav>
