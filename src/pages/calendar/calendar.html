@@ -6,6 +6,7 @@
     <ion-title>{{ viewTitle }}</ion-title>
     <ion-buttons end>
       <button ion-button [disabled]="isSelectedToday" (click)="today()">Today</button>
+      <button ion-button (click)="share()"><ion-icon name="share"></ion-icon></button>
       <button ion-button (click)="changeMode('month')">M</button>
       <button ion-button (click)="changeMode('week')">W</button>
       <button ion-button (click)="changeMode('day')">D</button>
@@ -59,7 +60,7 @@
 
 <ion-content class="has-header">
   <calendar [calendarMode]="calendarOptions.mode" [currentDate]="calendarOptions.currentDate" 
-    [eventSource]="eventSource" [markDisabled]="markDisabled"
+    [eventSource]="events" [markDisabled]="markDisabled"
     (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" 
     step="30" [monthviewDisplayEventTemplate]="monthviewDefaultDisplayEventTemplate"
     [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate">
