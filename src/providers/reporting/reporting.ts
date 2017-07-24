@@ -18,16 +18,19 @@ export class ReportingProvider {
 
   public share(currentDate: Date, events: Event[]): Promise<any> {
     let month = moment(currentDate).format('yyyy-MM');
+    let csv = this.createCsvReport(events);
 
+    return this.social.share(csv, `Reporting of ${month}`);
+  }
+
+  public createCsvReport(events: Event[]): string {
     let dates = [];
     dates.push('date');
     events.forEach(event => {
       dates.push(this.format(event.startTimbrage.getMoment()));
       dates.push(this.format(event.endTimbrage.getMoment()));
     });
-    let csv = _.join(dates, ',');
-
-    return this.social.share(csv, `Reporting of ${month}`);
+    return _.join(dates, '\n\r');
   }
 
   private format(date: Moment): string {
