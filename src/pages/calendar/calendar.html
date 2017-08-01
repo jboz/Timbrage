@@ -6,7 +6,7 @@
     <ion-title>{{ viewTitle }}</ion-title>
     <ion-buttons end>
       <button ion-button [disabled]="isSelectedToday" (click)="today()">Today</button>
-      <button ion-button (click)="share()"><ion-icon name="share"></ion-icon></button>
+      <button ion-button (click)="share()" [disabled]="!events || events.length == 0"><ion-icon name="share"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

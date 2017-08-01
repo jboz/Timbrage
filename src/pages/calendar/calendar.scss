@@ -2,6 +2,9 @@ page-calendar {
     .toolbar-title, div.header, button.bar-button {
         color: map-get($colors,light);
     }
+    ion-buttons button.bar-button {
+        padding: 0 15px;
+    }
     
     .monthview-primary-with-event.monthview-selected.monthview-current{
         background-color: map-get($colors,primary);

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, MenuController } from 'ionic-angular';
+import { IonicPage, MenuController, Platform } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
@@ -19,12 +19,13 @@ import { CalendarProvider } from '../../providers/calendar/calendar';
 })
 export class CalendarPage {
 
-  events;
+  events: Array<Event> = [];
   viewTitle;
   isSelectedToday: boolean;
 
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
-    public reporting: ReportingProvider, public menuCtrl: MenuController, public calendarCtrl: CalendarProvider) {
+    public reporting: ReportingProvider, public menuCtrl: MenuController, public calendarCtrl: CalendarProvider,
+    public platform: Platform) {
     this.menuCtrl.enable(false, 'menuTimbrage');
     this.menuCtrl.enable(true, 'menuCalendar');
   }
@@ -51,7 +52,7 @@ export class CalendarPage {
         var timbragesDuJour: Array<Timbrage> = groups[day];
         // create event from pair of timbrage
         // if one timbrage is missing, add one at end of day
-        let events = this.calculationService.splitPairs(timbragesDuJour, true)
+        let events: Event[] = this.calculationService.splitPairs(timbragesDuJour, true)
           .map(pair => this.toEvent(pair));
 
         // // create an 'all day' event to show the sum of the day
@@ -127,6 +128,8 @@ export class CalendarPage {
   }
 
   public share(): void {
-    this.reporting.share(this.calendarCtrl.currentDate, this.events);
+    if (this.platform.is('cordova')) {
+      this.reporting.share(this.calendarCtrl.currentDate, this.events);
+    }
   }
 }
