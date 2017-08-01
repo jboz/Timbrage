@@ -9,6 +9,7 @@ import { Timbrage } from '../../model/Timbrage';
 import { Event } from '../../model/Event';
 import { CalculationProvider } from '../../providers/calculation/calculation';
 import { StorageProvider } from '../../providers/storage/storage';
+import { ReportingProvider } from '../../providers/reporting/reporting';
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 })
 export class CalendarPage {
 
-  eventSource;
+  events;
   viewTitle;
   isSelectedToday: boolean;
   calendarOptions = {
@@ -25,7 +26,7 @@ export class CalendarPage {
     currentDate: new Date()
   };
 
-  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider) {
+  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider, public reporting: ReportingProvider) {
   }
 
   public ionViewWillEnter() {
@@ -45,7 +46,7 @@ export class CalendarPage {
       }
       // group by day
       let groups = _.groupBy(timbrages, x => x.getMoment().startOf('day').toISOString());
-      this.eventSource = new Array();
+      this.events = new Array();
       for (var day in groups) {
         var timbragesDuJour: Array<Timbrage> = groups[day];
         // create event from pair of timbrage
@@ -57,7 +58,7 @@ export class CalendarPage {
         // let duration = this.sumOfDay(events);
         // events.push(Event.allDay(duration.toString(), moment(day)));
 
-        this.eventSource = this.eventSource.concat(events);
+        this.events = this.events.concat(events);
       }
     });
   }
@@ -123,5 +124,9 @@ export class CalendarPage {
 
   public delete(timbrage: Timbrage) {
     this.storageService.delete(timbrage).then(() => this.loadEvents());
+  }
+
+  public share(): void {
+    this.reporting.share(this.calendarOptions.currentDate, this.events);
   }
 }
