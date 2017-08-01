@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, MenuController } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
@@ -10,6 +10,7 @@ import { Event } from '../../model/Event';
 import { CalculationProvider } from '../../providers/calculation/calculation';
 import { StorageProvider } from '../../providers/storage/storage';
 import { ReportingProvider } from '../../providers/reporting/reporting';
+import { CalendarProvider } from '../../providers/calendar/calendar';
 
 @IonicPage()
 @Component({
@@ -21,12 +22,11 @@ export class CalendarPage {
   events;
   viewTitle;
   isSelectedToday: boolean;
-  calendarOptions = {
-    mode: 'month',
-    currentDate: new Date()
-  };
 
-  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider, public reporting: ReportingProvider) {
+  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
+    public reporting: ReportingProvider, public menuCtrl: MenuController, public calendarCtrl: CalendarProvider) {
+    this.menuCtrl.enable(false, 'menuTimbrage');
+    this.menuCtrl.enable(true, 'menuCalendar');
   }
 
   public ionViewWillEnter() {
@@ -37,7 +37,7 @@ export class CalendarPage {
    * Load all events of the month.
    */
   private loadEvents() {
-    let start = moment(this.calendarOptions.currentDate).set('date', 1);
+    let start = moment(this.calendarCtrl.currentDate).set('date', 1);
     let end = start.clone().add(1, 'month');
     this.storageService.find(start, end).then((timbrages) => {
       // TODO group by day and after split pairs
@@ -89,8 +89,8 @@ export class CalendarPage {
   onCurrentDateChanged(event: Date) {
     this.isSelectedToday = moment(event).startOf('day').toString() == moment().startOf('day').toString();
     // if month changed, load events
-    let isChanged = moment(event).month() != moment(this.calendarOptions.currentDate).month();
-    this.calendarOptions.currentDate = event;
+    let isChanged = moment(event).month() != moment(this.calendarCtrl.currentDate).month();
+    this.calendarCtrl.currentDate = event;
     if (isChanged) {
       this.loadEvents();
     }
@@ -106,15 +106,15 @@ export class CalendarPage {
   /**
    * Changement du type de vue.
    */
-  changeMode(mode) {
-    this.calendarOptions.mode = mode;
+  changeMode(mode: string): void {
+    this.calendarCtrl.mode = mode;
   }
 
   /**
    * Navigate to today date.
    */
   today() {
-    this.calendarOptions.currentDate = new Date();
+    this.calendarCtrl.currentDate = new Date();
     this.loadEvents();
   }
 
@@ -127,6 +127,6 @@ export class CalendarPage {
   }
 
   public share(): void {
-    this.reporting.share(this.calendarOptions.currentDate, this.events);
+    this.reporting.share(this.calendarCtrl.currentDate, this.events);
   }
 }

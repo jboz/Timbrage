@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, MenuController } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
@@ -20,8 +20,10 @@ export class TimbragesPage {
   now = new Date();
   sum: Duration = moment.duration();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController,
-    public calculationService: CalculationProvider, public storageService: StorageProvider) {
+  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider, 
+    public menuCtrl: MenuController) {
+    this.menuCtrl.enable(true, 'menuTimbrage');
+    this.menuCtrl.enable(false, 'menuCalendar');
 
     this.loadTimbrages();
 

@@ -4,11 +4,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppVersion } from '@ionic-native/app-version';
 
-import { StorageProvider } from '../providers/storage/storage';
+import { CalendarPage } from "../pages/calendar/calendar";
 
 @Component({
   templateUrl: 'app.html',
-  providers: [StorageProvider]
+  providers: [CalendarPage]
 })
 export class MyApp {
   rootPage: any = 'TabsPage';
@@ -18,7 +18,7 @@ export class MyApp {
   versionCode;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-    public storageService: StorageProvider, private appVersion: AppVersion) {
+    private appVersion: AppVersion, public calendarCtrl: CalendarPage) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -41,10 +41,10 @@ export class MyApp {
     // }
   }
 
-  resetDatabase(): void {
-    this.storageService.reset().then(() => {
-      // TODO add toast message
-      console.info("reset done");
-    });
+  /**
+   * Changement du type de vue.
+   */
+  changeMode(mode: string): void {
+    this.calendarCtrl.changeMode(mode);
   }
 }

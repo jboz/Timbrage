@@ -14,6 +14,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
 import { ReportingProvider } from '../providers/reporting/reporting';
+import { CalendarProvider } from '../providers/calendar/calendar';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ReportingProvider } from '../providers/reporting/reporting';
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppVersion, SocialSharing, File,
-    CalculationProvider, StorageProvider, ReportingProvider
+    CalculationProvider, StorageProvider, ReportingProvider,
+    CalendarProvider
   ]
 })
 export class AppModule { }
