@@ -25,20 +25,20 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
-    if (platform.is('cordova')) {
-      appVersion.getAppName().then((appName) => {
-        this.appName = appName;
-      });
-      appVersion.getPackageName().then((packageName) => {
-        this.packageName = packageName;
-      });
-      appVersion.getVersionNumber().then((versionNumber) => {
-        this.versionNumber = versionNumber;
-      });
-      appVersion.getVersionCode().then((versionCode) => {
-        this.versionCode = versionCode;
-      });
-    }
+    // if (platform.is('cordova')) {
+    //   appVersion.getAppName().then((appName) => {
+    //     this.appName = appName;
+    //   });
+    //   appVersion.getPackageName().then((packageName) => {
+    //     this.packageName = packageName;
+    //   });
+    //   appVersion.getVersionNumber().then((versionNumber) => {
+    //     this.versionNumber = versionNumber;
+    //   });
+    //   appVersion.getVersionCode().then((versionCode) => {
+    //     this.versionCode = versionCode;
+    //   });
+    // }
   }
 
   resetDatabase(): void {

@@ -7,6 +7,7 @@ import { MyApp } from './app.component';
 
 import { AppVersion } from '@ionic-native/app-version';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { File } from '@ionic-native/file';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -35,7 +36,7 @@ import { ReportingProvider } from '../providers/reporting/reporting';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AppVersion, SocialSharing,
+    AppVersion, SocialSharing, File,
     CalculationProvider, StorageProvider,
     ReportingProvider
   ]
