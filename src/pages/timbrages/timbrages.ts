@@ -22,8 +22,6 @@ export class TimbragesPage {
 
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider, 
     public menuCtrl: MenuController) {
-    this.menuCtrl.enable(true, 'menuTimbrage');
-    this.menuCtrl.enable(false, 'menuCalendar');
 
     this.loadTimbrages();
 
@@ -32,6 +30,11 @@ export class TimbragesPage {
       this.now = new Date();
       this.sum = this.calculationService.calculate(this.timbrages);
     }, 1000);
+  }
+
+  ionViewWillEnter() {
+    this.menuCtrl.enable(true, 'menuTimbrage');
+    this.menuCtrl.enable(false, 'menuCalendar');
   }
 
   public loadTimbrages() {

@@ -26,11 +26,11 @@ export class CalendarPage {
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
     public reporting: ReportingProvider, public menuCtrl: MenuController, public calendarCtrl: CalendarProvider,
     public platform: Platform) {
-    this.menuCtrl.enable(false, 'menuTimbrage');
-    this.menuCtrl.enable(true, 'menuCalendar');
   }
 
   public ionViewWillEnter() {
+    this.menuCtrl.enable(false, 'menuTimbrage');
+    this.menuCtrl.enable(true, 'menuCalendar');
     this.loadEvents();
   }
 
