@@ -1,9 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<<<<<<< HEAD
-<widget android-versionCode="20001" id="ch.ifocusit.timbrage" version="2.0.0-beta2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-=======
-<widget android-versionCode="20002" id="ch.ifocusit.timbrage" version="2.0.0-beta3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
->>>>>>> b60ed691e25df780bfb14f75828ee3921ad829dc
+<widget android-versionCode="20003" id="ch.ifocusit.timbrage" version="2.0.0-beta3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Timbrage</name>
     <description>Work reporting application</description>
     <author email="julienboz@gmail.com" href="http://ifocusit.ch">Focus IT</author>

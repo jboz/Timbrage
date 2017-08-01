@@ -57,13 +57,9 @@
         "@ionic/app-scripts": "1.3.7",
         "@ionic/cli-plugin-cordova": "1.4.1",
         "@ionic/cli-plugin-ionic-angular": "1.3.2",
-<<<<<<< HEAD
-        "@types/pouchdb": "^6.1.0",
-=======
         "@types/pouchdb": "^6.1.1",
         "@types/pouchdb-find": "^6.3.0",
         "ionic": "3.6.0",
->>>>>>> b60ed691e25df780bfb14f75828ee3921ad829dc
         "typescript": "2.3.3"
     },
     "description": "Timbrage: a productive application",
@@ -74,13 +70,9 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-<<<<<<< HEAD
-            "cordova-plugin-app-version": {}
-=======
             "cordova-plugin-app-version": {},
             "cordova-plugin-x-socialsharing": {},
             "cordova-plugin-file": {}
->>>>>>> b60ed691e25df780bfb14f75828ee3921ad829dc
         },
         "platforms": [
             "android"
