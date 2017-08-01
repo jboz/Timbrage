@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="20003" id="ch.ifocusit.timbrage" version="2.0.0-beta3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="20004" id="ch.ifocusit.timbrage" version="2.0.0-beta4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Timbrage</name>
     <description>Work reporting application</description>
     <author email="julienboz@gmail.com" href="http://ifocusit.ch">Focus IT</author>
-    <content original-src="index.html" src="http://192.168.1.42:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-navigation href="http://ionic.local/*" />
     <allow-navigation href="http://192.168.1.44:8100" />
