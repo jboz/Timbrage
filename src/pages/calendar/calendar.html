@@ -6,6 +6,7 @@
     <ion-title>{{ viewTitle }}</ion-title>
     <ion-buttons end>
       <button ion-button [disabled]="isSelectedToday" (click)="today()">Today</button>
+      <button ion-button (click)="share()"><ion-icon name="share"></ion-icon></button>
       <button ion-button (click)="changeMode('month')">M</button>
       <button ion-button (click)="changeMode('week')">W</button>
       <button ion-button (click)="changeMode('day')">D</button>
@@ -20,12 +21,13 @@
   let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
   <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
     <ion-item *ngIf="selectedDate?.events.length>0" 
-      class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events)}}</ion-item>
+      class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events) | duration}}</ion-item>
     <div *ngFor="let event of selectedDate?.events">
       <ion-item *ngIf="event.startTimbrage">
         <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" 
           [(ngModel)]="event.startTimbrage.date"
           (ngModelChange)="onChangeTime(event.startTimbrage)"></ion-datetime>
+        <span item-right class="timbrage-desc">start</span>
         <button ion-button icon-only (click)="delete(event.startTimbrage)" color="danger" item-right>
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -34,6 +36,7 @@
         <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" 
           [(ngModel)]="event.endTimbrage.date" 
           (ngModelChange)="onChangeTime(event.endTimbrage)"></ion-datetime>
+        <span item-right class="timbrage-desc">end</span>
         <button ion-button icon-only (click)="delete(event.endTimbrage)" 
           color="danger" item-right>
           <ion-icon name="trash"></ion-icon>
@@ -41,6 +44,7 @@
       </ion-item>
       <ion-item *ngIf="event.endTimbrage && !event.endTimbrage._id">
         {{ event.endTimbrage.date | moment: 'HH:mm' }}
+        <span item-right class="timbrage-desc">end</span>
       </ion-item>
       <!--<span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">
         start {{event.startTime|date: 'HH:mm'}} to {{event.endTime|date: 'HH:mm'}}
@@ -56,7 +60,7 @@
 
 <ion-content class="has-header">
   <calendar [calendarMode]="calendarOptions.mode" [currentDate]="calendarOptions.currentDate" 
-    [eventSource]="eventSource" [markDisabled]="markDisabled"
+    [eventSource]="events" [markDisabled]="markDisabled"
     (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" 
     step="30" [monthviewDisplayEventTemplate]="monthviewDefaultDisplayEventTemplate"
     [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate">

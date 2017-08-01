@@ -6,8 +6,9 @@ import { Storage } from '@ionic/storage';
 import { Moment } from 'moment';
 import * as moment from 'moment';
 
-import * as PouchDB from 'pouchdb';
-PouchDB.plugin(require('pouchdb-find'));
+import PouchDB from 'pouchdb';
+import PouchFind from 'pouchdb-find';
+PouchDB.plugin(PouchFind);
 
 import { Timbrage } from '../../model/Timbrage';
 

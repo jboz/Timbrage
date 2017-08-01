@@ -5,10 +5,15 @@ import { IonicStorageModule } from '@ionic/storage';
 import { MyApp } from './app.component';
 // import { HttpModule } from '@angular/http';
 
+import { AppVersion } from '@ionic-native/app-version';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { File } from '@ionic-native/file';
+
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
+import { ReportingProvider } from '../providers/reporting/reporting';
 
 @NgModule({
   declarations: [
@@ -31,8 +36,9 @@ import { StorageProvider } from '../providers/storage/storage';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    CalculationProvider,
-    StorageProvider
+    AppVersion, SocialSharing, File,
+    CalculationProvider, StorageProvider,
+    ReportingProvider
   ]
 })
 export class AppModule { }

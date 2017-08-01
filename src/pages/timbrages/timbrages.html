@@ -18,7 +18,7 @@
     </div>
     <div id="totals">
       <div>Total journalier :</div>
-      <div>{{ sum }}</div>
+      <div>{{ sum | duration }}</div>
     </div>
     <div id="time">
       {{ now | moment: 'HH:mm:ss' }}
@@ -29,10 +29,11 @@
   </div>
 
   <ion-list id="timbrages" padding>
-    <ion-item *ngFor="let timbrage of timbrages">
+    <ion-item *ngFor="let timbrage of timbrages; let even=even">
       <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
-
-      <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-right>
+      <span *ngIf="even" item-right class="timbrage-desc">start</span>
+      <span *ngIf="!even" item-right class="timbrage-desc">end</span>
+      <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-end>
         <ion-icon name="trash"></ion-icon>
       </button>
     </ion-item>

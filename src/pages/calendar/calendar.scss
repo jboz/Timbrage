@@ -18,4 +18,21 @@ page-calendar {
             font-size: 2em;
         }
     }
+
+    ion-list {
+        ion-item {
+            div.input-wrapper {
+                flex: initial; // reset stretch
+            }
+
+            span.timbrage-desc {
+                flex: 1; // stretch
+                color: map-get($colors,secondary);
+            }
+
+            button {
+                width: 2.5em;
+            }
+        }
+    }
 }
