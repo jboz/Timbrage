@@ -34,7 +34,7 @@ export class ReportingProvider {
 
   public createCsvReport(events: Event[]): string {
     let dates = [];
-    dates.push('date');
+    dates.push('timbrages');
     events.forEach(event => {
       dates.push(this.format(event.startTimbrage.getMoment()));
       dates.push(this.format(event.endTimbrage.getMoment()));
