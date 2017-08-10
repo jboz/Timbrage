@@ -6,5 +6,4 @@ export const availableLanguages = [{
 	name: 'French'
 }];
 
-
 export const defaultLanguage = 'en';
