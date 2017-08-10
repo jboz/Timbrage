@@ -9,6 +9,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppVersion } from '@ionic-native/app-version';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { File } from '@ionic-native/file';
+import { Globalization } from '@ionic-native/globalization';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -47,7 +48,7 @@ import { CalendarProvider } from '../providers/calendar/calendar';
     StatusBar,
     SplashScreen,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    AppVersion, SocialSharing, File,
+    AppVersion, SocialSharing, File, Globalization,
     CalculationProvider, StorageProvider, ReportingProvider,
     CalendarProvider
   ]
