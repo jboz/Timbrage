@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Timeline</ion-title>
+    <ion-title>{{ 'page.timeline.title' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -17,7 +17,7 @@
       </span>
     </div>
     <div id="totals">
-      <div>Total journalier :</div>
+      <div>{{ 'page.timeline.total' | translate }}</div>
       <div>{{ sum | duration }}</div>
     </div>
     <div id="time">
@@ -31,8 +31,8 @@
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages; let even=even">
       <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
-      <span *ngIf="even" item-right class="timbrage-desc">start</span>
-      <span *ngIf="!even" item-right class="timbrage-desc">end</span>
+      <span *ngIf="even" item-right class="timbrage-desc">{{ 'timbrages.start' | translate }}</span>
+      <span *ngIf="!even" item-right class="timbrage-desc">{{ 'timbrages.end' | translate }}</span>
       <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-end>
         <ion-icon name="trash"></ion-icon>
       </button>

@@ -2,15 +2,18 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
-import { MyApp } from './app.component';
-// import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppVersion } from '@ionic-native/app-version';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { File } from '@ionic-native/file';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+import { MyApp } from './app.component';
 import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
 import { ReportingProvider } from '../providers/reporting/reporting';
@@ -18,15 +21,22 @@ import { CalendarProvider } from '../providers/calendar/calendar';
 
 @NgModule({
   declarations: [
-    MyApp,  
+    MyApp,
   ],
   imports: [
     BrowserModule,
-    // HttpModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
       name: '__timbrageDb',
       driverOrder: ['sqlite', 'indexeddb', 'websql']
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      }
     })
   ],
   bootstrap: [IonicApp],
@@ -43,3 +53,7 @@ import { CalendarProvider } from '../providers/calendar/calendar';
   ]
 })
 export class AppModule { }
+
+export function createTranslateLoader(http: Http) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}

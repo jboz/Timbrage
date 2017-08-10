@@ -1,0 +1,14 @@
+{
+    "page.timeline.title": "Timbrages",
+    "page.timeline.total": "Total journalier :",
+    "page.calendar.title": "Calendrier",
+    "page.calendar.today": "Auj.",
+    "menu.title": "Options",
+    "menu.calendar.views": "Vues",
+    "menu.calendar.views.day": "Jour",
+    "menu.calendar.views.week": "Semaine",
+    "menu.calendar.views.month": "Mois",
+    "timbrages.start": "début",
+    "timbrages.end": "fin",
+    "calendar.week": "sem."
+}

@@ -73,7 +73,7 @@ export class CalendarPage {
    */
   toEvent(pair: Timbrage[]): Event {
     let duration = this.calculationService.diff(pair[1], pair[0]);
-    return Event.fromTimbrages(duration.toString(), pair[0], pair[1]);
+    return Event.fromTimbrages(duration.toString().replace('PT', ''), pair[0], pair[1]);
   }
 
 

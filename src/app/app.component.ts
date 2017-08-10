@@ -4,6 +4,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppVersion } from '@ionic-native/app-version';
 
+import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
+
 import { CalendarPage } from "../pages/calendar/calendar";
 
 @Component({
@@ -18,7 +21,10 @@ export class MyApp {
   versionCode;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,
-    private appVersion: AppVersion, public calendarCtrl: CalendarPage) {
+    private appVersion: AppVersion, public calendarCtrl: CalendarPage, translate: TranslateService) {
+    translate.setDefaultLang('fr');
+    moment.locale('fr');
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
