@@ -1,8 +1,10 @@
-language: javascript
+language: node_js
+node_js:
+  - "6"
 
 sudo: false
 
-install: ionic build
+install: npm run build
 
 script: echo -e "\nIonic application\n"
 
@@ -12,13 +14,13 @@ branches:
 
 cache:
   directories:
-  - "$HOME/.m2"
+  - node_modules
 
-after_success:
-  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in .travis/release.keystore.enc -out $GPG_DIR/release.keystore -d
+#after_success:
+#  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in .travis/release.keystore.enc -out $GPG_DIR/release.keystore -d
 
-env:
-  global:
+#env:
+#  global:
   # encrypt ENCRYPTION_PASSWORD
   # encrypt alias_name
   # encrypt keystore password
@@ -29,10 +31,14 @@ notifications:
   on_success: change
   on_failure: always
 
-# deploy:
-#   provider: script
+ deploy:
+  provider: page
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: dist
+  on:
+    branch: master
 #   script: .travis/deploy.sh
 #   script: ionic cordova build --release android
 #           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my.keystore path-to-unsigned.apk alias_name
 #           zipalign -v 4 path-to-unsigned.apk timbrage.apk
-#   skip_cleanup: true
