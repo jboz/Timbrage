@@ -12,7 +12,10 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-
+$content: (
+  width: 412px,
+  height: 732px
+);
 
 
 // Named Color Variables
@@ -35,9 +38,18 @@ $colors: (
 $colors: (
   primary:    #8e24aa,
   secondary:  #9e9e9e,
-  danger:     #f53d3d,
+  danger:     #FF1744,
   light:      #f4f4f4,
-  dark:       #5c007a
+  dark:       #5c007a,
+  accent:     #304FFE
+);
+$colors: (
+  primary:    #9b26af,
+  secondary:  #9e9e9e,
+  danger:     #FF1744,
+  light:      #f4f4f4,
+  dark:       #691a99,
+  accent:     #68efad
 );
 
 // App iOS Variables

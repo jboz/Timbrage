@@ -3,16 +3,21 @@ import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 
+import { SettingsProvider } from '../settings/settings';
+
 @Injectable()
 export class CalendarProvider {
 
   mode: string = 'month';
   currentDate = new Date();
+  startHour = 7;
 
-  constructor(public translateService: TranslateService) { }
+  constructor(public translateService: TranslateService, settings: SettingsProvider) {
+    this.startHour = settings.get().startOfDay.hour;
+  }
 
   get dateFormatter() {
-    let week = this.translateService.instant('calendar.week');
+    let week = this.translateService.instant('page.calendar.week');
     return {
       formatMonthViewDay: function (date: Date) {
         return date.getDate().toString();

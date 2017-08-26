@@ -3,6 +3,7 @@
     "page.timeline.total": "Daily sum :",
     "page.calendar.title": "Calendar",
     "page.calendar.today": "Today",
+    "page.calendar.week": "week",
     "menu.title": "Options",
     "menu.calendar.views": "Views",
     "menu.calendar.views.day": "Day",
@@ -10,5 +11,5 @@
     "menu.calendar.views.month": "Month",
     "timbrages.start": "start",
     "timbrages.end": "end",
-    "calendar.week": "week"
+    "error.calendar.event.sum.negative": "Sum of the {{day}} is negative ! Please control the report."
 }

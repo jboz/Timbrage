@@ -6,10 +6,13 @@ import { Event } from '../../model/Event';
 import { Duration } from 'moment';
 import * as moment from 'moment';
 
+import { SettingsProvider } from "../settings/settings";
+import { StorageProvider } from "../storage/storage";
+
 @Injectable()
 export class CalculationProvider {
 
-  constructor() {
+  constructor(public settings: SettingsProvider, public storage: StorageProvider) {
   }
 
   public calculateFromEvents(events: Event[]): Duration {
@@ -54,13 +57,28 @@ export class CalculationProvider {
       } else {
         // the list of timbrages is not odd
         let missing = new Timbrage();
-        if (endOfDay) {
+        // if we must set missing report to end of the day (use in calendar view)
+        // only if it's not in the today date
+        // and the actual time is not before the parameterized end of day
+        let isToday = moment().isSame(list[i].getDate(), "day");
+        let isAfterParametizedEndOfDay = moment().isAfter(this.settings.getEndOfDay());
+        if (endOfDay && (!isToday || isAfterParametizedEndOfDay)) {
           // set time to end of day
-          missing.date = moment(list[i].date).endOf('day').startOf('minute').format();
+          missing.date = this.settings.applyEndOfDay(moment(list[i].date)).startOf('minute').format();
+
+          if (this.settings.get().saveMissings) {
+            // missing timbrage must be save to database
+            this.storage.saveSync(missing).then((timbrage) => missing = timbrage);
+          }
         }
         pairs.push([list[i], missing]);
       }
     }
     return pairs;
   };
+
+  private async save(timbrage: Timbrage) {
+    const saved = await this.storage.save(timbrage);
+    return saved;
+  }
 }

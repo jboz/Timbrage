@@ -3,6 +3,7 @@
     "page.timeline.total": "Total journalier :",
     "page.calendar.title": "Calendrier",
     "page.calendar.today": "Auj.",
+    "page.calendar.week": "sem.",
     "menu.title": "Options",
     "menu.calendar.views": "Vues",
     "menu.calendar.views.day": "Jour",
@@ -10,5 +11,5 @@
     "menu.calendar.views.month": "Mois",
     "timbrages.start": "début",
     "timbrages.end": "fin",
-    "calendar.week": "sem."
+    "error.calendar.event.sum.negative": "Le total du {{day}} est négatf ! Veuillez contrôler les heures reportées."
 }
