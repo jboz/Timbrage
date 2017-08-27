@@ -61,6 +61,11 @@ export class StorageProvider {
   //   });
   // }
 
+  public async saveSync(timbrage: Timbrage): Promise<Timbrage> {
+    let saved = await this.save(timbrage);
+    return saved;
+  }
+
   public save(timbrage: Timbrage): Promise<Timbrage> {
     return this.db().then((db) => {
       if (timbrage._id) {

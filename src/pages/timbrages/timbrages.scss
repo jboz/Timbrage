@@ -66,6 +66,11 @@ page-timbrages {
             top: 13em;
         }
     }
+    
+    div.scroll-content {
+        overflow: hidden;
+    }
+    
     ion-list#timbrages {
         padding-top: 17em;
 

@@ -24,6 +24,9 @@ export class Event {
         return new this(title, start, end);
     }
 
+    /**
+     * create an event on all day.
+     */
     static allDay(title: string, date: Moment): Event {
         let event = new this(title, null, null, true);
         event.startTime = date.startOf('day').add(1, 'second').toDate();

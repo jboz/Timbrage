@@ -19,6 +19,7 @@ import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
 import { ReportingProvider } from '../providers/reporting/reporting';
 import { CalendarProvider } from '../providers/calendar/calendar';
+import { SettingsProvider } from '../providers/settings/settings';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { CalendarProvider } from '../providers/calendar/calendar';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppVersion, SocialSharing, File, Globalization,
     CalculationProvider, StorageProvider, ReportingProvider,
-    CalendarProvider
+    CalendarProvider,
+    SettingsProvider
   ]
 })
 export class AppModule { }

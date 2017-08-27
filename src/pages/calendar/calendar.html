@@ -11,10 +11,10 @@
   </ion-navbar>
 </ion-header>
 
-<ng-template #monthviewDefaultDisplayEventTemplate let-view="view" let-row="row" let-col="col">
+<ng-template #monthviewDisplayEventTemplate let-view="view" let-row="row" let-col="col">
   {{view.dates[row*7+col].label}}
 </ng-template>
-<ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+<ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
   <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
     <ion-item *ngIf="selectedDate?.events.length>0" class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events) | duration}}</ion-item>
     <div *ngFor="let event of selectedDate?.events">
@@ -50,7 +50,8 @@
 
 <ion-content class="has-header" #content>
   <calendar [calendarMode]="calendarCtrl.mode" [currentDate]="calendarCtrl.currentDate" [eventSource]="events" [markDisabled]="markDisabled"
-    (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" step="30" [monthviewDisplayEventTemplate]="monthviewDefaultDisplayEventTemplate"
-    [monthviewEventDetailTemplate]="monthviewDefaultEventDetailTemplate" [dateFormatter]="calendarCtrl.dateFormatter">
+    (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" step="30" [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
+    [monthviewEventDetailTemplate]="monthviewEventDetailTemplate" [dateFormatter]="calendarCtrl.dateFormatter"
+    [scrollToHour]="calendarCtrl.startHour">
   </calendar>
 </ion-content>

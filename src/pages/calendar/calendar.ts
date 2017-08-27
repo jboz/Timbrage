@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
-import { IonicPage, MenuController, Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, MenuController, Platform, ToastController, Content } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
 import _ from 'lodash';
+
+import { TranslateService } from '@ngx-translate/core';
 
 import { Timbrage } from '../../model/Timbrage';
 import { Event } from '../../model/Event';
@@ -23,9 +25,11 @@ export class CalendarPage {
   viewTitle;
   isSelectedToday: boolean;
 
-  constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
-    public reporting: ReportingProvider, public menuCtrl: MenuController, public calendarCtrl: CalendarProvider,
-    public platform: Platform) {
+  @ViewChild(Content) content: Content;
+
+  constructor(private calculationService: CalculationProvider, private storageService: StorageProvider,
+    private reporting: ReportingProvider, private menuCtrl: MenuController, public calendarCtrl: CalendarProvider,
+    private platform: Platform, private toastCtrl: ToastController, private translate: TranslateService) {
   }
 
   public ionViewWillEnter() {
@@ -59,9 +63,25 @@ export class CalendarPage {
         // let duration = this.sumOfDay(events);
         // events.push(Event.allDay(duration.toString(), moment(day)));
 
+        this.validateDuration(events);
+
         this.events = this.events.concat(events);
       }
     });
+  }
+
+  private validateDuration(events: Event[]): void {
+    let duration = this.sumOfDay(events);
+    if (duration.get('minutes') < 0) {
+      let day = moment(events[0].startTime).format('LL');
+      let toast = this.toastCtrl.create({
+        message: this.translate.instant('error.calendar.event.sum.negative', { day: day }),
+        position: 'bottom',
+        showCloseButton: true,
+        closeButtonText: 'Ok'
+      });
+      toast.present();
+    }
   }
 
   public sumOfDay(events: Event[]): Duration {

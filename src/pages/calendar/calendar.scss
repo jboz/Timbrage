@@ -8,9 +8,10 @@ page-calendar {
     ion-buttons button.bar-button {
         padding: 0 15px;
     }
-    
+
+    .monthview-primary-with-event.monthview-selected,
     .monthview-primary-with-event.monthview-selected.monthview-current{
-        background-color: map-get($colors,primary);
+        background-color: map-get($colors,accent);
     }
     
     @media(max-width: 340px) {
