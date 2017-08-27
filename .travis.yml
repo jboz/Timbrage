@@ -1,25 +1,70 @@
-language: node_js
-
-node_js:
-  - stable
-
-sudo: false
-
-install: npm run build.github
-
-script: echo -e "\nIonic application\n"
+matrix:
+  include:
+  - os: linux
+    sudo: false
+    language: android
+    android:
+      components:
+      - tools
+      - platform-tools
+      - tools
+      - build-tools-26.0.0
+      - android-25
+      - extra-google-google_play_services
+      - extra-google-m2repository
+      - extra-android-m2repository
+    addons:
+      apt:
+        sources:
+        - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+          key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        packages:
+        - oracle-java8-installer
+        - oracle-java8-set-default
+        - yarn
+        - jq
+    licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+#  - os: osx
+#    language: objective-c
+#    osx_image: xcode8.3
 
 branches:
   only:
   - master
 
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
+  - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
+  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-  - node_modules
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+  - $HOME/Library/Caches/Yarn/v1/
+  - $HOME/.cache/yarn/v1/
+
+before_install:
+  - export LANG=en_US.UTF-8
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; brew install yarn ios-sim jq ios-deploy cocoapods ; rvm use system ; pod setup ; fi
+  - nvm install 8
+  - yarn global add ionic cordova
+
+before_script:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./.travis/addkeys.sh ; fi
+
+script:
+  - yarn install
+#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
+#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
 
 env:
   global:
     - secure: Vha+3jrHtlz47Nj5iclyAnbIR2NMuUCZGMirIoDHI/iMtZ32ysLHJ5dCWCpJQuXXmnnxt/u7copQOIxmZzs2je+CCe6CbOYiexTlOlxYq8gLg5exKrBnmHGQ/9NbbAGIZMhdLqO2uSP+jDzA5o8aDDSRCUop4dsjDWprAjmhuWTvIRwGgs+Tg3h9h4VmtOU4djFI0bFEVty2zjo7E4R8UnaJfabp363UhGW/w+z5EtlBR4P355yOINqoEPvLlFua27iI4BztfYHoRTycf2CquH9hd/Jh4dDAGSqoARvO0393L9h8kS4+YhUn0+EK++umDHUaKVu84AgNmtawyJWUQMiu6FMQINNckfoqm+oDZIZks7u2m5vq+o5DDrvl7DapGrND++NcmtB8Qy4DQKfecQwe4wYFMaQ0SCOUlcJYCQB0Ee1RehJ6UhSIyok8++6PnmUf6vQhTYNHjL39At/LzL0ZSUl+hkXb+Fk8IKdvvZjJE/V0xCBCRCjZGouq0+exFnyNthEFh8MJ9lsNfMU5u1lxt08BQxVGg/ylYc2cjgV9Oc04zNXo65u/xcnzdsksNM/1qUaULSbNQV6soPEkruK+HfxbDkaWQgoBsAPauXG0EniE2/n3ChleNeNc2f0Np1b6SXaF//VvZLUVjkM2DG1xXjnhiaSoPm1Ebmcdf/I=
+    - JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
 notifications:
   email:
