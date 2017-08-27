@@ -1,10 +1,10 @@
 language: node_js
 node_js:
-  - "6"
+  - stable
 
 sudo: false
 
-install: npm run build
+install: npm run build.github
 
 script: echo -e "\nIonic application\n"
 
@@ -16,14 +16,9 @@ cache:
   directories:
   - node_modules
 
-#after_success:
-#  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in .travis/release.keystore.enc -out $GPG_DIR/release.keystore -d
-
-#env:
-#  global:
-  # encrypt ENCRYPTION_PASSWORD
-  # encrypt alias_name
-  # encrypt keystore password
+env:
+  global:
+    - secure: "Vha+3jrHtlz47Nj5iclyAnbIR2NMuUCZGMirIoDHI/iMtZ32ysLHJ5dCWCpJQuXXmnnxt/u7copQOIxmZzs2je+CCe6CbOYiexTlOlxYq8gLg5exKrBnmHGQ/9NbbAGIZMhdLqO2uSP+jDzA5o8aDDSRCUop4dsjDWprAjmhuWTvIRwGgs+Tg3h9h4VmtOU4djFI0bFEVty2zjo7E4R8UnaJfabp363UhGW/w+z5EtlBR4P355yOINqoEPvLlFua27iI4BztfYHoRTycf2CquH9hd/Jh4dDAGSqoARvO0393L9h8kS4+YhUn0+EK++umDHUaKVu84AgNmtawyJWUQMiu6FMQINNckfoqm+oDZIZks7u2m5vq+o5DDrvl7DapGrND++NcmtB8Qy4DQKfecQwe4wYFMaQ0SCOUlcJYCQB0Ee1RehJ6UhSIyok8++6PnmUf6vQhTYNHjL39At/LzL0ZSUl+hkXb+Fk8IKdvvZjJE/V0xCBCRCjZGouq0+exFnyNthEFh8MJ9lsNfMU5u1lxt08BQxVGg/ylYc2cjgV9Oc04zNXo65u/xcnzdsksNM/1qUaULSbNQV6soPEkruK+HfxbDkaWQgoBsAPauXG0EniE2/n3ChleNeNc2f0Np1b6SXaF//VvZLUVjkM2DG1xXjnhiaSoPm1Ebmcdf/I="
 
 notifications:
   email:
@@ -38,7 +33,3 @@ notifications:
   local_dir: dist
   on:
     branch: master
-#   script: .travis/deploy.sh
-#   script: ionic cordova build --release android
-#           jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my.keystore path-to-unsigned.apk alias_name
-#           zipalign -v 4 path-to-unsigned.apk timbrage.apk
