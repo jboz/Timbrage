@@ -13,7 +13,7 @@
         "release": ".travis/release.sh",
         "debug": "ionic cordova run android -l -c",
         "start": "ionic serve",
-        "prod.build": "npm build --aot --prod --progress false --base-href \"https://jboz.github.io/timbrage/\""
+        "build.github": "npm run build --aot --prod --progress false --base-href \"https://jboz.github.io/timbrage/\""
     },
     "dependencies": {
         "@angular/common": "4.1.2",
