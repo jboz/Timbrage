@@ -7,7 +7,6 @@ matrix:
       components:
       - tools
       - platform-tools
-      - tools
       - build-tools-26.0.0
       - android-25
       - extra-google-google_play_services
@@ -40,6 +39,7 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
   - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+
 cache:
   directories:
   - $HOME/.gradle/caches/
@@ -58,6 +58,7 @@ before_script:
 
 script:
   - yarn install
+  - npm run build.github
 #  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
 #  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
 
@@ -72,9 +73,20 @@ notifications:
       - julienboz@gmail.com
 
 deploy:
-  provider: page
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  local_dir: dist
-  on:
-    branch: master
+  # deploy builded app to github pages
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    local_dir: dist
+    on:
+      branch: master
+  # - provider: script
+  #   script: .travis/package.sh
+  #   on:
+  #     branch: develop
+  # - provider: releases
+  #   api_key: "GITHUB OAUTH TOKEN"
+  #   file: "FILE TO UPLOAD"
+  #   skip_cleanup: true
+  #   on:
+  #     tags: true
