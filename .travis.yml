@@ -83,10 +83,13 @@ deploy:
   # - provider: script
   #   script: .travis/package.sh
   #   on:
-  #     branch: develop
-  # - provider: releases
-  #   api_key: "GITHUB OAUTH TOKEN"
-  #   file: "FILE TO UPLOAD"
-  #   skip_cleanup: true
-  #   on:
-  #     tags: true
+  #     branch: master
+#  - provider: releases
+#    api_key:
+#      secure: 1WU0Csb0tb7rKRbRE6oV6wBdHozMTE+uWkBMD0RSc9ZVzrl4aravifrUZNq5QPjt13eB8ZuMQTi+6882cyEtr68Uhy8LE/85I86AkyOsxQdnPgoB4fLFuow7fc80+lCH+QLc8HU9XH5Jwx/a9f2HxSv5ZGkluaHkMglGLTTIqE0pKDWfowmyrBCajSHIXNlPPYaEhKHKOmJkFUgn3kwYwPbV3CgYAQXoLOctK6TxvKlKL0FTmNPX3+MVUlY0jzAn9DEV9eXQ8bvomRJC4KQxTSh9xJKCba/C0wgUkO/3EECCPIArrdYHKzFjpXP18SIbvuBQvPoGHUcfClFIKP8G0gXYSCyiMAZ4b3a6CpydMb+PW0zGsEqEHL1EZlhn5cbYZzUfXKIYutO5A8h9dDcrCqOhUIzo2ZOy69sN9oSPPJRrvZOUOo+yzZHSutLI6r5ncVislRIQFw1QDN8HCJAfsDqDz2NcL3bJt8vRgHiI/98lKFIqkErrWwggGASIs0npmBVnlaraTUUW+B08MpkTXLdwcj98X8mMbSDThlNFJUymY7+HJ+YwKtdZ/pjfn7zAXaaPLn2v8Vu5M+uwV+KcVxRqLIRU41jB7DxkBA0Tu3sI6FHbaJwt6BB+xlJXw3d2MLeaJqN1+tc2rb6BiTIlRoRS2k1kqdLQlsvuCmSS+5s=
+#    file_glob: true
+#    file: output/*
+#    skip_cleanup: true
+#    overwrite: true
+#      on:
+#        branch: master
