@@ -21,4 +21,4 @@ echo '
 FINISHING android app..
 
 '
-zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk timbrage.apk
+~/Documents/prog/tools/android-sdk/build-tools/23.0.3/zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk timbrage.apk
