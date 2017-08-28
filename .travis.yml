@@ -2,33 +2,42 @@ matrix:
   include:
   - os: linux
     sudo: false
-    language: android
-    android:
-      components:
-      - tools
-      - platform-tools
-      - build-tools-26.0.0
-      - android-25
-      - extra-google-google_play_services
-      - extra-google-m2repository
-      - extra-android-m2repository
-    addons:
-      apt:
-        sources:
-        - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
-          key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
-        packages:
-        - oracle-java8-installer
-        - oracle-java8-set-default
-        - yarn
-        - jq
-    licenses:
-    - android-sdk-preview-license-.+
-    - android-sdk-license-.+
-    - google-gdk-license-.+
+    language: node_js
+    env: SYSTEM_NAME=linux_node
+  # - os: linux
+  #   sudo: false
+  #   language: android
+  #   env:
+  #    - global : 
+  #       SYSTEM_NAME=linux_android
+  #       SYSTEM_TYPE=yarn
+  #   android:
+  #     components:
+  #     - tools
+  #     - platform-tools
+  #     - build-tools-26.0.0
+  #     - android-25
+  #     - extra-google-google_play_services
+  #     - extra-google-m2repository
+  #     - extra-android-m2repository
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+  #         key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+  #       packages:
+  #       - oracle-java8-installer
+  #       - oracle-java8-set-default
+  #       - yarn
+  #       - jq
+  #   licenses:
+  #   - android-sdk-preview-license-.+
+  #   - android-sdk-license-.+
+  #   - google-gdk-license-.+
 #  - os: osx
 #    language: objective-c
 #    osx_image: xcode8.3
+#    env: SYSTEM_NAME=osx
 
 branches:
   only:
@@ -46,21 +55,23 @@ cache:
   - $HOME/.gradle/wrapper/
   - $HOME/Library/Caches/Yarn/v1/
   - $HOME/.cache/yarn/v1/
+  - $HOME/node_modules/
 
 before_install:
   - export LANG=en_US.UTF-8
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update ; brew install yarn ios-sim jq ios-deploy cocoapods ; rvm use system ; pod setup ; fi
-  - nvm install 8
-  - yarn global add ionic cordova
+  - if [[ "$SYSTEM_NAME" == "osx" ]]; then brew update ; brew install yarn ios-sim jq ios-deploy cocoapods ; rvm use system ; pod setup ; fi
+  - if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm install ionic ; fi
+  - if [[ "$SYSTEM_TYPE" == "yarn" ]]; then nvm install 8 ; yarn global add ionic cordova ; fi
 
 before_script:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./.travis/addkeys.sh ; fi
+  - if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/addkeys.sh ; fi
+  - if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm install ionic ; fi
 
 script:
-  - yarn install
-  - npm run build.github
-#  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
-#  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
+  - if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm run build.github ; fi
+  - if [[ "$SYSTEM_TYPE" == "yarn" ]]; then yarn install ; fi
+  - if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
+  - if [[ "$SYSTEM_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
 
 env:
   global:
@@ -80,6 +91,7 @@ deploy:
     local_dir: www
     on:
       branch: master
+    condition: $SYSTEM_NAME = linux_node
   # - provider: script
   #   script: .travis/package.sh
   #   on:
