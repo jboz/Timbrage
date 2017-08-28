@@ -1,5 +1,6 @@
-[![license](https://img.shields.io/github/license/jboz/timbrage.svg)]()
+[![license](https://img.shields.io/github/license/jboz/timbrage.svg?style=flat-square)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Travis](https://img.shields.io/travis/jboz/timbrage.svg?style=flat-square)]()
 
 # Timbrage - reporting quotidien
 
