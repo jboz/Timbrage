@@ -76,9 +76,4 @@ export class CalculationProvider {
     }
     return pairs;
   };
-
-  private async save(timbrage: Timbrage) {
-    const saved = await this.storage.save(timbrage);
-    return saved;
-  }
 }
