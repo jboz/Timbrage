@@ -33,7 +33,7 @@ page-timbrages {
                 }
 
                 > span:nth-child(2) {
-                    color: map-get($colors,secondary);
+                    color: map-get($colors,primary-light);
                 }
             }
         }
@@ -65,6 +65,10 @@ page-timbrages {
         #timbre {
             top: 13em;
         }
+
+        .fab-md-accent {
+            color: map-get($colors,accent-dark);
+        }
     }
     
     div.scroll-content {
@@ -81,7 +85,7 @@ page-timbrages {
 
             span.timbrage-desc {
                 flex: 1; // stretch
-                color: map-get($colors,secondary);
+                color: map-get($colors,secondary-text);
             }
 
             button {

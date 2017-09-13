@@ -41,7 +41,7 @@ page-calendar {
 
             span.timbrage-desc {
                 flex: 1; // stretch
-                color: map-get($colors,secondary);
+                color: map-get($colors,secondary-text);
             }
 
             button {

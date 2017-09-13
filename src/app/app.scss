@@ -21,3 +21,11 @@ ion-app.app-root.platform-core {
     margin: auto;
     position: relative;
 }
+
+@import "../theme/icons";
+
+ion-menu#menuCalendar {
+    ion-icon {
+        vertical-align: top;
+    }
+}

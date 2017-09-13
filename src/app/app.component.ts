@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AppVersion } from '@ionic-native/app-version';
 import { Globalization } from '@ionic-native/globalization';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
@@ -22,8 +23,9 @@ export class MyApp {
   versionNumber;
   versionCode;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, globalization: Globalization,
-    private appVersion: AppVersion, public calendarCtrl: CalendarPage, public translate: TranslateService) {
+  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, globalization: Globalization,
+    private appVersion: AppVersion, public calendarCtrl: CalendarPage, public translate: TranslateService,
+    private inAppBrowser: InAppBrowser) {
     this.setLang(defaultLanguage);
 
     platform.ready().then(() => {
@@ -74,5 +76,27 @@ export class MyApp {
   getSuitableLanguage(language) {
     language = language.substring(0, 2).toLowerCase();
     return availableLanguages.some(x => x.code == language) ? language : defaultLanguage;
+  }
+
+  options: InAppBrowserOptions = {
+    location: 'yes',//Or 'no' 
+    hidden: 'no', //Or  'yes'
+    clearcache: 'yes',
+    clearsessioncache: 'yes',
+    zoom: 'yes',//Android only ,shows browser zoom controls 
+    hardwareback: 'yes',
+    mediaPlaybackRequiresUserAction: 'no',
+    shouldPauseOnSuspend: 'no', //Android only 
+    closebuttoncaption: 'Close', //iOS only
+    disallowoverscroll: 'no', //iOS only 
+    toolbar: 'yes', //iOS only 
+    enableViewportScale: 'no', //iOS only 
+    allowInlineMediaPlayback: 'no',//iOS only 
+    presentationstyle: 'pagesheet',//iOS only 
+    fullscreen: 'yes',//Windows only    
+  };
+
+  openGithub(): void {
+    this.inAppBrowser.create("https://github.com/jboz/timbrage", "_system", this.options);
   }
 }

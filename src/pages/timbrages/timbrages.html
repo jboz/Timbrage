@@ -30,9 +30,9 @@
 
   <ion-list id="timbrages" padding>
     <ion-item *ngFor="let timbrage of timbrages; let even=even">
-      <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
-      <span *ngIf="even" item-right class="timbrage-desc">{{ 'timbrages.start' | translate }}</span>
-      <span *ngIf="!even" item-right class="timbrage-desc">{{ 'timbrages.end' | translate }}</span>
+      <ion-datetime #picker displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="timbrage.date" (ngModelChange)="onChangeTime(timbrage)"></ion-datetime>
+      <span *ngIf="even" item-right class="timbrage-desc" (click)="picker.open()">{{ 'timbrages.start' | translate }}</span>
+      <span *ngIf="!even" item-right class="timbrage-desc" (click)="picker.open()">{{ 'timbrages.end' | translate }}</span>
       <button ion-button icon-only (click)="delete(timbrage)" color="danger" item-end>
         <ion-icon name="trash"></ion-icon>
       </button>

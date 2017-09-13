@@ -4,6 +4,12 @@
       <ion-title>{{ 'menu.title' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
+  <ion-footer>
+    <button ion-button outline icon-start (click)="openGithub()">
+      <ion-icon name='ai-code' is-active="false"></ion-icon>
+        Code open sources
+    </button>
+  </ion-footer>
 </ion-menu>
 
 <ion-menu [content]="content" id="menuCalendar" enabled="false">
@@ -16,13 +22,16 @@
     <ion-item-group>
       <ion-item-divider color="light">{{ 'menu.calendar.views' | translate }}</ion-item-divider>
       <button ion-item detail-none (click)="changeMode('day')" menuClose="menuCalendar">
+        <!-- <ion-icon name='ai-day' is-active="false"></ion-icon> -->
         {{ 'menu.calendar.views.day' | translate }}
       </button>
       <button ion-item detail-none (click)="changeMode('week')" menuClose="menuCalendar">
-        {{ 'menu.calendar.views.week' | translate }}
+          <!-- <ion-icon name='ai-week' is-active="false"></ion-icon> -->
+          {{ 'menu.calendar.views.week' | translate }}
       </button>
       <button ion-item detail-none (click)="changeMode('month')" menuClose="menuCalendar">
-        {{ 'menu.calendar.views.month' | translate }}
+          <!-- <ion-icon name='calendar' is-active="false"></ion-icon> -->
+          {{ 'menu.calendar.views.month' | translate }}
       </button>
     </ion-item-group>
   </ion-content>
