@@ -20,8 +20,6 @@ La version actuel est basé sur le très réputé framework ionic qui lui même 
 
 ## Développement
 
-[Génération des icones](https://romannurik.github.io/AndroidAssetStudio/icons-generic.html#source.type=image&source.space.trim=1&source.space.pad=0&size=85&padding=0&color=rgba(96%2C%20125%2C%20139%2C%200)&name=icon)
-
 [Choix des couleurs](https://www.materialpalette.com/purple/teal)
 
 ```bash
@@ -30,4 +28,7 @@ ionic serve
 
 # déploiement sur device android
 ionic cordova run android --device --prod
+
+#génération des icônes et spash screen
+ionic cordova resources
 ```

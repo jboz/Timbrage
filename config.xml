@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-versionCode="20007" id="ch.ifocusit.timbrage" version="2.0.0-beta7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Timbrage</name>
+    <name>Timbrages</name>
     <description>Work reporting application</description>
     <author email="julienboz@gmail.com" href="http://ifocusit.ch">Focus IT</author>
     <content src="index.html" />
@@ -27,17 +27,18 @@
     <preference name="orientation" value="portrait" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="mdpi" src="resources/android/icon/drawable-mdpi/icon.png" />
-        <icon density="hdpi" src="resources/android/icon/drawable-hdpi/icon.png" />
-        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi/icon.png" />
-        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi/icon.png" />
-        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi/icon.png" />
-        <splash density="port-ldpi" src="resources/android/splash/drawable-port-ldpi/screen.png" />
-        <splash density="port-mdpi" src="resources/android/splash/drawable-port-mdpi/screen.png" />
-        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi/screen.png" />
-        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi/screen.png" />
-        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi/screen.png" />
-        <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi/screen.png" />
+        <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
+        <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
+        <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
+        <icon density="xhdpi" src="resources/android/icon/drawable-xhdpi-icon.png" />
+        <icon density="xxhdpi" src="resources/android/icon/drawable-xxhdpi-icon.png" />
+        <icon density="xxxhdpi" src="resources/android/icon/drawable-xxxhdpi-icon.png" />
+        <splash density="port-ldpi" src="resources/android/splash/drawable-port-ldpi-screen.png" />
+        <splash density="port-mdpi" src="resources/android/splash/drawable-port-mdpi-screen.png" />
+        <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.png" />
+        <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
+        <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
+        <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <engine name="android" spec="^6.2.3" />
     <plugin name="cordova-plugin-app-version" spec="^0.1.9" />

@@ -1,5 +1,5 @@
 {
-    "name": "timbrage",
+    "name": "timbrages",
     "version": "2.0.0",
     "author": "Julien Boz",
     "homepage": "http://ifocusit.ch/",
@@ -69,7 +69,7 @@
         "ionic": "3.6.0",
         "typescript": "2.3.3"
     },
-    "description": "Timbrage: a productive application",
+    "description": "Timbrages: a productive application",
     "cordova": {
         "plugins": {
             "cordova-plugin-device": {},
