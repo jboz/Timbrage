@@ -1,5 +1,7 @@
 #!/bin/bash
 
+read -s -p "Enter Passphrase for keystore: " storepass
+
 ionic cordova plugin rm cordova-plugin-console
 
 echo '
@@ -14,7 +16,7 @@ echo '
 SIGNING android app..
 
 '
-jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore .travis/release.keystore platforms/android/build/outputs/apk/android-release-unsigned.apk alias_name
+jarsigner -storepass $storepass -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore .travis/release.keystore platforms/android/build/outputs/apk/android-release-unsigned.apk alias_name
 
 echo '
 
