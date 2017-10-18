@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { AppVersion } from '@ionic-native/app-version';
 import { Globalization } from '@ionic-native/globalization';
 import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser';
 
@@ -24,7 +23,7 @@ export class MyApp {
   versionCode;
 
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, globalization: Globalization,
-    private appVersion: AppVersion, public calendarCtrl: CalendarPage, public translate: TranslateService,
+    public calendarCtrl: CalendarPage, public translate: TranslateService,
     private inAppBrowser: InAppBrowser) {
     this.setLang(defaultLanguage);
 
