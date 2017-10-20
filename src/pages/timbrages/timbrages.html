@@ -16,12 +16,18 @@
       <span>{{ now | moment: 'MMMM YYYY' }}</span>
       </span>
     </div>
-    <div id="totals">
+    <div id="sumDay">
       <div>{{ 'page.timeline.total' | translate }}</div>
-      <div>{{ sum | duration }}</div>
+      <div>{{ sumDay | duration }}</div>
     </div>
-    <div id="time">
+    <div id="now">
       {{ now | moment: 'HH:mm:ss' }}
+    </div>
+    <div id="sumWeek">
+      total hebdomadaire : {{ sumWeek | duration }}
+    </div>
+    <div id="sumMonth">
+      total mensuel : {{ sumMonth | duration }}
     </div>
     <ion-fab id="timbre" top right edge>
       <button ion-fab (click)="timbrer()" color="accent"><ion-icon name="add"></ion-icon></button>

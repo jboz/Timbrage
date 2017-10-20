@@ -15,7 +15,7 @@ page-timbrages {
         width: 100%;
         z-index: 1;
 
-        #date, #totals {
+        #date, #sumDay {
             display: inline-block;
         }
 
@@ -38,7 +38,7 @@ page-timbrages {
             }
         }
 
-        #totals {
+        #sumDay {
             float: right;
             position: relative;
             top: 1em;
@@ -52,10 +52,13 @@ page-timbrages {
             }
         }
 
-        #time {
+        #sumWeek, #sumMonth {
+            color: map-get($colors,primary-light);
+        }
+
+        #now {
             font-size: 2em;
-            padding-top: 1em;
-            padding-left: 2em;
+            padding: 1em 2em 0.2em 1em;
             
             @media screen and (max-width: $break-small) {
                 padding-left: 0;
@@ -69,10 +72,6 @@ page-timbrages {
         .fab-md-accent {
             color: map-get($colors,accent-dark);
         }
-    }
-    
-    div.scroll-content {
-        overflow: hidden;
     }
     
     ion-list#timbrages {
@@ -93,5 +92,14 @@ page-timbrages {
             }
         }
 
+    }
+    
+    overflow: hidden;
+    position: relative;
+
+    div.scroll-content {
+        overflow-y: auto;
+        position: absolute;
+        right: -17px;
     }
 }

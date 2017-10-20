@@ -45,7 +45,6 @@ export class CalendarPage {
     let start = moment(this.calendarCtrl.currentDate).set('date', 1);
     let end = start.clone().add(1, 'month');
     this.storageService.find(start, end).then((timbrages) => {
-      // TODO group by day and after split pairs
       if (!timbrages || timbrages.length == 0) {
         return;
       }
@@ -54,20 +53,24 @@ export class CalendarPage {
       this.events = new Array();
       for (var day in groups) {
         var timbragesDuJour: Array<Timbrage> = groups[day];
-        // create event from pair of timbrage
-        // if one timbrage is missing, add one at end of day
-        let events: Event[] = this.calculationService.splitPairs(timbragesDuJour, true)
-          .map(pair => this.toEvent(pair));
-
-        // // create an 'all day' event to show the sum of the day
-        // let duration = this.sumOfDay(events);
-        // events.push(Event.allDay(duration.toString(), moment(day)));
-
-        this.validateDuration(events);
-
-        this.events = this.events.concat(events);
+        this.addEvents(timbragesDuJour);
       }
     });
+  }
+
+  private addEvents(timbrages: Array<Timbrage>): void {
+    // create event from pair of timbrage
+    // if one timbrage is missing, add one at end of day
+    let events: Event[] = this.calculationService.splitPairs(timbrages, true)
+      .map(pair => this.toEvent(pair));
+
+    // // create an 'all day' event to show the sum of the day
+    // let duration = this.sumOfDay(events);
+    // events.push(Event.allDay(duration.toString(), moment(day)));
+
+    this.validateDuration(events);
+
+    this.events = this.events.concat(events);
   }
 
   private validateDuration(events: Event[]): void {
@@ -143,13 +146,35 @@ export class CalendarPage {
     this.storageService.save(timbrage).then(() => this.loadEvents());
   }
 
-  public delete(timbrage: Timbrage) {
-    this.storageService.delete(timbrage).then(() => this.loadEvents());
+  public deleteStart(event: Event) {
+    this.storageService.delete(event.startTimbrage).then(() => event.startTimbrage = null);
+  }
+
+  public deleteEnd(event: Event) {
+    this.storageService.delete(event.endTimbrage).then(() => event.endTimbrage = null);
   }
 
   public share(): void {
     if (this.platform.is('cordova')) {
       this.reporting.share(this.calendarCtrl.currentDate, this.events);
     }
+  }
+
+  public addTimbrage() {
+    // add event
+    let timbrages = [];
+    timbrages.push(Timbrage.from(this.calendarCtrl.currentDate, 8, 0));
+    this.addEvents(timbrages);
+  }
+
+  public addTimbrages() {
+    let currentDate = this.calendarCtrl.currentDate;
+    // add event
+    let timbrages = [];
+    timbrages.push(Timbrage.from(currentDate, 8, 0));
+    timbrages.push(Timbrage.from(currentDate, 12, 0));
+    timbrages.push(Timbrage.from(currentDate, 13, 0));
+    timbrages.push(Timbrage.from(currentDate, 17, 0));
+    this.storageService.save(...timbrages).then(() => this.addEvents(timbrages));
   }
 }

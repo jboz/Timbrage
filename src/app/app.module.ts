@@ -31,8 +31,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
-      name: '__timbrageDb',
-      driverOrder: ['sqlite', 'indexeddb', 'websql']
+      name: '__timbrageDb'
     }),
     TranslateModule.forRoot({
       loader: {

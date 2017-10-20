@@ -32,7 +32,6 @@ page-calendar {
         }
     }
 
-
     ion-list {
         ion-item {
             div.input-wrapper {
@@ -48,5 +47,9 @@ page-calendar {
                 width: 2.5em;
             }
         }
+    }
+
+    ion-fab#timbre {
+        bottom: 10px;
     }
 }

@@ -61,26 +61,31 @@ export class StorageProvider {
   //   });
   // }
 
-  public async saveSync(timbrage: Timbrage): Promise<Timbrage> {
-    let saved = await this.save(timbrage);
+  public async saveSync(...timbrages: Timbrage[]): Promise<Timbrage[]> {
+    let saved = await this.save(...timbrages);
     return saved;
   }
 
-  public save(timbrage: Timbrage): Promise<Timbrage> {
+  public save(...timbrages: Timbrage[]): Promise<Timbrage[]> {
     return this.db().then((db) => {
-      if (timbrage._id) {
-        db.put(timbrage)
-      } else {
-        db.post(timbrage)
-      }
-    }).then(() => timbrage);
+      timbrages.forEach(timbrage => {
+        if (timbrage._id) {
+          db.put(timbrage)
+        } else {
+          db.post(timbrage)
+        }
+      });
+    }).then(() => timbrages);
   }
 
-  public delete(timbrage: Timbrage): Promise<Timbrage> {
-    if (!timbrage._id) {
-      return; // nothing to sync with db
-    }
-    return this.db().then((db) => db.remove(timbrage)).then(() => timbrage);
+  public delete(...timbrages: Timbrage[]): Promise<Timbrage[]> {
+    return this.db().then((db) => {
+      timbrages.forEach(timbrage => {
+        if (timbrage._id) {
+          db.remove(timbrage)
+        }
+      });
+    }).then(() => timbrages);
   }
 
   public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
@@ -96,7 +101,7 @@ export class StorageProvider {
         include_docs: true
       })
       // create model from db data
-      .then((data) => data.rows.map((row) => this.toModel(row.doc)))
+      .then((data) => data.rows.map((row) => this.toModel(row.doc)).filter(x => x))
       // sort ascending
       // TODO sort in query options ?
       .then((timbrages) => {
@@ -112,6 +117,9 @@ export class StorageProvider {
   }
 
   private toModel(doc: any): Timbrage {
+    if (doc === undefined) {
+      return null;
+    }
     // _id and _rev are required to update/delete fields
     return new Timbrage(doc.date, doc._id, doc._rev);
   }
