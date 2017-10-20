@@ -28,4 +28,12 @@ export class Timbrage {
     public compareTo(other: Timbrage): number {
         return this.getMoment().diff(other.getMoment());
     }
+
+    public static from(baseDate: Date, hour: number, minute: number): Timbrage {
+        let dateTime = moment(baseDate);
+        dateTime.set('hour', hour);
+        dateTime.set('minute', minute);
+        let timbrage = new Timbrage(dateTime.format());
+        return timbrage;
+    }
 }
