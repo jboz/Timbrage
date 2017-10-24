@@ -21,6 +21,7 @@ import { StorageProvider } from '../providers/storage/storage';
 import { ReportingProvider } from '../providers/reporting/reporting';
 import { CalendarProvider } from '../providers/calendar/calendar';
 import { SettingsProvider } from '../providers/settings/settings';
+import { LoadingProvider } from '../providers/loading/loading';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SettingsProvider } from '../providers/settings/settings';
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
-      name: '__timbrageDb'
+      name: '__timbrageDb',
+      driverOrder: ['sqlite', 'indexeddb', 'websql']
     }),
     TranslateModule.forRoot({
       loader: {
@@ -51,8 +53,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AppVersion, SocialSharing, File, Globalization, InAppBrowser,
     CalculationProvider, StorageProvider, ReportingProvider,
-    CalendarProvider,
-    SettingsProvider
+    CalendarProvider, SettingsProvider, LoadingProvider
   ]
 })
 export class AppModule { }

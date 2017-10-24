@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, MenuController, Platform, ToastController, Content } from 'ionic-angular';
+import { IonicPage, MenuController, Platform, ToastController } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
@@ -13,6 +13,9 @@ import { CalculationProvider } from '../../providers/calculation/calculation';
 import { StorageProvider } from '../../providers/storage/storage';
 import { ReportingProvider } from '../../providers/reporting/reporting';
 import { CalendarProvider } from '../../providers/calendar/calendar';
+import { LoadingProvider } from '../../providers/loading/loading';
+
+import { CalendarComponent } from 'ionic2-calendar/calendar';
 
 @IonicPage()
 @Component({
@@ -24,57 +27,89 @@ export class CalendarPage {
   events: Array<Event> = [];
   viewTitle;
   isSelectedToday: boolean;
+  sumDay: Duration;
 
-  @ViewChild(Content) content: Content;
+  @ViewChild(CalendarComponent) calendar;
 
   constructor(private calculationService: CalculationProvider, private storageService: StorageProvider,
     private reporting: ReportingProvider, private menuCtrl: MenuController, public calendarCtrl: CalendarProvider,
-    private platform: Platform, private toastCtrl: ToastController, private translate: TranslateService) {
+    private platform: Platform, private toastCtrl: ToastController, private translate: TranslateService,
+    public loader: LoadingProvider) {
   }
 
   public ionViewWillEnter() {
     this.menuCtrl.enable(false, 'menuTimbrage');
     this.menuCtrl.enable(true, 'menuCalendar');
-    this.loadEvents();
+    this.loadAllEvents();
+  }
+
+  /**
+   * Load all events of the day.
+   */
+  private reloadDay(date: Date = this.calendarCtrl.currentDate) {
+    this.loader.present();
+
+    let start = moment(this.calendarCtrl.currentDate).set('hour', 1);
+    let end = start.clone().add(1, 'day');
+    this.storageService.find(start, end)
+      .then((timbrages) => {
+        if (!timbrages || timbrages.length == 0) {
+          return;
+        }
+        // remove previous events
+        _.remove(this.events, (event) => event && event.getMoment().isSame(start, 'day'));
+        // create new events
+        return this.addEvents(timbrages);
+      })
+      .then((events) => {
+        this.updateSumOfDay(events);
+      })
+      .then(() => this.loader.dismiss())
+      .then(() => this.calendar.loadEvents());
   }
 
   /**
    * Load all events of the month.
    */
-  private loadEvents() {
+  private loadAllEvents(): Promise<Event[]> {
     let start = moment(this.calendarCtrl.currentDate).set('date', 1);
     let end = start.clone().add(1, 'month');
-    this.storageService.find(start, end).then((timbrages) => {
-      if (!timbrages || timbrages.length == 0) {
-        return;
-      }
-      // group by day
-      let groups = _.groupBy(timbrages, x => x.getMoment().startOf('day').toISOString());
-      this.events = new Array();
-      for (var day in groups) {
-        var timbragesDuJour: Array<Timbrage> = groups[day];
-        this.addEvents(timbragesDuJour);
-      }
-    });
+    return this.storageService.find(start, end)
+      .then((timbrages) => {
+        if (!timbrages || timbrages.length == 0) {
+          return;
+        }
+        // group by day
+        let days = _.groupBy(timbrages, x => x.getMoment().startOf('day').toISOString());
+        this.events = new Array();
+        for (var day in days) {
+          var timbragesDuJour: Array<Timbrage> = days[day];
+          this.addEvents(timbragesDuJour);
+        }
+
+        return this.events;
+      })
+      .then((events) => {
+        this.updateSumOfDay();
+        return events;
+      });
   }
 
-  private addEvents(timbrages: Array<Timbrage>): void {
+  private addEvents(timbrages: Array<Timbrage>): Event[] {
     // create event from pair of timbrage
     // if one timbrage is missing, add one at end of day
     let events: Event[] = this.calculationService.splitPairs(timbrages, true)
       .map(pair => this.toEvent(pair));
 
-    // // create an 'all day' event to show the sum of the day
-    // let duration = this.sumOfDay(events);
-    // events.push(Event.allDay(duration.toString(), moment(day)));
-
     this.validateDuration(events);
 
     this.events = this.events.concat(events);
+
+    return events;
   }
 
   private validateDuration(events: Event[]): void {
-    let duration = this.sumOfDay(events);
+    let duration = this.calculationService.calculateFromEvents(events);
     if (duration.get('minutes') < 0) {
       let day = moment(events[0].startTime).format('LL');
       let toast = this.toastCtrl.create({
@@ -87,8 +122,8 @@ export class CalendarPage {
     }
   }
 
-  public sumOfDay(events: Event[]): Duration {
-    return this.calculationService.calculateFromEvents(events);
+  public updateSumOfDay(events: Event[] = _.filter(this.events, (event) => event && event.getMoment().isSame(moment(), 'day'))): void {
+    this.sumDay = this.calculationService.calculateFromEvents(events);
   }
 
   /**
@@ -116,7 +151,9 @@ export class CalendarPage {
     let isChanged = moment(event).month() != moment(this.calendarCtrl.currentDate).month();
     this.calendarCtrl.currentDate = event;
     if (isChanged) {
-      this.loadEvents();
+      this.loadAllEvents();
+    } else {
+      this.reloadDay();
     }
   }
 
@@ -139,19 +176,35 @@ export class CalendarPage {
    */
   today() {
     this.calendarCtrl.currentDate = new Date();
-    this.loadEvents();
+    this.reloadDay();
   }
 
   public onChangeTime(timbrage: Timbrage): void {
-    this.storageService.save(timbrage).then(() => this.loadEvents());
+    this.storageService.save(timbrage).then(() => this.reloadDay());
   }
 
   public deleteStart(event: Event) {
-    this.storageService.delete(event.startTimbrage).then(() => event.startTimbrage = null);
+    this.storageService.delete(event.startTimbrage)
+      .then(() => event.startTimbrage = null)
+      .then(() => {
+        if (event.endTimbrage == null && event.startTimbrage == null) {
+          // remove empty event
+          _.remove(this.events, event);
+        }
+      })
+      .then(() => this.updateSumOfDay());
   }
 
   public deleteEnd(event: Event) {
-    this.storageService.delete(event.endTimbrage).then(() => event.endTimbrage = null);
+    this.storageService.delete(event.endTimbrage)
+      .then(() => event.endTimbrage = null)
+      .then(() => {
+        if (event.endTimbrage == null && event.startTimbrage == null) {
+          // remove empty event
+          _.remove(this.events, event);
+        }
+      })
+      .then(() => this.updateSumOfDay());
   }
 
   public share(): void {
@@ -161,20 +214,15 @@ export class CalendarPage {
   }
 
   public addTimbrage() {
-    // add event
-    let timbrages = [];
-    timbrages.push(Timbrage.from(this.calendarCtrl.currentDate, 8, 0));
-    this.addEvents(timbrages);
+    this.storageService.save(Timbrage.from(this.calendarCtrl.currentDate)).then(() => this.reloadDay());
   }
 
   public addTimbrages() {
-    let currentDate = this.calendarCtrl.currentDate;
-    // add event
-    let timbrages = [];
-    timbrages.push(Timbrage.from(currentDate, 8, 0));
-    timbrages.push(Timbrage.from(currentDate, 12, 0));
-    timbrages.push(Timbrage.from(currentDate, 13, 0));
-    timbrages.push(Timbrage.from(currentDate, 17, 0));
-    this.storageService.save(...timbrages).then(() => this.addEvents(timbrages));
+    this.storageService.save(
+      Timbrage.from(this.calendarCtrl.currentDate, 8, 0),
+      Timbrage.from(this.calendarCtrl.currentDate, 12, 0),
+      Timbrage.from(this.calendarCtrl.currentDate, 13, 0),
+      Timbrage.from(this.calendarCtrl.currentDate, 17, 0))
+      .then(() => this.reloadDay());
   }
 }

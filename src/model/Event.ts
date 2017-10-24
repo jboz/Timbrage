@@ -16,6 +16,10 @@ export class Event {
         this.endTime = !endTimbrage ? null : endTimbrage.getDate();
     }
 
+    public getMoment() {
+        return this.startTimbrage ? this.startTimbrage.getMoment() : this.endTimbrage.getMoment();
+    }
+
     public duration(): Duration {
         return moment.duration(moment(this.endTime).diff(moment(this.startTime)));
     }

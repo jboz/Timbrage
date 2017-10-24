@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, MenuController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, MenuController, Content } from 'ionic-angular';
 
 import { Duration } from 'moment';
 import * as moment from 'moment';
@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { Timbrage } from '../../model/Timbrage';
 import { CalculationProvider } from '../../providers/calculation/calculation';
 import { StorageProvider } from '../../providers/storage/storage';
+import { LoadingProvider } from '../../providers/loading/loading';
 
 @IonicPage()
 @Component({
@@ -23,8 +24,10 @@ export class TimbragesPage {
   sumWeek: Duration = moment.duration();
   sumMonth: Duration = moment.duration();
 
+  @ViewChild(Content) content: Content;
+
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
-    public menuCtrl: MenuController) {
+    public menuCtrl: MenuController, public loader: LoadingProvider) {
 
     // each second, refresh time and duration
     setInterval(() => {
@@ -46,19 +49,29 @@ export class TimbragesPage {
   }
 
   public loadTimbrages() {
+    this.loader.present();
+
     this.storageService.find(moment()).then((data) => {
       this.timbrages = data;
+      this.loader.dismiss();
     });
   }
 
   public save(timbrage: Timbrage): void {
-    this.storageService.save(timbrage).then(() => this.loadTimbrages());
+    this.storageService.save(timbrage);
+    this.reorder();
+  }
+
+  private reorder() {
+    this.timbrages = _.sortBy(this.timbrages, (timbrage) => timbrage.getDate());
   }
 
   public timbrer() {
     let timbrage = new Timbrage();
     this.timbrages.push(timbrage);
     this.save(timbrage);
+    this.reorder();
+    this.content.scrollToBottom();
   }
 
   public onChangeTime(timbrage: Timbrage): void {
@@ -67,6 +80,6 @@ export class TimbragesPage {
 
   public delete(timbrage) {
     _.pull(this.timbrages, timbrage);
-    this.storageService.delete(timbrage).then(() => this.loadTimbrages());
+    this.storageService.delete(timbrage);
   }
 }

@@ -32,7 +32,7 @@ export class StorageProvider {
           fields: ['date']
         }
       }).then(function (result) {
-        console.info("index on field date " + result);
+        console.info("index on field date " + JSON.stringify(result));
       });
     }
     return Promise.resolve(this._db);
