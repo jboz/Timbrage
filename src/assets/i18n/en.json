@@ -11,5 +11,6 @@
     "menu.calendar.views.month": "Month",
     "timbrages.start": "start",
     "timbrages.end": "end",
-    "error.calendar.event.sum.negative": "Sum of the {{day}} is negative ! Please control the report."
+    "error.calendar.event.sum.negative": "Sum of the {{day}} is negative ! Please control the report.",
+    "loading.message": "Loading..."
 }

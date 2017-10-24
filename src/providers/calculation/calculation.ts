@@ -68,7 +68,7 @@ export class CalculationProvider {
 
           if (this.settings.get().saveMissings) {
             // missing timbrage must be save to database
-            this.storage.saveSync(missing).then((timbrage) => missing = timbrage);
+            this.storage.saveSync(missing).then((timbrage) => missing = timbrage[0]);
           }
         }
         pairs.push([list[i], missing]);

@@ -6,7 +6,9 @@
     <ion-title>{{ viewTitle }}</ion-title>
     <ion-buttons end>
       <button ion-button [disabled]="isSelectedToday" (click)="today()">{{ 'page.calendar.today' | translate }}</button>
-      <button ion-button (click)="share()" [disabled]="!events || events.length == 0"><ion-icon name="share"></ion-icon></button>
+      <button ion-button (click)="share()" [disabled]="!events || events.length == 0">
+        <ion-icon name="share"></ion-icon>
+      </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -16,7 +18,7 @@
 </ng-template>
 <ng-template #monthviewEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
   <ion-list #timbrages class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-    <ion-item *ngIf="selectedDate?.events.length>0" class="monthview-eventdetail-timecolumn">{{sumOfDay(selectedDate?.events) | duration}}</ion-item>
+    <ion-item #sumOfDay *ngIf="selectedDate?.events.length>0" class="monthview-eventdetail-timecolumn">{{ sumDay | duration }}</ion-item>
     <div *ngFor="let event of selectedDate?.events">
       <ion-item *ngIf="event.startTimbrage">
         <ion-datetime displayFormat="HH:mm" pickerFormat="DD MMM YYYY HH mm" [(ngModel)]="event.startTimbrage.date" (ngModelChange)="onChangeTime(event.startTimbrage)"></ion-datetime>
@@ -49,18 +51,23 @@
 </ng-template>
 
 <ion-content class="has-header" #content>
-    
+
   <ion-fab id="timbre" bottom right edge>
-    <button ion-fab mini color="accent"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab mini color="accent">
+      <ion-icon name="add"></ion-icon>
+    </button>
     <ion-fab-list side="left">
-      <button ion-fab><ion-icon name="square" (click)="addTimbrage()"></ion-icon></button>
-      <button ion-fab><ion-icon name="albums" (click)="addTimbrages()"></ion-icon></button>
+      <button ion-fab>
+        <ion-icon name="square" (click)="addTimbrage()"></ion-icon>
+      </button>
+      <button ion-fab>
+        <ion-icon name="albums" (click)="addTimbrages()"></ion-icon>
+      </button>
     </ion-fab-list>
   </ion-fab>
-      
+
   <calendar #calendar [calendarMode]="calendarCtrl.mode" [currentDate]="calendarCtrl.currentDate" [eventSource]="events" [markDisabled]="markDisabled"
     (onCurrentDateChanged)="onCurrentDateChanged($event)" (onTitleChanged)="onViewTitleChanged($event)" step="30" [monthviewDisplayEventTemplate]="monthviewDisplayEventTemplate"
-    [monthviewEventDetailTemplate]="monthviewEventDetailTemplate" [dateFormatter]="calendarCtrl.dateFormatter"
-    [scrollToHour]="calendarCtrl.startHour">
+    [monthviewEventDetailTemplate]="monthviewEventDetailTemplate" [dateFormatter]="calendarCtrl.dateFormatter" [scrollToHour]="calendarCtrl.startHour">
   </calendar>
 </ion-content>

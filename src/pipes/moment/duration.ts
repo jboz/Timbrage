@@ -5,7 +5,7 @@ import { Duration } from 'moment';
   name: 'duration',
 })
 export class DurationPipe implements PipeTransform {
-  transform(value: Duration, ...args) {
-    return value.toString().replace('PT', '').replace('H', 'h').replace('M', 'm');
+  transform(value: Duration, ...args): string {
+    return value ? value.hours() + 'h' + value.minutes() + "m" : '';
   }
 }

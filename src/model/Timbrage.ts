@@ -29,7 +29,7 @@ export class Timbrage {
         return this.getMoment().diff(other.getMoment());
     }
 
-    public static from(baseDate: Date, hour: number, minute: number): Timbrage {
+    public static from(baseDate: Date, hour: number = moment().hour(), minute: number = moment().minutes()): Timbrage {
         let dateTime = moment(baseDate);
         dateTime.set('hour', hour);
         dateTime.set('minute', minute);

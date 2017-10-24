@@ -11,5 +11,6 @@
     "menu.calendar.views.month": "Mois",
     "timbrages.start": "début",
     "timbrages.end": "fin",
-    "error.calendar.event.sum.negative": "Le total du {{day}} est négatf ! Veuillez contrôler les heures reportées."
+    "error.calendar.event.sum.negative": "Le total du {{day}} est négatf ! Veuillez contrôler les heures reportées.",
+    "loading.message": "Chargement..."
 }
