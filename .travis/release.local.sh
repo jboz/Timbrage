@@ -2,7 +2,7 @@
 
 read -s -p "Enter Passphrase for keystore: " storepass
 
-ionic cordova plugin rm cordova-plugin-console
+#ionic cordova plugin rm cordova-plugin-console
 
 echo '
 
