@@ -110,23 +110,24 @@ export class StorageProvider {
     start = start.clone().startOf("day");
     end = end ? end.clone().startOf("day") : start.clone().add(1, 'day');
 
-    return this.db().then((db) => db.query(function (doc, emit) {
-      let date = moment(doc.date);
-      if (date.isSameOrAfter(start) && date.isBefore(end)) {
-        emit(doc.date);
-      }
-    }, {
-        include_docs: true
-      })
-      // create model from db data
-      .then((data) => data.rows.map((row) => this.toModel(row.doc)).filter(x => x))
-      // sort ascending
-      // TODO sort in query options ?
-      .then((timbrages) => {
-        return timbrages.sort((a, b) => {
-          return a.compareTo(b);
-        });
-      }));
+    return this.db()
+      .then((db) => db.query((doc, emit) => {
+        let date = moment(doc.date);
+        if (date.isSameOrAfter(start) && date.isBefore(end)) {
+          emit(doc.date);
+        }
+      }, {
+          include_docs: true
+        })
+        // create model from db data
+        .then((data) => data.rows.map((row) => this.toModel(row.doc)).filter(x => x))
+        // sort ascending
+        // TODO sort in query options ?
+        .then((timbrages) => {
+          return timbrages.sort((a, b) => {
+            return a.compareTo(b);
+          });
+        }));
   }
 
   public findAll(): Promise<Array<Timbrage>> {

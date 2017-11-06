@@ -39,10 +39,15 @@ export class LoadingProvider {
   }
 
   public present(): void {
-    this.create().present();
+    if (!this.loader){
+      this.create().present();
+    }
   }
-
+  
   public dismiss(): void {
-    this.loader.dismiss();
+    if (this.loader) {
+      this.loader.dismiss();
+    }
+    this.loader = null;
   }
 }

@@ -69,10 +69,7 @@ export class TimbragesPage {
   public loadTimbrages() {
     this.loader.present();
 
-    this.storageService.find(moment()).then((data) => {
-      this.timbrages = data;
-      this.loader.dismiss();
-    });
+    this.storageService.find(moment()).then((data) => this.timbrages = data).then(() => this.loader.dismiss());
   }
 
   public save(timbrage: Timbrage): void {
