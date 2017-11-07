@@ -37,3 +37,4 @@ UserInterfaceState.xcuserstate
 
 *.apk
 .travis/*.keystore
+.travis/*.jks

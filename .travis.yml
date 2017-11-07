@@ -45,54 +45,56 @@ branches:
   - master
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
-  - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
-  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
+- rm -rf $HOME/.gradle/caches/3.5/fileHashes/
+- rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/Library/Caches/Yarn/v1/
-    - $HOME/.cache/yarn/v1/
-    - "node_modules"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/Library/Caches/Yarn/v1/"
+  - "$HOME/.cache/yarn/v1/"
+  - node_modules
 
 before_install:
-  - export LANG=en_US.UTF-8
-  - if [[ "$SYSTEM_NAME" == "osx" ]]; then brew update ; brew install yarn ios-sim jq ios-deploy cocoapods ; rvm use system ; pod setup ; fi
-  - nvm install 8
-  - yarn global add ionic cordova
+- export LANG=en_US.UTF-8
+- if [[ "$SYSTEM_NAME" == "osx" ]]; then brew update ; brew install yarn ios-sim jq ios-deploy cocoapods ; rvm use system ; pod setup ; fi
+- nvm install 8
+- yarn global add ionic cordova
 
 before_script:
-  - if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/addkeys.sh ; fi
-  - if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm install ionic ; fi
+- if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/addkeys.sh ; fi
+- if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm install ionic ; fi
 
 script:
-  - yarn install
-  - if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm run build.github ; fi
-  - if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
-  - if [[ "$SYSTEM_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
+- yarn install
+- if [[ "$SYSTEM_NAME" == "linux_node" ]]; then npm run build.github ; fi
+- if [[ "$SYSTEM_NAME" == "osx" ]]; then ./.travis/build-ios.sh && ./.travis/package-ios.sh ; fi
+- if [[ "$SYSTEM_NAME" == "linux" ]]; then ./.travis/build-android.sh && ./.travis/package-android.sh ; fi
 
 env:
   global:
-    - secure: Vha+3jrHtlz47Nj5iclyAnbIR2NMuUCZGMirIoDHI/iMtZ32ysLHJ5dCWCpJQuXXmnnxt/u7copQOIxmZzs2je+CCe6CbOYiexTlOlxYq8gLg5exKrBnmHGQ/9NbbAGIZMhdLqO2uSP+jDzA5o8aDDSRCUop4dsjDWprAjmhuWTvIRwGgs+Tg3h9h4VmtOU4djFI0bFEVty2zjo7E4R8UnaJfabp363UhGW/w+z5EtlBR4P355yOINqoEPvLlFua27iI4BztfYHoRTycf2CquH9hd/Jh4dDAGSqoARvO0393L9h8kS4+YhUn0+EK++umDHUaKVu84AgNmtawyJWUQMiu6FMQINNckfoqm+oDZIZks7u2m5vq+o5DDrvl7DapGrND++NcmtB8Qy4DQKfecQwe4wYFMaQ0SCOUlcJYCQB0Ee1RehJ6UhSIyok8++6PnmUf6vQhTYNHjL39At/LzL0ZSUl+hkXb+Fk8IKdvvZjJE/V0xCBCRCjZGouq0+exFnyNthEFh8MJ9lsNfMU5u1lxt08BQxVGg/ylYc2cjgV9Oc04zNXo65u/xcnzdsksNM/1qUaULSbNQV6soPEkruK+HfxbDkaWQgoBsAPauXG0EniE2/n3ChleNeNc2f0Np1b6SXaF//VvZLUVjkM2DG1xXjnhiaSoPm1Ebmcdf/I=
-    - JAVA_HOME=/usr/lib/jvm/java-8-oracle
-
+  - secure: Vha+3jrHtlz47Nj5iclyAnbIR2NMuUCZGMirIoDHI/iMtZ32ysLHJ5dCWCpJQuXXmnnxt/u7copQOIxmZzs2je+CCe6CbOYiexTlOlxYq8gLg5exKrBnmHGQ/9NbbAGIZMhdLqO2uSP+jDzA5o8aDDSRCUop4dsjDWprAjmhuWTvIRwGgs+Tg3h9h4VmtOU4djFI0bFEVty2zjo7E4R8UnaJfabp363UhGW/w+z5EtlBR4P355yOINqoEPvLlFua27iI4BztfYHoRTycf2CquH9hd/Jh4dDAGSqoARvO0393L9h8kS4+YhUn0+EK++umDHUaKVu84AgNmtawyJWUQMiu6FMQINNckfoqm+oDZIZks7u2m5vq+o5DDrvl7DapGrND++NcmtB8Qy4DQKfecQwe4wYFMaQ0SCOUlcJYCQB0Ee1RehJ6UhSIyok8++6PnmUf6vQhTYNHjL39At/LzL0ZSUl+hkXb+Fk8IKdvvZjJE/V0xCBCRCjZGouq0+exFnyNthEFh8MJ9lsNfMU5u1lxt08BQxVGg/ylYc2cjgV9Oc04zNXo65u/xcnzdsksNM/1qUaULSbNQV6soPEkruK+HfxbDkaWQgoBsAPauXG0EniE2/n3ChleNeNc2f0Np1b6SXaF//VvZLUVjkM2DG1xXjnhiaSoPm1Ebmcdf/I=
+  - JAVA_HOME=/usr/lib/jvm/java-8-oracle
+  - secure: b+sj6g4JL02b7czETlGb5PaCqQ8gXeWW7hkhRgZjAjeewd4Bnb/uZFRgNkBKdVC6wVcE0sGarVrqRNjLiPn6BK5ym7kUYrB4v5LKMDd2DoT1pMgD+UIG6q/Rk3X9ojGC42IRyw04xrpljjc4WUxgryPQn5ITwiOppqYy4yC7eDdkgGyFIxh1VpruCQkx7vasCWH56Qjg3Rvp/twc7K8Kt32jG+TLNCeUDDOORPEDPKiCT69XvJpCy+QBwPAINMFxEToAc8o9rFzqPin+f9aYKh+AdH+hHyPmafKXYhf97vhVqk2yj3tW35Nmty9f8Obzd5bS+fKwhoUM0qOrAsPBAUh3BrWA0tWMYJeVskJbd48IF57sbCpAv+RSiOmKUEyMASS80wBtpcsAsCLZJDst06VNMXkB+3yw1E/Aesbmh+8Ojd8fYJirLD3W9XgcUJ7NFXy2O0OnvxR+eXA26D2S7ZnxqV81lLzxoe/jeFM0znq2yafCTo4K9NOGZ/cHqxPMDctGPfmUowVsCezc1mw4I3aVwq07weNNZGg2FuvU+Eo+6xx5Xqmi9hmvwuvpC5ogREX7e7QuWU0+88UtnuvQkIGzc/ulJvllaV9IZjjsQX6SaZ1/96bRMG/ooSjozGPEN4rneq/IUm5RdIl0O/lgLqO4SZpwzsW4Q9C0/Q0/gEY=
+  - secure: A76V5K7PqRCU2e45WPb1AUrYdoYKJUkNS040c66RUpDoz7EEXqlbdyigwzymeAqs4EDy2h8b+gluq4xAicrGSWjVHkrjCWmHL782wtPEV0DZsWBIMCy5h/ZneG6dWJHusGCGQNFd7KSLTDgKmpud1uUehn633J1+zMGMAVt569ZMX4hsO5tR+Bp9rj1tHcNjypJtIWIt8OdRPnVN0i+BsdR9C1+xgVZF8cwt8k70CSBLyP5OIuth9KwyMhHxy0Lo3alfNYf09h8Bzx7hVT3KhSjjWR+1IxYiTDdvXGwp1X43VWUodg9/xs180WFgNUQDmUE2Msywc1VX+yHACLEDc6gV5EqvZ2sRwszVSIHA0sKFt3nX/MtxZU9RQKvCSlqG6VVOXXOgKvdScz6kYzpPpyVnB0udGpZzl+iD0YL4A0jb4DII/HSr/6fKFPlXM6xol4nkvog15XXRZNkqHC/H2olXyeI9+rJRDJu7Vem0OyICTY6pRRGIEsvEBdDtUfJmkV8mXTkuuhKwQbL9ifHmvxBNFnelVkhkGTbkqXtqZXW48cejb83HkrflMokPHJSevhGdO6keI7oAuoySj7I3UD/e54pA4HzvhZyHJp1WjCKNbZPSwEjqsumJEHl2bu5FRjpbGeEiyhld0PjfnNTnXsso8F528+yyQw6Dkg0525U=
+  - secure: MOORa22z6oUIQ6JWrFoPQNL0FAhZ4snX4Jm1d3my3O5ips3oDyWusSvKpvRtSXcqTdm8BZwsmEHxxYAIaO06pvEmF8JlAFg+xye/KUQf4MgrBcaeNFSVur3HsOngOZ2EcdpZhMu5/S8xZ6DWvHghPVUKPAS5gUtb9HSOX0JXKkJzd29K5Wf8/0ugXmp5o1tUxkl/xzF3yfQk4bC5mt5PGvWLe6OM9Ph60bRL/0T4H1V1E7LcvFiiR2xC2JPq1lCWu78oeGoFTjdy0AS16C6ap6xwDYJUYbu+WyQh8DBVY/6hPDgF1XeA5qZPlcEZ4oaMlQAQbmBciHLLLlKatAF7KaB9G+rozFXEZfqPX1s6O9MUMfCSge2EgL/hCQ6SvZZH7B/gnVNS5WNQuTy9knfp634KHXlVnvSXfNLHzf68AwE6B/t8GxC4lfPrUHUubfNleHxOJ3tpPsXzbkdL+91CLxwyjeHdiOU9x8nkUk7DFg+OJ46M/IAklbIc1UeXuE4cE2S1Ax6Cfn2ijM275995LqgwR5pFb04QRSebRtdyI0AW1pGDJq/t3F7G9YbmDRY6YHT3HhXTJ9fSFqNpM8cpoUWC9eCE6CGEZIY3TPkdnnffkfxCRGVe8woYicxL0s/oQ7zus6MPaTLgM8fGFmBych/p+9/mpovrfhXMmJztb74=
 notifications:
   email:
     recipients:
-      - julienboz@gmail.com
+    - julienboz@gmail.com
 
 deploy:
   # deploy builded app to github pages
-  - provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
-    local_dir: www
-    on:
-      branch: master
-    condition: $SYSTEM_NAME = linux_node
+- provider: pages
+  skip_cleanup: true
+  github_token: "$GITHUB_TOKEN"
+  local_dir: www
+  on:
+    branch: master
+  condition: "$SYSTEM_NAME = linux_node"
   # - provider: script
   #   script: .travis/package.sh
   #   on:
@@ -106,3 +108,4 @@ deploy:
 #    overwrite: true
 #      on:
 #        branch: master
+
