@@ -44,20 +44,47 @@ export class TimbragesPage {
 
   @ViewChild(Content) content: Content;
 
+  timerDay: any;
+  timerWeek: any;
+  timerMonth: any;
+
   constructor(public calculationService: CalculationProvider, public storageService: StorageProvider,
     public menuCtrl: MenuController, public loader: LoadingProvider) {
+  }
 
-    // each second, refresh time and duration
-    setInterval(() => {
+  ionViewDidEnter() {
+    // refresh time and duration
+    this.startTimers();
+  }
+
+  ionViewDidLeave() {
+    this.stopTimers();
+  }
+
+  private startTimers(): void {
+
+    this.timerDay = setInterval(() => {
       this.now = new Date();
-      this.sumDay = this.calculationService.calculate(this.timbrages);
+      this.calculationService.calculate(this.timbrages).then((duration) => this.sumDay = duration);
+    }, 1000);
+
+    this.timerWeek = setInterval(() => {
       this.storageService.find(moment().startOf('week'), moment().endOf('week')).then((timbrages) => {
-        this.sumWeek = this.calculationService.calculate(timbrages);
-      });
-      this.storageService.find(moment().startOf('month'), moment().endOf('month')).then((timbrages) => {
-        this.sumMonth = this.calculationService.calculate(timbrages);
+        this.calculationService.calculate(timbrages).then((duration) => this.sumWeek = duration);
       });
     }, 1000);
+
+    this.timerMonth = setInterval(() => {
+      this.storageService.find(moment().startOf('month'), moment().endOf('month')).then((timbrages) => {
+        this.calculationService.calculate(timbrages).then((duration) => this.sumMonth = duration);
+      });
+    }, 1000);
+  }
+
+  private stopTimers() {
+    if (this.timerDay) clearInterval(this.timerDay);
+    if (this.timerWeek) clearInterval(this.timerWeek);
+    if (this.timerMonth) clearInterval(this.timerMonth);
   }
 
   ionViewWillEnter() {
@@ -69,7 +96,9 @@ export class TimbragesPage {
   public loadTimbrages() {
     this.loader.present();
 
-    this.storageService.find(moment()).then((data) => this.timbrages = data).then(() => this.loader.dismiss());
+    this.storageService.find()
+      .then((data) => this.timbrages = _.filter(data, (timbrage) => timbrage && timbrage.getMoment().isSame(moment(), 'day')))
+      .then(() => this.loader.dismiss());
   }
 
   public save(timbrage: Timbrage): void {

@@ -18,6 +18,7 @@
 
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
+import { ToastController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -34,7 +35,16 @@ import { Timbrage } from '../../model/Timbrage';
 export class StorageProvider {
   private _db;
 
-  constructor(public storage: Storage) {
+  constructor(public storage: Storage, private toastCtrl: ToastController) {
+  }
+
+  private message(msg : string) : void {
+    let toast = this.toastCtrl.create({
+      message: msg,
+      position: 'top',
+      duration: 3000
+    });
+    toast.present();
   }
 
   db(): Promise<any> {
@@ -93,7 +103,8 @@ export class StorageProvider {
           db.post(timbrage)
         }
       });
-    }).then(() => timbrages);
+    })
+    .then(() => timbrages);
   }
 
   public delete(...timbrages: Timbrage[]): Promise<Timbrage[]> {
@@ -106,10 +117,10 @@ export class StorageProvider {
     }).then(() => timbrages);
   }
 
-  public find(start: Moment = moment(), end?: Moment): Promise<Array<Timbrage>> {
-    start = start.clone().startOf("day");
-    end = end ? end.clone().startOf("day") : start.clone().add(1, 'day');
-
+  public find(start: Moment = moment().startOf("day"), end?: Moment): Promise<Array<Timbrage>> {
+    start = start.clone();
+    end = end ? end.clone() : start.clone().endOf('day');
+    // this.message(`find between ${start} and ${end}`);
     return this.db()
       .then((db) => db.query((doc, emit) => {
         let date = moment(doc.date);

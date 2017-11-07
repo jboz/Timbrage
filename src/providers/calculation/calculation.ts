@@ -33,32 +33,36 @@ export class CalculationProvider {
   constructor(public settings: SettingsProvider, public storage: StorageProvider) {
   }
 
-  public calculateFromEvents(events: Event[]): Duration {
-    if (!events || events.length == 0) {
-      return moment.duration();
-    }
-    let duration = moment.duration();
-    events.forEach(event => {
-      duration = duration.add(event.duration());
+  public calculateFromEvents(events: Event[]): Promise<Duration> {
+    return Promise.resolve().then(() => {
+      if (!events || events.length == 0) {
+        return moment.duration();
+      }
+      let duration = moment.duration();
+      events.forEach(event => {
+        duration = duration.add(event.duration());
+      });
+      return duration;
     });
-    return duration;
   }
 
-  public calculate(timbrages: Array<Timbrage>): Duration {
-    let duration = moment.duration();
+  public calculate(timbrages: Array<Timbrage>): Promise<Duration> {
+    return Promise.resolve().then(() => {
+      let duration = moment.duration();
 
-    if (!timbrages || timbrages.length == 0) {
-      // no times
+      if (!timbrages || timbrages.length == 0) {
+        // no times
+        return duration;
+      }
+
+      // calculate duration by pairs of Timbrage
+      this.splitPairs(timbrages).forEach(pair => {
+        duration = duration.add(this.diff(pair[1], pair[0]));
+      });
+
+      // return moment.duration(timbrages);
       return duration;
-    }
-
-    // calculate duration by pairs of Timbrage
-    this.splitPairs(timbrages).forEach(pair => {
-      duration = duration.add(this.diff(pair[1], pair[0]));
     });
-
-    // return moment.duration(timbrages);
-    return duration;
   }
 
   public diff(t1: Timbrage, t0: Timbrage): Duration {
