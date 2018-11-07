@@ -1,123 +1,124 @@
 // Copyright (C) 2017 Julien Boz
-// 
+//
 // This file is part of Focus IT - Timbrage.
-// 
+//
 // Focus IT - Timbrage is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // Focus IT - Timbrage is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with Focus IT - Timbrage.  If not, see <http://www.gnu.org/licenses/>.
-// 
+//
 
 $break-small: 320px;
 
 page-timbrages {
+  .toolbar-title,
+  div.header {
+    color: map-get($colors, light);
+  }
 
-    .toolbar-title, div.header {
-        color: map-get($colors,light);
+  div.header {
+    height: 15em;
+    background-color: map-get($colors, primary);
+    padding: 2em;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+
+    #date,
+    #sumDay {
+      display: inline-block;
     }
 
-    div.header {
-        height: 15em;
-        background-color: map-get($colors,primary);
-        padding: 2em;
-        position: fixed;
-        top: 4em;
-        width: 100%;
-        z-index: 1;
+    #date {
+      > span:nth-child(1) {
+        font-size: 4em;
+        padding-right: 0.2em;
+      }
+      span:nth-child(2) {
+        display: inline-block;
 
-        #date, #sumDay {
-            display: inline-block;
+        > span:nth-child(1) {
+          display: block;
+          padding-bottom: 0.4em;
         }
 
-        #date {
-            > span:nth-child(1) {
-                font-size: 4em;
-                padding-right: 0.2em;
-            }
-            span:nth-child(2) {
-                display: inline-block;
-
-                > span:nth-child(1) {
-                    display: block;
-                    padding-bottom: 0.4em;
-                }
-
-                > span:nth-child(2) {
-                    color: map-get($colors,primary-light);
-                }
-            }
+        > span:nth-child(2) {
+          color: map-get($colors, primary-light);
         }
-
-        #sumDay {
-            float: right;
-            position: relative;
-            top: 1em;
-
-            > div:nth-child(1) {
-                text-align: end;
-            }
-
-            > div:nth-child(2) {
-                font-size: 2em;
-            }
-        }
-
-        #sumWeek, #sumMonth {
-            color: map-get($colors,primary-light);
-        }
-
-        #now {
-            font-size: 2em;
-            padding: 1em 2em 0.2em 1em;
-            
-            @media screen and (max-width: $break-small) {
-                padding-left: 0;
-            }
-        }
-        
-        #timbre {
-            top: 13em;
-        }
-
-        .fab-md-accent {
-            color: map-get($colors,accent-dark);
-        }
+      }
     }
-    
-    ion-list#timbrages {
-        padding-top: 17em;
 
-        ion-item {
-            div.input-wrapper {
-                flex: initial; // reset stretch
-            }
+    #sumDay {
+      float: right;
+      position: relative;
+      top: 1em;
 
-            span.timbrage-desc {
-                flex: 1; // stretch
-                color: map-get($colors,secondary-text);
-            }
+      > div:nth-child(1) {
+        text-align: end;
+      }
 
-            button {
-                width: 2.5em;
-            }
-        }
-
+      > div:nth-child(2) {
+        font-size: 2em;
+      }
     }
-    
-    overflow: hidden;
-    position: relative;
 
-    div.scroll-content {
-        overflow-y: auto;
-        position: absolute;
-        right: -17px;
+    #sumWeek,
+    #sumMonth {
+      color: map-get($colors, primary-light);
     }
+
+    #now {
+      font-size: 2em;
+      padding: 1em 2em 0.2em 1em;
+
+      @media screen and (max-width: $break-small) {
+        padding-left: 0;
+      }
+    }
+
+    #timbre {
+      top: 13em;
+      right: 2em;
+    }
+
+    .fab-md-accent {
+      color: map-get($colors, accent-dark);
+    }
+  }
+
+  ion-list#timbrages {
+    padding-top: 17em;
+
+    ion-item {
+      div.input-wrapper {
+        flex: initial; // reset stretch
+      }
+
+      span.timbrage-desc {
+        flex: 1; // stretch
+        color: map-get($colors, secondary-text);
+      }
+
+      button {
+        width: 2.5em;
+      }
+    }
+  }
+
+  overflow: hidden;
+  position: relative;
+
+  div.scroll-content {
+    overflow-y: auto;
+    position: absolute;
+    right: -17px;
+  }
 }

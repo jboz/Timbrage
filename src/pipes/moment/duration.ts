@@ -24,6 +24,6 @@ import { Duration } from 'moment';
 })
 export class DurationPipe implements PipeTransform {
   transform(value: Duration, ...args): string {
-    return value ? value.toIsoString().replace('P', '').replace('T', '').toLocaleLowerCase() : '';
+    return value ? value.toISOString().replace('P', '').replace('T', '').toLocaleLowerCase() : '';
   }
 }
