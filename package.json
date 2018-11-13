@@ -68,7 +68,7 @@
     "@ionic/app-scripts": "3.0.0",
     "@types/pouchdb": "^6.3.0",
     "@types/pouchdb-find": "^6.3.0",
-    "ionic": "3.13.0",
+    "ionic": "4.3.1",
     "typescript": "2.3.4"
   },
   "description": "Timbrages: a productive application",

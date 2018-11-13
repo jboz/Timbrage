@@ -23,4 +23,4 @@ jarsigner -storepass $storepass -verbose -sigalg SHA1withRSA -digestalg SHA1 -ke
 
 echo '\n\nFINISHING android app..\n\n'
 
-~/Documents/prog/tools/android-sdk/build-tools/23.0.3/zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk $output_apk
+~/Documents/prog/tools/android-sdk/build-tools/27.0.3/zipalign -v 4 platforms/android/build/outputs/apk/android-release-unsigned.apk $output_apk

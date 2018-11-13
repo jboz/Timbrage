@@ -18,12 +18,10 @@
 
 import { ElementRef, Injectable } from "@angular/core";
 import "rxjs/add/operator/map";
-
-import { SocialSharing } from "@ionic-native/social-sharing";
 import { File } from "@ionic-native/file";
 
-import { Moment } from "moment";
 import * as moment from "moment";
+import { Moment } from "moment";
 import _ from "lodash";
 
 import { Event } from "../../model/Event";
@@ -62,13 +60,13 @@ export class ReportingProvider {
     let dates = [];
     dates.push("timbrages");
     events.forEach(event => {
-      dates.push(this.format(event.startTimbrage.getMoment()));
-      dates.push(this.format(event.endTimbrage.getMoment()));
+      dates.push(ReportingProvider.format(event.startTimbrage.getMoment()));
+      dates.push(ReportingProvider.format(event.endTimbrage.getMoment()));
     });
     return _.join(dates, "\r\n");
   }
 
-  private format(date: Moment): string {
+  private static format(date: Moment): string {
     return date.format("YYYY-MM-DD HH:mm");
   }
 }
