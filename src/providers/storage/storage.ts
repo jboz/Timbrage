@@ -18,33 +18,23 @@
 
 import { Injectable } from "@angular/core";
 import "rxjs/add/operator/map";
-import { ToastController } from "ionic-angular";
 
 import { Storage } from "@ionic/storage";
 
-import { Moment } from "moment";
 import * as moment from "moment";
+import { Moment } from "moment";
 
 import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
-PouchDB.plugin(PouchFind);
-
 import { Timbrage } from "../../model/Timbrage";
+
+PouchDB.plugin(PouchFind);
 
 @Injectable()
 export class StorageProvider {
   private _db;
 
-  constructor(public storage: Storage, private toastCtrl: ToastController) {}
-
-  private message(msg: string): void {
-    let toast = this.toastCtrl.create({
-      message: msg,
-      position: "top",
-      duration: 3000
-    });
-    toast.present();
-  }
+  constructor(public storage: Storage) {}
 
   db(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -68,7 +58,7 @@ export class StorageProvider {
 
   public reset(): Promise<any> {
     if (this._db) {
-      return this._db.destroy().then(function() {
+      return this._db.destroy().then(function () {
         console.log("database cleaned");
       });
     }
@@ -76,18 +66,6 @@ export class StorageProvider {
       console.log("no database to clean");
     });
   }
-
-  // ex: return this.parallelize(timbrages, (db) => db.post(timbrages));
-  // private parallelize(timbrages: Timbrage[], promise: (db: any) => any) {
-  //   return this.db().then((db) => {
-  //     let promises = [];
-  //     timbrages.forEach((timbrage) => {
-  //       promises.push(promise(db));
-  //     });
-
-  //     return Promise.all(promises);
-  //   });
-  // }
 
   public async saveSync(...timbrages: Timbrage[]): Promise<Timbrage[]> {
     let saved = await this.save(...timbrages);
@@ -120,10 +98,7 @@ export class StorageProvider {
       .then(() => timbrages);
   }
 
-  public find(
-    start: Moment = moment().startOf("day"),
-    end?: Moment
-  ): Promise<Array<Timbrage>> {
+  public find(start: Moment = moment().startOf("day"), end?: Moment): Promise<Array<Timbrage>> {
     start = start.clone();
     end = end ? end.clone() : start.clone().endOf("day");
     // this.message(`find between ${start} and ${end}`);

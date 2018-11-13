@@ -38,3 +38,4 @@ UserInterfaceState.xcuserstate
 *.apk
 .travis/*.keystore
 .travis/*.jks
+.travis/*.pem
