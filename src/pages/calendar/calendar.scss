@@ -17,55 +17,69 @@
 // 
 
 page-calendar {
-    .toolbar-title, div.header, button.bar-button {
-        color: map-get($colors,light);
+  .toolbar-title, div.header, button.bar-button {
+    color: map-get($colors, light);
+  }
+
+  ion-buttons button.bar-button {
+    padding: 0 15px;
+  }
+
+  .monthview-primary-with-event.monthview-selected,
+  .monthview-primary-with-event.monthview-selected.monthview-current {
+    background-color: map-get($colors, accent);
+  }
+
+  @media(max-width: 340px) {
+    table.table.monthview-datetable th > small {
+      font-size: 70%;
+    }
+  }
+
+  .event-detail-container {
+
+    ion-label.label {
+      padding-left: 16px;
     }
 
-    ion-buttons button.bar-button {
-        padding: 0 15px;
+    .monthview-eventdetail-timecolumn {
+      font-weight: bold;
+      font-size: 2em;
     }
+  }
 
-    .monthview-primary-with-event.monthview-selected,
-    .monthview-primary-with-event.monthview-selected.monthview-current{
-        background-color: map-get($colors,accent);
-    }
-    
-    @media(max-width: 340px) {
-        table.table.monthview-datetable th > small {
-            font-size: 70%;
-        }
-    }
+  ion-content {
+    monthview {
+      ion-slides {
+        position: fixed;
+        top: 0;
+        height: 262px;
+        z-index: 1;
+        background-color: white;
+      }
 
-    .event-detail-container {
+      ion-list {
+        padding-top: 262px;
 
-        ion-label.label {
-            padding-left: 16px;
-        }
-
-        .monthview-eventdetail-timecolumn {
-            font-weight: bold;
-            font-size: 2em;
-        }
-    }
-
-    ion-list {
         ion-item {
-            div.input-wrapper {
-                flex: initial; // reset stretch
-            }
+          div.input-wrapper {
+            flex: initial; // reset stretch
+          }
 
-            span.timbrage-desc {
-                flex: 1; // stretch
-                color: map-get($colors,secondary-text);
-            }
+          span.timbrage-desc {
+            flex: 1; // stretch
+            color: map-get($colors, secondary-text);
+          }
 
-            button {
-                width: 2.5em;
-            }
+          button {
+            width: 2.5em;
+          }
         }
+      }
     }
+  }
 
-    ion-fab#timbre {
-        bottom: 10px;
-    }
+  ion-fab#timbre {
+    bottom: 10px;
+  }
 }

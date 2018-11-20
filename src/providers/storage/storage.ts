@@ -17,13 +17,9 @@
 //
 
 import { Injectable } from "@angular/core";
-import "rxjs/add/operator/map";
-
 import { Storage } from "@ionic/storage";
-
 import * as moment from "moment";
 import { Moment } from "moment";
-
 import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
 import { Timbrage } from "../../model/Timbrage";

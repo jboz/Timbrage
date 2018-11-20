@@ -17,13 +17,10 @@
 //
 
 import { ElementRef, Injectable } from "@angular/core";
-import "rxjs/add/operator/map";
 import { File } from "@ionic-native/file";
-
 import * as moment from "moment";
 import { Moment } from "moment";
 import _ from "lodash";
-
 import { Event } from "../../model/Event";
 
 @Injectable()

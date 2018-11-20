@@ -14,7 +14,7 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with Focus IT - Timbrage.  If not, see <http://www.gnu.org/licenses/>.
-// 
+//
 
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
@@ -26,7 +26,7 @@ import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser'
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
-import { defaultLanguage, availableLanguages } from './i18n.constants';
+import { availableLanguages, defaultLanguage } from './i18n.constants';
 import { CalendarPage } from "../pages/calendar/calendar";
 
 @Component({
@@ -35,25 +35,21 @@ import { CalendarPage } from "../pages/calendar/calendar";
 })
 export class MyApp {
   rootPage: any = 'TabsPage';
-  appName;
-  packageName;
-  versionNumber;
-  versionCode;
 
-  constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, globalization: Globalization,
-    public calendarCtrl: CalendarPage, public translate: TranslateService,
-    private inAppBrowser: InAppBrowser) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, globalization: Globalization,
+              public calendarCtrl: CalendarPage, public translate: TranslateService,
+              private inAppBrowser: InAppBrowser) {
     this.setLang(defaultLanguage);
 
     platform.ready().then(() => {
       if ((<any>window).cordova) {
         globalization.getPreferredLanguage().then(result => {
-          var language = this.getSuitableLanguage(result.value);
+          const language = this.getSuitableLanguage(result.value);
           this.setLang(language);
         });
       } else {
         let browserLanguage = translate.getBrowserLang() || defaultLanguage;
-        var language = this.getSuitableLanguage(browserLanguage);
+        const language = this.getSuitableLanguage(browserLanguage);
         this.setLang(language);
       }
 
@@ -62,20 +58,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
     });
-    // if (platform.is('cordova')) {
-    //   appVersion.getAppName().then((appName) => {
-    //     this.appName = appName;
-    //   });
-    //   appVersion.getPackageName().then((packageName) => {
-    //     this.packageName = packageName;
-    //   });
-    //   appVersion.getVersionNumber().then((versionNumber) => {
-    //     this.versionNumber = versionNumber;
-    //   });
-    //   appVersion.getVersionCode().then((versionCode) => {
-    //     this.versionCode = versionCode;
-    //   });
-    // }
   }
 
   /**

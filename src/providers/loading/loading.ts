@@ -14,12 +14,10 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with Focus IT - Timbrage.  If not, see <http://www.gnu.org/licenses/>.
-// 
+//
 
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-
-import { LoadingController, Loading } from 'ionic-angular';
+import { Loading, LoadingController } from 'ionic-angular';
 import { TranslateService } from "@ngx-translate/core";
 
 @Injectable()
@@ -38,11 +36,11 @@ export class LoadingProvider {
   }
 
   public present(): void {
-    if (!this.loader){
+    if (!this.loader) {
       this.create().present();
     }
   }
-  
+
   public dismiss(): void {
     if (this.loader) {
       this.loader.dismiss();

@@ -14,16 +14,13 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with Focus IT - Timbrage.  If not, see <http://www.gnu.org/licenses/>.
-// 
+//
 
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
-
 import { Timbrage } from '../../model/Timbrage';
 import { Event } from '../../model/Event';
-import { Duration } from 'moment';
 import * as moment from 'moment';
-
+import { Duration } from 'moment';
 import { SettingsProvider } from "../settings/settings";
 import { StorageProvider } from "../storage/storage";
 
@@ -72,30 +69,33 @@ export class CalculationProvider {
   }
 
   public splitPairs(list: Array<Timbrage>, endOfDay = false): Array<Array<Timbrage>> {
-    var pairs = [];
-    for (var i = 0; i < list.length; i += 2) {
-      if (list[i + 1] !== undefined) {
-        pairs.push([list[i], list[i + 1]]);
-      } else {
-        // the list of timbrages is not odd
-        let missing = new Timbrage();
-        // if we must set missing report to end of the day (use in calendar view)
-        // only if it's not in the today date
-        // and the actual time is not before the parameterized end of day
-        let isToday = moment().isSame(list[i].getDate(), "day");
-        let isAfterParametizedEndOfDay = moment().isAfter(this.settings.getEndOfDay());
-        if (endOfDay && (!isToday || isAfterParametizedEndOfDay)) {
-          // set time to end of day
-          missing.date = this.settings.applyEndOfDay(moment(list[i].date)).startOf('minute').format();
+    const pairs = [];
+    if (list) {
+      for (let i = 0; i < list.length; i += 2) {
+        if (list[i + 1] !== undefined) {
+          pairs.push([list[i], list[i + 1]]);
+        } else {
+          // the list of timbrages is not odd
+          let missing = new Timbrage();
+          // if we must set missing report to end of the day (use in calendar view)
+          // only if it's not in the today date
+          // and the actual time is not before the parameterized end of day
+          let isToday = moment().isSame(list[i].getDate(), "day");
+          let isAfterParametizedEndOfDay = moment().isAfter(this.settings.getEndOfDay());
+          if (endOfDay && (!isToday || isAfterParametizedEndOfDay)) {
+            // set time to end of day
+            missing.date = this.settings.applyEndOfDay(moment(list[i].date)).startOf('minute').format();
 
-          if (this.settings.get().saveMissings) {
-            // missing timbrage must be save to database
-            this.storage.saveSync(missing).then((timbrage) => missing = timbrage[0]);
+            if (this.settings.get().saveMissings) {
+              // missing timbrage must be save to database
+              this.storage.saveSync(missing).then((timbrage) => missing = timbrage[0]);
+            }
           }
+          pairs.push([list[i], missing]);
         }
-        pairs.push([list[i], missing]);
       }
     }
     return pairs;
-  };
+  }
+  ;
 }

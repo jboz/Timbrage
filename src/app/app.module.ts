@@ -14,13 +14,12 @@
 // 
 // You should have received a copy of the GNU General Public License
 // along with Focus IT - Timbrage.  If not, see <http://www.gnu.org/licenses/>.
-// 
+//
 
-import { NgModule, ErrorHandler } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
-import { HttpModule, Http } from '@angular/http';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -29,10 +28,6 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { File } from '@ionic-native/file';
 import { Globalization } from '@ionic-native/globalization';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
 import { MyApp } from './app.component';
 import { CalculationProvider } from '../providers/calculation/calculation';
 import { StorageProvider } from '../providers/storage/storage';
@@ -40,6 +35,9 @@ import { ReportingProvider } from '../providers/reporting/reporting';
 import { CalendarProvider } from '../providers/calendar/calendar';
 import { SettingsProvider } from '../providers/settings/settings';
 import { LoadingProvider } from '../providers/loading/loading';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -47,7 +45,7 @@ import { LoadingProvider } from '../providers/loading/loading';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot({
       name: '__timbrageDb',
@@ -57,7 +55,7 @@ import { LoadingProvider } from '../providers/loading/loading';
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
-        deps: [Http]
+        deps: [HttpClient]
       }
     })
   ],
@@ -74,8 +72,8 @@ import { LoadingProvider } from '../providers/loading/loading';
     CalendarProvider, SettingsProvider, LoadingProvider
   ]
 })
-export class AppModule { }
+export class AppModule {}
 
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
