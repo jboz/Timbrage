@@ -19,7 +19,7 @@ ionic cordova build android --release --prod
 
 echo '\n\nSIGNING android app..\n\n'
 
-jarsigner -storepass $storepass -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore .travis/release-keystore.jks platforms/android/build/outputs/apk/android-release-unsigned.apk timbrage-app
+jarsigner -storepass $storepass -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore .travis/release-keystore.jks platforms/android/build/outputs/apk/android-release-unsigned.apk upload
 
 echo '\n\nFINISHING android app..\n\n'
 
