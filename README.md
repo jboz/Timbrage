@@ -1,6 +1,4 @@
-[![license](https://img.shields.io/github/license/jboz/timbrage.svg?style=flat-square)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Travis](https://img.shields.io/travis/jboz/timbrage.svg?style=flat-square)]()
+[![license](https://img.shields.io/github/license/jboz/timbrage.svg?style=flat-square)]() [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Travis](https://img.shields.io/travis/jboz/timbrage.svg?style=flat-square)]()
 
 # Timbrage - reporting quotidien
 
@@ -17,18 +15,3 @@ La version actuel est basé sur le très réputé framework ionic qui lui même 
 ## Ecrans de saisie quotidien/vue mensuelle :
 
 <img src="docs/screen1-android.png" width="300"/> <img src="docs/screen2-android.png" width="300"/>
-
-## Développement
-
-[Choix des couleurs](https://www.materialpalette.com/purple/teal)
-
-```bash
-# lancement en local
-ionic serve
-
-# déploiement sur device android
-ionic cordova run android --device --prod
-
-#génération des icônes et spash screen
-ionic cordova resources
-```

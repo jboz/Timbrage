@@ -14,6 +14,7 @@
     "release": "bash .travis/release.local.sh",
     "debug": "ionic cordova run android -l -c",
     "device": "ionic cordova run android --device --prod",
+    "resources": "ionic cordova resources",
     "start": "ionic serve",
     "build.github": "npm run ionic:build --prod --progress false --base-href \"https://jboz.github.io/timbrage/\""
   },
