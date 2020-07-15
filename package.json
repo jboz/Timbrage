@@ -57,7 +57,7 @@
     "ionic-plugin-keyboard": "2.2.1",
     "ionic2-calendar": "0.4.5",
     "ionicons": "4.4.6",
-    "lodash": "4.17.11",
+    "lodash": "4.17.19",
     "moment": "2.22.2",
     "pouchdb": "6.4.3",
     "pouchdb-find": "6.4.3",
